@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:illimited_app/constant/const.dart';
 
-class PrimaryButton extends StatelessWidget {
+class GoogleSignButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   final Color color;
@@ -13,16 +13,16 @@ class PrimaryButton extends StatelessWidget {
   final double? elevation;
   final bool? enabled;
 
-  const PrimaryButton({
+  const GoogleSignButton({
     Key? key,
-    required this.text,
+    this.text = "GOOGLE",
     required this.onPressed,
-    this.color = primaryColor,
+    this.color = Colors.white,
     this.width = double.infinity,
     this.height = 60,
     this.isBold = false,
     this.icon,
-    this.textColor = Colors.white, this.elevation, this.enabled=true,
+    this.textColor = Colors.cyan, this.elevation, this.enabled=true,
   }) : super(key: key);
 
   @override
@@ -35,7 +35,7 @@ class PrimaryButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           elevation: elevation,
           foregroundColor: textColor,
-          backgroundColor: enabled == true ? color : Colors.grey,
+          backgroundColor:color,
           padding: EdgeInsets.zero,
           textStyle: getFontStyle(context).copyWith(fontWeight: isBold! ? FontWeight.bold : FontWeight.normal, fontSize: 20),
           shape: RoundedRectangleBorder(
@@ -46,12 +46,11 @@ class PrimaryButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (icon != null)
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: icon!,
-              ),
-            if (icon != null) const SizedBox(width: 5),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset("assets/icon/google_icon.png", width: 30,),
+            ),
+            const SizedBox(width: 4,),
             Text(text),
           ],
         ),

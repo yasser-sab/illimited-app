@@ -6,7 +6,7 @@ const Color primaryColor = Color.fromARGB(255, 84, 198, 2);
 const Color errorColor = Color.fromARGB(255, 153, 0, 0);
 
 //APP FONTS
-TextStyle _kFontStyle = GoogleFonts.montserrat(color: Colors.black, fontWeight: FontWeight.bold);
+TextStyle _kFontStyle = GoogleFonts.montserrat(color: Colors.white, fontWeight: FontWeight.w600);
 TextStyle kArabicFontStyle = GoogleFonts.cairo(color: Colors.black);
 TextStyle getFontStyle(BuildContext context) {
   return _kFontStyle;
