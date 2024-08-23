@@ -18,16 +18,3 @@ TextStyle getFontStyle(BuildContext context) {
   //   return _kFontStyle;
   // }
 }
-
-
-//AUTHENTICATION BACKGROUND
-// BoxDecoration getBackgroundDecoration() {
-//   String backgroundImage = "assets/lottie/Animation - 1724427883796.json";
-//   return BoxDecoration(
-//     image: DecorationImage(
-//       image: AssetImage(backgroundImage),
-//       fit: BoxFit.cover,
-//       alignment: Alignment.center,
-//     ),
-//   );
-// }
