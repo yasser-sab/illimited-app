@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:illimited_app/constant/const.dart';
-import 'package:illimited_app/screens/sign_up_screen.dart';
+import 'package:illimited_app/screens/signin_screen.dart';
 import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/google_sign_button.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:lottie/lottie.dart';
 import 'package:modern_textfield/modern_textfield.dart';
 
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +34,7 @@ class _SignInScreenState extends State<SignInScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Sign In",
+                  "Sign Up",
                   style: getFontStyle(context)
                       .copyWith(fontSize: 40, fontWeight: FontWeight.w800),
                 ),
@@ -43,6 +43,30 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
                 ModernTextField(
                   iconBackgroundColor: primaryColor,
+                  borderRadius: 20,
+                  customTextFieldIcon: const Icon(
+                    Icons.person_rounded,
+                    color: Colors.white,
+                  ),
+                  hintText: "First Name",
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                ModernTextField(
+                  iconBackgroundColor: primaryColor,
+                  borderRadius: 20,
+                  customTextFieldIcon: const Icon(
+                    Icons.person_rounded,
+                    color: Colors.white,
+                  ),
+                  hintText: "Last Name",
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                ModernTextField(
+                  iconBackgroundColor: Colors.orange,
                   borderRadius: 20,
                   customTextFieldIcon: const Icon(
                     Icons.email_rounded,
@@ -112,7 +136,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   height: 20,
                 ),
                 Text(
-                  "Don't have an account ?",
+                  "Already have an account ?",
                   style: getFontStyle(context),
                 ),
                 SizedBox(
@@ -122,12 +146,11 @@ class _SignInScreenState extends State<SignInScreen> {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => SignUpScreen(),
+                        builder: (context) => SignInScreen(),
                       ),
-                    );
-                  },
+                    );},
                   child: Text(
-                    "Sign Up",
+                    "Sign In",
                     style: getFontStyle(context).copyWith(
                         fontSize: 20,
                         color: Colors.cyan,
