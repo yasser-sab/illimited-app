@@ -63,6 +63,9 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1030505689131',
     projectId: 'illimited-app',
     storageBucket: 'illimited-app.appspot.com',
+    androidClientId: '1030505689131-6oidha1bvsie75r5k8qll9u0bfvncdae.apps.googleusercontent.com',
+    iosClientId: '1030505689131-j8nk28450qn9v8p1apamuqitr4k3gidh.apps.googleusercontent.com',
     iosBundleId: 'com.example.illimitedApp',
   );
+
 }

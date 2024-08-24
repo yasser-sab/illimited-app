@@ -1,29 +1,49 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:illimited_app/firebase_options.dart';
+import 'package:illimited_app/providers/authentication_provider.dart';
+import 'package:illimited_app/router/go_router.dart';
 import 'package:illimited_app/screens/sign_up_screen.dart';
 import 'package:illimited_app/screens/signin_screen.dart';
 import 'package:illimited_app/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp(
+  await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AuthenticationProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
+
+    FirebaseAuth.instance.userChanges().listen((User? user) {
+    router.refresh();
+  });
+
 }
 
+
+  
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return MaterialApp.router(
+      routerConfig: router,
+      title: "Illimited",
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        brightness: Brightness.light,
       ),
-      home: SignInScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
