@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:illimited_app/constant/typography.dart';
 import 'package:illimited_app/firebase_options.dart';
+import 'package:illimited_app/screens/getstarted_screen.dart';
 import 'package:illimited_app/screens/sign_up_screen.dart';
 import 'package:illimited_app/screens/signin_screen.dart';
 import 'package:illimited_app/screens/splash_screen.dart';
@@ -7,7 +9,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp(
+  await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const MyApp());
@@ -22,8 +24,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        textTheme: myTextTheme,
       ),
-      home: SignInScreen(),
+      home: GetStarted(),
     );
   }
 }
