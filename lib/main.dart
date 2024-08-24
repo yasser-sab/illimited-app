@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:illimited_app/constant/typography.dart';
 import 'package:illimited_app/firebase_options.dart';
 import 'package:illimited_app/providers/authentication_provider.dart';
 import 'package:illimited_app/router/go_router.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
         brightness: Brightness.light,
+        textTheme: myTextTheme,
       ),
       debugShowCheckedModeBanner: false,
     );

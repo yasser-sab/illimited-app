@@ -1,3 +1,4 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -15,6 +16,7 @@ import 'package:lottie/lottie.dart';
 import 'package:modern_textfield/modern_textfield.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
+
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});

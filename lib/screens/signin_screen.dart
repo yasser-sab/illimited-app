@@ -54,6 +54,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     final authProvider =
         Provider.of<AuthenticationProvider>(context, listen: true);
     return PopScope(
@@ -250,6 +251,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                       ),
                     ],
+
                   ),
                 ),
               ),
