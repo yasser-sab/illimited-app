@@ -138,6 +138,7 @@ class _QuestionState extends State<Question> {
                             questionIndex: index,
                             question: questions[index]["question"],
                             answers: questions[index]["answers"],
+                            type: questions[index]["type"],
                           );
                         },
                       ),
