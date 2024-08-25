@@ -152,7 +152,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     ModernTextField(
                       isPasswordField: true,
-
                       textFieldTextStyle:
                           getFontStyle(context).copyWith(color: Colors.black),
                       textEditingController: _passwordController,
