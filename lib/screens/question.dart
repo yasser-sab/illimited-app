@@ -1,9 +1,17 @@
+import 'dart:developer';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:illimited_app/constant/const.dart';
+import 'package:illimited_app/data/questions.dart';
+import 'package:illimited_app/providers/questions_provider.dart';
+import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:illimited_app/widget/progress_bar.dart';
 import 'package:illimited_app/widget/question_page.dart';
 import 'package:illimited_app/widget/single_choice_selector.dart';
+import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
 class Question extends StatefulWidget {
   const Question({super.key});
@@ -13,86 +21,39 @@ class Question extends StatefulWidget {
 }
 
 class _QuestionState extends State<Question> {
+  final soundPlayer = AudioPlayer();
   final PageController _pageController = PageController();
   int _currentPage = 0;
+  int _currentReachedPage = 0;
+  double _percentage = 0;
+  bool isFinished = false;
 
-  List<Map<String, dynamic>> questions = [
-    {
-      "question": "what is your gender ?",
-      "answers": [
-        {
-          "text": "Male",
-          "icon": Icons.schedule,
-        },
-        {
-          "text": "Female",
-          "icon": Icons.bus_alert,
-        },
-      ]
-    },
-    {
-      "question": "What would you like to improve ?",
-      "answers": [
-        {
-          "text": "your physical well-being",
-          "icon": Icons.schedule,
-        },
-        {
-          "text": "your mental well-being",
-          "icon": Icons.bus_alert,
-        },
-        {
-          "text": "both",
-          "icon": Icons.bus_alert,
-        },
-      ]
-    },
-    {
-      "question": "What age group do you fall into ?",
-      "answers": [
-        {
-          "text": "12-17 years",
-          "icon": Icons.schedule,
-        },
-        {
-          "text": "18-25 years",
-          "icon": Icons.bus_alert,
-        },
-        {
-          "text": "25-34 years",
-          "icon": Icons.bus_alert,
-        },
-        // {
-        //   "text": "35-45 years",
-        //   "icon": Icons.bus_alert,
-        // },
-        // {
-        //   "text": "45-55 years",
-        //   "icon": Icons.bus_alert,
-        // },
-        // {
-        //   "text": "55-65 years",
-        //   "icon": Icons.bus_alert,
-        // },
-        // {
-        //   "text": "Over 65 years",
-        //   "icon": Icons.bus_alert,
-        // },
-      ]
-    },
-    {
-      "question": "Which country are you located in ?",
-      "answers": [
-        {
-          "text": "12-17 years",
-          "icon": Icons.schedule,
-        },
-      ]
-    }
-  ];
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    soundPlayer.dispose();
+    super.dispose();
+  }
 
   void _nextPage() {
-    if (_currentPage < 2) {
+    if (_currentPage == questions.length - 1 &&
+        context.read<QuestionProvider>().answers[_currentPage] != "") {
+      setState(() {
+        isFinished = true;
+        getPercentage();
+      });
+      soundPlayer.play(
+        soundPlayer.source ?? AssetSource('sounds/congratulation.mp3'),
+      );
+
+      pushAuth();
+    }
+
+    if (_currentPage < questions.length - 1) {
       _pageController.nextPage(
         duration: Duration(milliseconds: 200),
         curve: Curves.easeIn,
@@ -113,72 +74,129 @@ class _QuestionState extends State<Question> {
     setState(() {
       _currentPage = page;
     });
+    if (_currentReachedPage < _currentPage) {
+      _currentReachedPage = _currentPage;
+      setState(() {
+        getPercentage();
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final _questionProvider =
+        Provider.of<QuestionProvider>(context, listen: true);
     return Scaffold(
       body: SafeArea(
-          child: Center(
-        child: Container(
-          margin: EdgeInsets.only(top: 40.0),
-          width: MediaQuery.of(context).size.width * 0.95,
-          child: Column(
-            children: [
-              Row(
+          child: Stack(
+        children: [
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircleAvatar(
-                    backgroundColor: Colors.blue, // Background color
-                    radius: 20, // Adjust radius for size
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.arrow_back,
-                        color: Colors.white, // Arrow color
-                        size: 18, // Adjust size of the icon
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: _currentPage == 0
+                            ? Colors.grey
+                            : Colors.blue, // Background color
+                        radius: 20, // Adjust radius for size
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.arrow_back,
+                            color: Colors.white, // Arrow color
+                            size: 18, // Adjust size of the icon
+                          ),
+                          onPressed: () {
+                            _previusPage();
+                          },
+                        ),
                       ),
-                      onPressed: () {
-                        _previusPage();
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    width: 5,
+                      const SizedBox(
+                        width: 7,
+                      ),
+                      Expanded(
+                        child: ProgressBar(
+                          percent: _percentage,
+                        ),
+                      )
+                    ],
                   ),
                   Expanded(
-                    child: ProgressBar(),
-                  )
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 12),
+                      child: PageView.builder(
+                        controller: _pageController,
+                        onPageChanged: _onPageChanged,
+                        itemCount: questions.length,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return QuestionPage(
+                            questionIndex: index,
+                            question: questions[index]["question"],
+                            answers: questions[index]["answers"],
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  PrimaryButton(
+                    enabled: _questionProvider.answers[_currentPage] != "",
+                    text:
+                        _currentPage == questions.length - 1 ? "Done" : "Next",
+                    onPressed: _nextPage,
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
                 ],
               ),
-              SizedBox(
-                height: 15.0,
-              ),
-              Expanded(
-                child: PageView.builder(
-                  controller: _pageController,
-                  onPageChanged: _onPageChanged,
-                  itemCount: questions.length,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return QuestionPage(
-                      question: questions[index]["question"],
-                      answers: questions[index]["answers"],
-                      onNext: _nextPage,
-                    );
-                  },
-                ),
-              ),
-              PrimaryButton(
-                text: "Next",
-                onPressed: _nextPage,
-              ),
-              SizedBox(
-                height: 15,
-              ),
-            ],
+            ),
           ),
-        ),
+          Visibility(
+            visible: isFinished,
+            child: Positioned(
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Lottie.asset(
+                "assets/lottie/congratz2.json",
+                repeat: false,
+              ),
+            ),
+          ),
+        ],
       )),
     );
+  }
+
+  getPercentage() {
+    int answeredQuestions = context
+        .read<QuestionProvider>()
+        .answers
+        .where((answer) => answer != "")
+        .length;
+    int nbQestions = questions.length;
+
+    if (answeredQuestions == 0) {
+      _percentage = 0;
+    } else {
+      double percentage = (answeredQuestions / nbQestions) * 100;
+      setState(() {
+        _percentage = percentage;
+      });
+    }
+  }
+
+  void pushAuth() async {
+    await Future.delayed(
+      const Duration(milliseconds: 3000),
+    );
+    context.goNamed(RouteNames.signin);
   }
 }
