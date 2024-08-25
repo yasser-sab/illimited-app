@@ -1,5 +1,4 @@
 import 'dart:developer';
-// import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:illimited_app/constant/const.dart';
@@ -10,6 +9,7 @@ import 'package:illimited_app/widget/primary_button.dart';
 import 'package:illimited_app/widget/progress_bar.dart';
 import 'package:illimited_app/widget/question_page.dart';
 import 'package:illimited_app/widget/single_choice_selector.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -21,7 +21,7 @@ class Question extends StatefulWidget {
 }
 
 class _QuestionState extends State<Question> {
-  // final soundPlayer = AudioPlayer();
+  final soundPlayer = AudioPlayer();
   final PageController _pageController = PageController();
   int _currentPage = 0;
   int _currentReachedPage = 0;
@@ -31,11 +31,13 @@ class _QuestionState extends State<Question> {
   @override
   void initState() {
     super.initState();
+    soundPlayer.setAsset(           // Load a URL
+    'assets/sounds/congratulation.mp3');  
   }
 
   @override
   void dispose() {
-    // soundPlayer.dispose();
+    soundPlayer.dispose();
     super.dispose();
   }
 
@@ -46,10 +48,7 @@ class _QuestionState extends State<Question> {
         isFinished = true;
         getPercentage();
       });
-      // soundPlayer.play(
-      //   soundPlayer.source ?? AssetSource('sounds/congratulation.mp3'),
-      // );
-
+      soundPlayer.play();
       pushAuth();
     }
 

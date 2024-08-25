@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:illimited_app/models/sign_in_result.dart';
 import 'package:illimited_app/router/router_names.dart';
+import 'package:illimited_app/screens/getstarted_screen.dart';
 import 'package:illimited_app/screens/home_screen.dart';
 import 'package:illimited_app/screens/intro_video_screen.dart';
 import 'package:illimited_app/screens/question.dart';
@@ -33,7 +34,7 @@ final GoRouter _router = GoRouter(
       name: RouteNames.splash,
       path: RouteNames.splash,
       builder: (BuildContext context, GoRouterState state) {
-        return const IntroVideoScreen();
+        return const Question();
       },
     ),
     GoRoute(
@@ -62,6 +63,20 @@ final GoRouter _router = GoRouter(
       path: RouteNames.question,
       builder: (BuildContext context, GoRouterState state) {
         return const Question();
+      },
+    ),
+    GoRoute(
+      name: RouteNames.getStarted,
+      path: RouteNames.getStarted,
+      builder: (BuildContext context, GoRouterState state) {
+        return const GetStarted();
+      },
+    ),
+    GoRoute(
+      name: RouteNames.introVideo,
+      path: RouteNames.introVideo,
+      builder: (BuildContext context, GoRouterState state) {
+        return const IntroVideoScreen();
       },
     ),
   ],

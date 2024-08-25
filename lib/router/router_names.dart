@@ -4,7 +4,11 @@ class RouteNames {
   static const signup = '/signup';
   static const home = '/home';
   static const question = '/question';
-  static List<String> noLoginScreens = [splash]; 
+  static const getStarted = '/getStarted';
+  static const introVideo = '/introVideo';
+
+
+  static List<String> noLoginScreens = [splash, getStarted, signup]; 
 }
 
 

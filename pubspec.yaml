@@ -45,6 +45,7 @@ dependencies:
   video_player: 2.4.7
   # audioplayers: ^6.0.0
   just_audio: ^0.9.39
+  animate_do: ^3.3.4
 
 dev_dependencies:
   flutter_test:

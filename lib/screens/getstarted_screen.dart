@@ -1,5 +1,8 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:illimited_app/constant/const.dart';
+import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:lottie/lottie.dart';
 
@@ -23,13 +26,24 @@ class GetStarted extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Welcome to Illimite",
-                  style: Theme.of(context).textTheme.displayLarge),
-              SizedBox(
+              ZoomIn(
+                duration: Duration(seconds: 2),
+                child: FadeIn(
+                  duration: Duration(seconds: 2),
+                  child: Text("Welcome to Illimite",
+                      style: Theme.of(context).textTheme.displayLarge),
+                ),
+              ),
+              const SizedBox(
                 height: 10,
               ),
-              Text("The goal is to help you",
-                  style: Theme.of(context).textTheme.titleLarge),
+              FadeIn(
+                
+                duration: Duration(seconds: 4),
+                delay: Duration(seconds: 1),
+                child: Text("The goal is to help you",
+                    style: Theme.of(context).textTheme.titleLarge),
+              ),
             ],
           ),
         ),
@@ -39,13 +53,13 @@ class GetStarted extends StatelessWidget {
           right: 20,
           child: Column(
             children: [
-              PrimaryButton(text: "Get started", onPressed: () {}),
-              SizedBox(
+              PrimaryButton(text: "Get started", onPressed: () => context.goNamed(RouteNames.signup),),
+              const SizedBox(
                 height: 10,
               ),
               PrimaryButton(
                 text: "Sign in",
-                onPressed: () {},
+                onPressed: () => context.goNamed(RouteNames.signin),
                 color: primaryColor.withOpacity(0.1),
                 borderWith: 1.0,
               ),
