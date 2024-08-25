@@ -54,7 +54,6 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final authProvider =
         Provider.of<AuthenticationProvider>(context, listen: true);
     return PopScope(
@@ -103,6 +102,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         height: 20,
                       ),
                       ModernTextField(
+                        isPasswordField: true,
                         textFieldTextStyle:
                             getFontStyle(context).copyWith(color: Colors.black),
                         textEditingController: _passwordController,
@@ -203,12 +203,11 @@ class _SignInScreenState extends State<SignInScreen> {
                               log("lala");
                               context.goNamed(RouteNames.home);
 
-                              // if (res.isNewUser) {
-                              //   context.goNamed(RouteNames.passengerAdditionalInfo);
-                              // } else {
-                              //   //CHECK IF COMPLETED INFOS
-                              //   context.goNamed(RouteNames.main);
-                              // }
+                              if (res.isNewUser) {
+                                context.goNamed(RouteNames.question);
+                              } else {
+                                context.goNamed(RouteNames.home);
+                              }
                             } else {
                               context
                                   .read<AuthenticationProvider>()
@@ -251,7 +250,6 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                       ),
                     ],
-
                   ),
                 ),
               ),

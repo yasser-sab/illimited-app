@@ -152,6 +152,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       height: 20,
                     ),
                     ModernTextField(
+                      isPasswordField: true,
+                      
                       textFieldTextStyle:
                           getFontStyle(context).copyWith(color: Colors.black),
                       textEditingController: _passwordController,
@@ -162,6 +164,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         color: Colors.white,
                       ),
                       hintText: "Enter Your Password",
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ModernTextField(
+                      isPasswordField: true,
+                      
+                      textFieldTextStyle:
+                          getFontStyle(context).copyWith(color: Colors.black),
+                      textEditingController: _passwordController,
+                      iconBackgroundColor: Colors.pink,
+                      borderRadius: 20,
+                      customTextFieldIcon: const Icon(
+                        Icons.lock_rounded,
+                        color: Colors.white,
+                      ),
+                      hintText: "Confirme Password",
                     ),
                     const SizedBox(
                       height: 20,
@@ -204,7 +223,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     _emailController.text.trim(),
                                     _passwordController.text);
                             if (userCreds != null) {
-                              context.goNamed(RouteNames.home);
+                              context.goNamed(RouteNames.question);
                             }
                           }
                         },
@@ -220,14 +239,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           child: Divider(),
                           width: getScreenWidth(context) * 0.4,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         Text(
                           "Or",
                           style: getFontStyle(context),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         SizedBox(
@@ -236,7 +255,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     SizedBox(
@@ -260,14 +279,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             await Future.delayed(
                               const Duration(milliseconds: 1000),
                             );
-                            context.goNamed(RouteNames.home);
-
-                            // if (res.isNewUser) {
-                            //   context.goNamed(RouteNames.passengerAdditionalInfo);
-                            // } else {
-                            //   //CHECK IF COMPLETED INFOS
-                            //   context.goNamed(RouteNames.main);
-                            // }
+                            
+                            if (res.isNewUser){
+                              context.goNamed(RouteNames.question);
+                            }
+                            else
+                            {
+                              context.goNamed(RouteNames.home);
+                            }
                           } else {
                             context
                                 .read<AuthenticationProvider>()
