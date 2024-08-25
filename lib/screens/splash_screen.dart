@@ -60,7 +60,7 @@ class _SplashScreenState extends State<SplashScreen>
                             top: 50,
                             left: _cloudAnimation.value,
                             child: Image.asset(
-                              'assets/ground.png',
+                              'assets/icons/ground.png',
                               fit: BoxFit.cover,
                               height: 150,
                             ),
@@ -72,10 +72,9 @@ class _SplashScreenState extends State<SplashScreen>
                         bottom: 0,
                         left: 0,
                         right: 0,
-                        child: Image.network(
-                          'https://media.discordapp.net/attachments/1276199454801788968/1276666115421900893/telechargement_3.png?ex=66ca5b79&is=66c909f9&hm=fba1b54fd2f5284e53438b40b16cd92a3df260fe75d3675e809ea7c584b06227&=&format=webp&quality=lossless',
+                        child: Image.asset(
+                          'assets/icon/logo-name.png', // Replaced with local asset
                           width: 150, // Adjust width as needed
-
                           fit: BoxFit.cover,
                           height: 150,
                         ),
@@ -91,8 +90,8 @@ class _SplashScreenState extends State<SplashScreen>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Image.network(
-                  'https://media.discordapp.net/attachments/1276199454801788968/1276666115753508946/telechargement_2.png?ex=66ca5b79&is=66c909f9&hm=b18e3eee4d44f5bc134b1a5ec220368473dfbaeb9165665c6c317b6f88101e9a&=&format=webp&quality=lossless&width=473&height=473',
+                Image.asset(
+                  'assets/icon/logo.png', // Replaced with local asset
                   width: 350, // Adjust width as needed
                 ),
                 const SizedBox(height: 20),
