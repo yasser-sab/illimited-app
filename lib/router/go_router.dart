@@ -6,10 +6,12 @@ import 'package:go_router/go_router.dart';
 import 'package:illimited_app/models/sign_in_result.dart';
 import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/screens/home_screen.dart';
+import 'package:illimited_app/screens/intro_video_screen.dart';
 import 'package:illimited_app/screens/question.dart';
 import 'package:illimited_app/screens/sign_up_screen.dart';
 import 'package:illimited_app/screens/signin_screen.dart';
 import 'package:illimited_app/screens/splash_screen.dart';
+import 'package:video_player/video_player.dart';
 
 final GoRouter _router = GoRouter(
   redirect: (BuildContext context, GoRouterState state) async {
@@ -31,7 +33,7 @@ final GoRouter _router = GoRouter(
       name: RouteNames.splash,
       path: RouteNames.splash,
       builder: (BuildContext context, GoRouterState state) {
-        return const SplashScreen();
+        return const IntroVideoScreen();
       },
     ),
     GoRoute(
