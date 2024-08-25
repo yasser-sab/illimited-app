@@ -197,6 +197,6 @@ class _QuestionState extends State<Question> {
     await Future.delayed(
       const Duration(milliseconds: 3000),
     );
-    context.goNamed(RouteNames.signin);
+    context.goNamed(RouteNames.introVideo);
   }
 }
