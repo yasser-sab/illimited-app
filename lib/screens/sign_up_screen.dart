@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -17,7 +16,6 @@ import 'package:modern_textfield/modern_textfield.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
-
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
@@ -28,6 +26,7 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmePasswordController = TextEditingController();
   final _fNameController = TextEditingController();
   final _lNameController = TextEditingController();
 
@@ -153,7 +152,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     ModernTextField(
                       isPasswordField: true,
-                      
                       textFieldTextStyle:
                           getFontStyle(context).copyWith(color: Colors.black),
                       textEditingController: _passwordController,
@@ -170,10 +168,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     ModernTextField(
                       isPasswordField: true,
-                      
                       textFieldTextStyle:
                           getFontStyle(context).copyWith(color: Colors.black),
-                      textEditingController: _passwordController,
+                      textEditingController: _confirmePasswordController,
                       iconBackgroundColor: Colors.pink,
                       borderRadius: 20,
                       customTextFieldIcon: const Icon(
@@ -217,13 +214,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     "Password Must be at least 8 character",
                                 snackBarType: SnackBarType.failure);
                           } else {
-                            UserCredential? userCreds = await AuthService()
-                                .signUpWithEmailAndPassword(
-                                    context,
-                                    _emailController.text.trim(),
-                                    _passwordController.text);
-                            if (userCreds != null) {
-                              context.goNamed(RouteNames.question);
+                            if (_confirmePasswordController.text ==
+                                _passwordController.text) {
+                              UserCredential? userCreds = await AuthService()
+                                  .signUpWithEmailAndPassword(
+                                      context,
+                                      _emailController.text.trim(),
+                                      _passwordController.text);
+                              if (userCreds != null) {
+                                context.goNamed(RouteNames.question);
+                              }
+                            } else {
+                              mySnackBar(
+                                context: context,
+                                message:
+                                    "Password Confirmation is not match",
+                                snackBarType: SnackBarType.failure);
                             }
                           }
                         },
@@ -279,12 +285,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             await Future.delayed(
                               const Duration(milliseconds: 1000),
                             );
-                            
-                            if (res.isNewUser){
+
+                            if (res.isNewUser) {
                               context.goNamed(RouteNames.question);
-                            }
-                            else
-                            {
+                            } else {
                               context.goNamed(RouteNames.home);
                             }
                           } else {

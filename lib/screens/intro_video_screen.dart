@@ -82,7 +82,7 @@ class _IntroVideoScreenState extends State<IntroVideoScreen> {
                     enabled: isButtonEnabled,
                     text: "Skip",
                     onPressed: () {
-                      context.goNamed(RouteNames.signin);
+                      context.goNamed(RouteNames.home);
                     },
                   ),
                 ),
