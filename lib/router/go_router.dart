@@ -6,13 +6,14 @@ import 'package:go_router/go_router.dart';
 import 'package:illimited_app/models/sign_in_result.dart';
 import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/screens/home_screen.dart';
+import 'package:illimited_app/screens/question.dart';
 import 'package:illimited_app/screens/sign_up_screen.dart';
 import 'package:illimited_app/screens/signin_screen.dart';
 import 'package:illimited_app/screens/splash_screen.dart';
 
 final GoRouter _router = GoRouter(
-    redirect: (BuildContext context, GoRouterState state) async {
-      log("REDIRECT");
+  redirect: (BuildContext context, GoRouterState state) async {
+    log("REDIRECT");
     final bool loggedIn = FirebaseAuth.instance.currentUser != null;
 
     getRouterLog(state, loggedIn);
@@ -30,28 +31,35 @@ final GoRouter _router = GoRouter(
       name: RouteNames.splash,
       path: RouteNames.splash,
       builder: (BuildContext context, GoRouterState state) {
-        return const SignInScreen(); 
+        return const Question();
       },
     ),
-        GoRoute(
+    GoRoute(
       name: RouteNames.signin,
       path: RouteNames.signin,
       builder: (BuildContext context, GoRouterState state) {
-        return const SignInScreen(); 
+        return const SignInScreen();
       },
     ),
-        GoRoute(
+    GoRoute(
       name: RouteNames.signup,
       path: RouteNames.signup,
       builder: (BuildContext context, GoRouterState state) {
-        return const SignUpScreen(); 
+        return const SignUpScreen();
       },
     ),
-            GoRoute(
+    GoRoute(
       name: RouteNames.home,
       path: RouteNames.home,
       builder: (BuildContext context, GoRouterState state) {
-        return const HomeScreen(); 
+        return const HomeScreen();
+      },
+    ),
+    GoRoute(
+      name: RouteNames.question,
+      path: RouteNames.question,
+      builder: (BuildContext context, GoRouterState state) {
+        return const Question();
       },
     ),
   ],
@@ -59,13 +67,12 @@ final GoRouter _router = GoRouter(
 
 GoRouter get router => _router;
 
-
-void getRouterLog(GoRouterState state, bool loggedIn){
-    log('ROUTER ==> In Redirect');
-    log("ROUTER ==> Is LoggedIn = $loggedIn");
-    log("ROUTER ==> Path = ${state.path}");
-    log("ROUTER ==> Name = ${state.name}");
-    log("ROUTER ==> FullPath = ${state.fullPath}");
-    log("ROUTER ==> MatchedLocation = ${state.matchedLocation}");
-    log("ROUTER ==> Uri = ${state.uri}");
+void getRouterLog(GoRouterState state, bool loggedIn) {
+  log('ROUTER ==> In Redirect');
+  log("ROUTER ==> Is LoggedIn = $loggedIn");
+  log("ROUTER ==> Path = ${state.path}");
+  log("ROUTER ==> Name = ${state.name}");
+  log("ROUTER ==> FullPath = ${state.fullPath}");
+  log("ROUTER ==> MatchedLocation = ${state.matchedLocation}");
+  log("ROUTER ==> Uri = ${state.uri}");
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:illimited_app/constant/typography.dart';
 import 'package:illimited_app/firebase_options.dart';
 import 'package:illimited_app/providers/authentication_provider.dart';
+import 'package:illimited_app/providers/questions_provider.dart';
 import 'package:illimited_app/router/go_router.dart';
 import 'package:illimited_app/screens/sign_up_screen.dart';
 import 'package:illimited_app/screens/signin_screen.dart';
@@ -19,6 +20,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthenticationProvider()),
+        ChangeNotifierProvider(create: (context) => QuestionProvider()),
       ],
       child: const MyApp(),
     ),

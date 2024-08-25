@@ -11,7 +11,7 @@ class PrimaryButton extends StatelessWidget {
   final bool? isBold;
   final Widget? icon;
   final double? elevation;
-  final bool? enabled;
+  final bool enabled;
   final double borderWith;
 
   const PrimaryButton({
@@ -48,9 +48,10 @@ class PrimaryButton extends StatelessWidget {
               side: BorderSide(
                 color: primaryColor,
                 width: borderWith,
+                style: borderWith == 0 ? BorderStyle.none : BorderStyle.solid 
               )),
         ),
-        onPressed: onPressed,
+        onPressed: enabled ? onPressed : () {},
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
