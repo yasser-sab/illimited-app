@@ -2,12 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:illimited_app/constant/typography.dart';
 import 'package:illimited_app/firebase_options.dart';
+import 'package:illimited_app/providers/app_provider.dart';
 import 'package:illimited_app/providers/authentication_provider.dart';
 import 'package:illimited_app/providers/questions_provider.dart';
 import 'package:illimited_app/router/go_router.dart';
-import 'package:illimited_app/screens/sign_up_screen.dart';
-import 'package:illimited_app/screens/signin_screen.dart';
-import 'package:illimited_app/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +19,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (context) => AuthenticationProvider()),
         ChangeNotifierProvider(create: (context) => QuestionProvider()),
+        ChangeNotifierProvider(create: (context) => AppProvider()),
       ],
       child: const MyApp(),
     ),

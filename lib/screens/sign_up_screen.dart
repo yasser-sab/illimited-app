@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -148,7 +150,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       hintText: "Enter Your Email",
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     ModernTextField(
                       isPasswordField: true,
@@ -222,14 +224,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       _emailController.text.trim(),
                                       _passwordController.text);
                               if (userCreds != null) {
-                                context.goNamed(RouteNames.question);
+                                userCreds.user!.sendEmailVerification().then(
+                                  (value) {
+                                    context.goNamed(
+                                        RouteNames.emailVerificationMessage);
+                                  },
+                                ).onError(
+                                  (error, stackTrace) {
+                                    log("ERROR SENDING THE EMAIL VERIFICATION : $error");
+                                  },
+                                );
+                                log("Email Sent");
                               }
                             } else {
                               mySnackBar(
-                                context: context,
-                                message:
-                                    "Password Confirmation is not match",
-                                snackBarType: SnackBarType.failure);
+                                  context: context,
+                                  message: "Password Confirmation is not match",
+                                  snackBarType: SnackBarType.failure);
                             }
                           }
                         },

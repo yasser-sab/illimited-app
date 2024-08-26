@@ -142,13 +142,78 @@ class _SignInScreenState extends State<SignInScreen> {
                                           _emailController.text.trim(),
                                           _passwordController.text);
                               if (userCrendential != null) {
-                                mySnackBar(
-                                    context: context,
-                                    message: "Succefully Signed In");
-                                context.goNamed(RouteNames.home);
+                                if (FirebaseAuth
+                                    .instance.currentUser!.emailVerified) {
+                                  mySnackBar(
+                                      context: context,
+                                      message: "Succefully Signed In");
+                                  context.goNamed(RouteNames.home);
+                                } else {
+                                  showEmailVerificationDialog(
+                                    context:  context,
+                                    message: "Your Email Has a Pending Verification",
+                                    subtitle: "Didn't receive a verification email ?",
+                                    verifyButtonCallBack: () {
+                                      userCrendential.user!
+                                          .sendEmailVerification()
+                                          .then(
+                                        (value) {
+                                          mySnackBar(
+                                              context: context,
+                                              message:
+                                                  "Email Verification Sent",
+                                              snackBarType: SnackBarType.info);
+                                          // context.goNamed(RouteNames.signin);
+                                        },
+                                      ).onError(
+                                        (error, stackTrace) {
+                                          log("ERROR SENDING THE EMAIL VERIFICATION : $error" );
+                                          mySnackBar(
+                                              context: context,
+                                              message:
+                                                  "Something Went Wrong, Please Try Again Later",
+                                              snackBarType: SnackBarType.info);
+                                        },
+                                      );
+                                    },
+                                  );
+                                }
                               }
                             }
                           },
+                          // onPressed: () {
+                            
+                          //   showEmailVerificationDialog(
+                          //           context:  context,
+                          //           message: "Your Email Has a Pending Verification",
+                          //           subtitle: "Didn't receive a verification email ?",
+                          //           verifyButtonCallBack: () {
+                          //             FirebaseAuth.instance.currentUser!
+                          //                 .sendEmailVerification()
+                          //                 .then(
+                          //               (value) {
+                          //                 mySnackBar(
+                          //                     context: context,
+                          //                     message:
+                          //                         "Email Verification Sent",
+                          //                     snackBarType: SnackBarType.info);
+                          //                     // context.pop();
+                          //                 // context.goNamed(RouteNames.signin);
+                          //               },
+                                        
+                          //             ).onError(
+                          //               (error, stackTrace) {
+                          //                 log("ERROR SENDING THE EMAIL VERIFICATION : $error" );
+                          //                 mySnackBar(
+                          //                     context: context,
+                          //                     message:
+                          //                         "Something Went Wrong, Please Try Again Later",
+                          //                     snackBarType: SnackBarType.info);
+                          //               },
+                          //             );
+                          //           },
+                          //         );
+                          // },
                         ),
                       ),
                       const SizedBox(
