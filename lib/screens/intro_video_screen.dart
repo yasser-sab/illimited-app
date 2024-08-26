@@ -27,6 +27,15 @@ class _IntroVideoScreenState extends State<IntroVideoScreen> {
         _controller.play();
         startTimer();
       });
+    // Add listener to detect when the video finishes playing
+    _controller.addListener(() {
+      if (_controller.value.position == _controller.value.duration) {
+        // Video has finished playing, wait 2 seconds and then navigate
+        Future.delayed(const Duration(seconds: 2), () {
+          context.goNamed(RouteNames.home);
+        });
+      }
+    });
   }
 
   @override
@@ -58,7 +67,9 @@ class _IntroVideoScreenState extends State<IntroVideoScreen> {
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
                           decoration: BoxDecoration(
-                            border: Border.all(width: 10, color: Color.fromARGB(255, 197, 216, 179)),
+                            border: Border.all(
+                                width: 10,
+                                color: Color.fromARGB(255, 197, 216, 179)),
                             borderRadius: BorderRadius.all(
                               Radius.circular(videoBorderRadius + 10),
                             ),
@@ -96,7 +107,7 @@ class _IntroVideoScreenState extends State<IntroVideoScreen> {
 
   void startTimer() async {
     await Future.delayed(
-      const Duration(milliseconds: 5000),
+      const Duration(milliseconds: 30000), // 30 seconds
     );
     setState(() {
       isButtonEnabled = true;
