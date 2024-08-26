@@ -3,7 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 
 //COLORS
 const Color primaryColor = Color.fromARGB(255, 84, 198, 2);
-const Color errorColor = Color.fromARGB(255, 153, 0, 0);
+const Color errorColor = Color.fromARGB(255, 173, 37, 37);
+
+
+//SENDING EMAIL VERIFICATION COOL DOWN in (Seconds)
+const int emailMessageCoolDown = 60;
 
 //APP FONTS
 TextStyle _kFontStyle = GoogleFonts.montserrat(color: Colors.white, fontWeight: FontWeight.w600);

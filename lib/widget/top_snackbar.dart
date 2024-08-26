@@ -3,7 +3,7 @@ import 'package:illimited_app/constant/const.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
-enum SnackBarType { success, failure, info }
+enum SnackBarType { success, failure, info,}
 int _displayDuration = 1500;
 int _reverseAnimationDuration = 500;
 int _animationDuration = 500;
@@ -51,7 +51,7 @@ void mySnackBar({
       displayDuration: Duration(milliseconds: _displayDuration),
       reverseAnimationDuration: Duration(milliseconds: _reverseAnimationDuration),
       animationDuration: Duration(milliseconds: _animationDuration),
-      CustomSnackBar.info(
+      CustomSnackBar.error(
         backgroundColor: const Color.fromARGB(255, 50, 92, 112),
         message: message,
       ),

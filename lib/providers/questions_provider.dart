@@ -12,4 +12,8 @@ class QuestionProvider extends ChangeNotifier{
     notifyListeners();
     
   }
+
+  void resetProvider(){
+    _answers = List.filled(questions.length, "");
+  }
 }
