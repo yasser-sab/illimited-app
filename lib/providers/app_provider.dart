@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppProvider extends ChangeNotifier {
+  //VERIFICATION COOL DOWN
   int _sendVerificationCooldown = 0;
   Timer? _cooldownTimer;
 
@@ -33,5 +35,15 @@ class AppProvider extends ChangeNotifier {
   void dispose() {
     _cooldownTimer?.cancel();
     super.dispose();
+  }
+
+  //IS FIRST LAUNCH
+  bool _isFirstLunch = true;
+  bool get isFirstLunch => _isFirstLunch;
+  void setFirstLaunch(bool val) async {
+    _isFirstLunch = val;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isFirstLaunch', val);
+    notifyListeners();
   }
 }
