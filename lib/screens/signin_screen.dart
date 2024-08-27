@@ -1,10 +1,12 @@
 import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/models/sign_in_result.dart';
 import 'package:illimited_app/providers/authentication_provider.dart';
+import 'package:illimited_app/providers/user_provider.dart';
 import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/screens/sign_up_screen.dart';
 import 'package:illimited_app/services/authentication_service.dart';
@@ -150,7 +152,39 @@ class _SignInScreenState extends State<SignInScreen> {
                                   mySnackBar(
                                       context: context,
                                       message: "Succefully Signed In");
-                                  context.goNamed(RouteNames.home);
+                                  FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(userCrendential.user!.uid)
+                                    .get()
+                                    .then((DocumentSnapshot documentSnapshot) {
+                                  if (documentSnapshot.exists) {
+                                    Map<String, dynamic>? userData =
+                                        documentSnapshot.data()
+                                            as Map<String, dynamic>?;
+
+                                    context
+                                        .read<UserProvider>()
+                                        .setUserId(userCrendential.user!.uid);
+                                    context
+                                        .read<UserProvider>()
+                                        .setQuestionFlag(
+                                            userData!["isQuestionsAnswered"]
+                                                as bool);
+
+                                    if (context
+                                        .read<UserProvider>()
+                                        .isQuestionsAnswered) {
+                                      context.goNamed(RouteNames.home);
+                                    } else {
+                                      context.goNamed(RouteNames.question);
+                                    }
+                                  } else {
+                                    print('No user found with this ID.');
+                                  }
+                                }).catchError((error) {
+                                  print('Failed to retrieve user data: $error');
+                                });
+                                  
                                 } else {
                                   showEmailVerificationDialog(
                                     context: context,
