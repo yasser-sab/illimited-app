@@ -51,7 +51,7 @@ class EmailVerificationMessage extends StatelessWidget {
                         padding: const EdgeInsets.all(90),
                         child: Lottie.asset(
                           "assets/lottie/emailSent0.json",
-                          repeat: true,
+                          repeat: false,
                         ),
                       ),
                     ],

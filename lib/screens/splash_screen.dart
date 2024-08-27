@@ -1,9 +1,13 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/router/router_names.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -13,10 +17,26 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  bool? isFirstLaunch;
+  Future<bool?> checkFirstLaunch() async {
+    final prefs = await SharedPreferences.getInstance();
+    // final allKeys = prefs.getKeys();
+    // print(allKeys.length);
+
+    // for (final key in allKeys) {
+    //   final value = prefs.get(key);
+    //   log('Key: $key, Value: $value');
+    // }
+    return prefs.getBool("isFirstLaunch") ?? true;
+  }
 
   @override
   void initState() {
     super.initState();
+
+    checkFirstLaunch().then(
+      (value) => isFirstLaunch = value,
+    );
     startTimer();
   }
 
@@ -33,16 +53,18 @@ class _SplashScreenState extends State<SplashScreen> {
                   child: Stack(
                     children: [
                       Positioned(
-                          bottom: 20,
-                          left: 0,
-                          right: 0,
-                          child: SlideInUp(
-                              child: Text(
+                        bottom: 20,
+                        left: 0,
+                        right: 0,
+                        child: SlideInUp(
+                          child: Text(
                             "illimité",
                             textAlign: TextAlign.center,
                             style: GoogleFonts.lobster(
                                 color: Colors.white, fontSize: 80),
-                          ))),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -67,6 +89,21 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(
       const Duration(milliseconds: 3000),
     );
+    final loggedIn = FirebaseAuth.instance.currentUser != null;
     context.goNamed(RouteNames.getStarted);
+    // if (loggedIn) {
+    //   context.goNamed(RouteNames.home);
+    // } else if (isFirstLaunch == true) {
+    //   context.goNamed(RouteNames.getStarted);
+    // } else {
+      
+    //   context.goNamed(RouteNames.signin);
+    // }
+
+    // if (isFirstLaunch == true) {
+    //   context.goNamed(RouteNames.getStarted);
+    // } else if (!loggedIn) {
+    //   context.goNamed(RouteNames.signin);
+    // } else {}
   }
 }

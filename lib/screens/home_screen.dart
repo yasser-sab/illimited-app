@@ -26,11 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextButton(
-                onPressed: () => log(FirebaseAuth
-                    .instance.currentUser!.emailVerified
-                    .toString()),
-                child: Text("data")),
+            Text("Email : ${FirebaseAuth.instance.currentUser!.email}"),
             Text("Signout"),
           ],
         ),
