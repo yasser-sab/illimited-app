@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:illimited_app/models/sign_in_result.dart';
 import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/screens/email_verification_message_screen.dart';
+import 'package:illimited_app/screens/forgot_password_screen.dart';
 import 'package:illimited_app/screens/getstarted_screen.dart';
 import 'package:illimited_app/screens/home_screen.dart';
 import 'package:illimited_app/screens/intro_video_screen.dart';
@@ -85,6 +86,13 @@ final GoRouter _router = GoRouter(
       path: RouteNames.emailVerificationMessage,
       builder: (BuildContext context, GoRouterState state) {
         return const EmailVerificationMessage();
+      },
+    ),
+        GoRoute(
+      name: RouteNames.resetPassword,
+      path: RouteNames.resetPassword,
+      builder: (BuildContext context, GoRouterState state) {
+        return const ResetPassword();
       },
     ),
   ],

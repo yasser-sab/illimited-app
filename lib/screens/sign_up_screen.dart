@@ -60,7 +60,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   bool isValidPassword(String? value) {
-    if (value == null || value.isEmpty || value.length < 8) {
+    if (value == null || value.isEmpty || value.length < passwordMinLength) {
       return false;
     } else {
       return true;
@@ -195,14 +195,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             mySnackBar(
                                 context: context,
                                 message:
-                                    "First Name Must be at least 2 character",
+                                    "First Name Must be at least 6 character",
                                 snackBarType: SnackBarType.failure);
                           } else if (!isValidFirstName(
                               _lNameController.text.trim())) {
                             mySnackBar(
                                 context: context,
                                 message:
-                                    "Last Name Must be at least 2 character",
+                                    "Last Name Must be at least 6 character",
                                 snackBarType: SnackBarType.failure);
                           } else if (!isValidEmail(
                               _emailController.text.trim())) {
@@ -215,7 +215,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             mySnackBar(
                                 context: context,
                                 message:
-                                    "Password Must be at least 8 character",
+                                    "Password Must be at least 6 character",
                                 snackBarType: SnackBarType.failure);
                           } else {
                             if (_confirmePasswordController.text ==

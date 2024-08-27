@@ -20,7 +20,7 @@ class EmailVerificationMessage extends StatelessWidget {
               end: Alignment.bottomRight,
               colors: [
                 Colors.white,
-                Color.fromARGB(255, 195, 253, 202),
+                Color.fromARGB(255, 217, 255, 222),
                 Colors.white,
               ],
             ),
@@ -35,15 +35,16 @@ class EmailVerificationMessage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "We Sent You An Email Verification Message",
+                        "Thanks For Signing Up!",
                         style: getFontStyle(context)
                             .copyWith(color: Colors.black, fontSize: 28),
                         textAlign: TextAlign.center,
                       ),
+                      const SizedBox(height: 10,),
                       Text(
-                        "Please Verify Your Email And Login",
-                        style: getFontStyle(context).copyWith(
-                            color: Colors.black.withOpacity(0.6), fontSize: 16),
+                        "Please check your email for the verification link to complete your registration. If it's not there, it might be in your spam folder.",
+                        style: getFontStyle(context)
+                            .copyWith(color: Colors.black.withOpacity(0.7), fontSize: 18),
                         textAlign: TextAlign.center,
                       ),
                       Padding(

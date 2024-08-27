@@ -39,13 +39,13 @@ class _SignInScreenState extends State<SignInScreen> {
     }
   }
 
-  bool isValidPassword(String? value) {
-    if (value == null || value.isEmpty || value.length < 8) {
-      return false;
-    } else {
-      return true;
-    }
-  }
+  // bool isValidPassword(String? value) {
+  //   if (value == null || value.isEmpty || value.length < 8) {
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // }
 
   @override
   void dispose() {
@@ -124,20 +124,23 @@ class _SignInScreenState extends State<SignInScreen> {
                         child: PrimaryButton(
                           text: "Sign In",
                           onPressed: () async {
-                            if (!isValidEmail(_emailController.text.trim())) {
-                              mySnackBar(
-                                  context: context,
-                                  message: "Invalid Email",
-                                  snackBarType: SnackBarType.failure);
-                            } else if (!isValidPassword(
-                                _passwordController.text)) {
-                              mySnackBar(
-                                  context: context,
-                                  message:
-                                      "Password Must be at least 8 character",
-                                  snackBarType: SnackBarType.failure);
-                            } else {
-                              UserCredential? userCrendential =
+                            // if (!isValidEmail(_emailController.text.trim())) {
+                            //   mySnackBar(
+                            //       context: context,
+                            //       message: "Invalid Email",
+                            //       snackBarType: SnackBarType.failure);
+                            // } else if (!isValidPassword(
+                            //     _passwordController.text)) {
+                            //   mySnackBar(
+                            //       context: context,
+                            //       message:
+                            //           "Password Must be at least 8 character",
+                            //       snackBarType: SnackBarType.failure);
+                            // } else {
+                              
+                            // }
+
+                            UserCredential? userCrendential =
                                   await AuthService()
                                       .signInWithEmailAndPassword(
                                           context,
@@ -184,9 +187,11 @@ class _SignInScreenState extends State<SignInScreen> {
                                   
                                 } else {
                                   showEmailVerificationDialog(
-                                    context:  context,
-                                    message: "Your Email Has a Pending Verification",
-                                    subtitle: "Didn't receive a verification email ?",
+                                    context: context,
+                                    message:
+                                        "Your Email Has a Pending Verification",
+                                    subtitle:
+                                        "Didn't receive a verification email ? \n please check your Spam folder or Re-send",
                                     verifyButtonCallBack: () {
                                       userCrendential.user!
                                           .sendEmailVerification()
@@ -201,7 +206,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                         },
                                       ).onError(
                                         (error, stackTrace) {
-                                          log("ERROR SENDING THE EMAIL VERIFICATION : $error" );
+                                          log("ERROR SENDING THE EMAIL VERIFICATION : $error");
                                           mySnackBar(
                                               context: context,
                                               message:
@@ -213,45 +218,24 @@ class _SignInScreenState extends State<SignInScreen> {
                                   );
                                 }
                               }
-                            }
                           },
-                          // onPressed: () {
-                            
-                          //   showEmailVerificationDialog(
-                          //           context:  context,
-                          //           message: "Your Email Has a Pending Verification",
-                          //           subtitle: "Didn't receive a verification email ?",
-                          //           verifyButtonCallBack: () {
-                          //             FirebaseAuth.instance.currentUser!
-                          //                 .sendEmailVerification()
-                          //                 .then(
-                          //               (value) {
-                          //                 mySnackBar(
-                          //                     context: context,
-                          //                     message:
-                          //                         "Email Verification Sent",
-                          //                     snackBarType: SnackBarType.info);
-                          //                     // context.pop();
-                          //                 // context.goNamed(RouteNames.signin);
-                          //               },
-                                        
-                          //             ).onError(
-                          //               (error, stackTrace) {
-                          //                 log("ERROR SENDING THE EMAIL VERIFICATION : $error" );
-                          //                 mySnackBar(
-                          //                     context: context,
-                          //                     message:
-                          //                         "Something Went Wrong, Please Try Again Later",
-                          //                     snackBarType: SnackBarType.info);
-                          //               },
-                          //             );
-                          //           },
-                          //         );
-                          // },
+                        
                         ),
                       ),
                       const SizedBox(
-                        height: 20,
+                        height: 10,
+                      ),
+                      InkWell(
+                        child: Text(
+                          "Forgot your Password ? Click to reset",
+                          style: getFontStyle(context),
+                        ),
+                        onTap: () {
+                          context.pushNamed(RouteNames.resetPassword);
+                        },
+                      ),
+                      const SizedBox(
+                        height: 10,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -299,7 +283,6 @@ class _SignInScreenState extends State<SignInScreen> {
                               await Future.delayed(
                                 const Duration(milliseconds: 1200),
                               );
-                              log("lala");
                               context.goNamed(RouteNames.home);
 
                               if (res.isNewUser) {
