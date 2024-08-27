@@ -43,7 +43,6 @@ class AuthService {
   }
 
   void signOut() async {
-    log("LOA");
     try {
       await _auth.signOut();
       log("USER SIGNED OUT");
@@ -77,6 +76,9 @@ class AuthService {
         mySnackBar(context: context, message: "Wrong password", snackBarType: SnackBarType.failure);
       } else if (e.code == 'invalid-credential') {
         mySnackBar(context: context, message: "Invalid Credentials", snackBarType: SnackBarType.failure);
+      }
+       else if (e.code == 'too-many-requests') {
+        mySnackBar(context: context, message: "Too Many Requests, Please try again later", snackBarType: SnackBarType.failure);
       }
       else {
         mySnackBar(context: context, message: "Something Went wrong, Please try again later", snackBarType: SnackBarType.failure);

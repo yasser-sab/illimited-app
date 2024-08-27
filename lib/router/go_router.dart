@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:illimited_app/models/sign_in_result.dart';
 import 'package:illimited_app/router/router_names.dart';
+import 'package:illimited_app/screens/email_verification_message_screen.dart';
 import 'package:illimited_app/screens/getstarted_screen.dart';
 import 'package:illimited_app/screens/home_screen.dart';
 import 'package:illimited_app/screens/intro_video_screen.dart';
@@ -77,6 +78,13 @@ final GoRouter _router = GoRouter(
       path: RouteNames.introVideo,
       builder: (BuildContext context, GoRouterState state) {
         return const IntroVideoScreen();
+      },
+    ),
+    GoRoute(
+      name: RouteNames.emailVerificationMessage,
+      path: RouteNames.emailVerificationMessage,
+      builder: (BuildContext context, GoRouterState state) {
+        return const EmailVerificationMessage();
       },
     ),
   ],
