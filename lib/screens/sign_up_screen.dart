@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/models/sign_in_result.dart';
-import 'package:illimited_app/models/user.dart';
 import 'package:illimited_app/providers/authentication_provider.dart';
 import 'package:illimited_app/providers/questions_provider.dart';
 import 'package:illimited_app/providers/user_provider.dart';

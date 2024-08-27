@@ -35,7 +35,7 @@ final GoRouter _router = GoRouter(
       name: RouteNames.splash,
       path: RouteNames.splash,
       builder: (BuildContext context, GoRouterState state) {
-        return const SignUpScreen();
+        return const SplashScreen();
       },
     ),
     GoRoute(
