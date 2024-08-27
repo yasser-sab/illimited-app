@@ -226,7 +226,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       _emailController.text.trim(),
                                       _passwordController.text);
                               if (userCreds != null) {
-
                                 FirebaseFirestore.instance
                                     .collection('users')
                                     .doc(userCreds.user!.uid)
@@ -238,20 +237,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   "gender": "",
                                   "improvement_preference": "",
                                   "isQuestionsAnswered": false,
-                                  "isVerified": false,
-                                  "isVideoWatched": false,
                                 }).then((value) {
                                   print("User added successfully!");
 
                                   context
                                       .read<UserProvider>()
                                       .setUserId(userCreds.user!.uid);
-
                                 }).catchError(
                                   (error) =>
                                       print("Failed to add user: $error"),
                                 );
-                                
+
                                 userCreds.user!.sendEmailVerification().then(
                                   (value) {
                                     context.goNamed(
@@ -326,9 +322,62 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             );
 
                             if (res.isNewUser) {
+                              FirebaseFirestore.instance
+                                  .collection('users')
+                                  .doc(res.user!.uid)
+                                  .set({
+                                "age": "",
+                                "country": "",
+                                "firstname":
+                                    res.user!.displayName!.split(" ")[0],
+                                "lastname":
+                                    res.user!.displayName!.split(" ")[1],
+                                "gender": "",
+                                "improvement_preference": "",
+                                "isQuestionsAnswered": false,
+                              }).then((value) {
+                                print("User signed up successfully!");
+
+                                context
+                                    .read<UserProvider>()
+                                    .setUserId(res.user!.uid);
+                              }).catchError(
+                                (error) => print(
+                                    "Failed to sign up with google auth : $error"),
+                              );
+
                               context.goNamed(RouteNames.question);
                             } else {
-                              context.goNamed(RouteNames.home);
+                              // context.goNamed(RouteNames.home);
+                              FirebaseFirestore.instance
+                                  .collection('users')
+                                  .doc(res.user!.uid)
+                                  .get()
+                                  .then((DocumentSnapshot documentSnapshot) {
+                                if (documentSnapshot.exists) {
+                                  Map<String, dynamic>? userData =
+                                      documentSnapshot.data()
+                                          as Map<String, dynamic>?;
+
+                                  context
+                                      .read<UserProvider>()
+                                      .setUserId(res.user!.uid);
+                                  context.read<UserProvider>().setQuestionFlag(
+                                      userData!["isQuestionsAnswered"] as bool);
+
+                                  if (context
+                                      .read<UserProvider>()
+                                      .isQuestionsAnswered) {
+                                    context.goNamed(RouteNames.home);
+                                  } else {
+                                    context.goNamed(RouteNames.question);
+                                  }
+                                } else {
+                                  print('No user found with this ID.');
+                                }
+                              }).catchError((error) {
+                                print('Failed to retrieve user data: $error');
+                              });
                             }
                           } else {
                             context
