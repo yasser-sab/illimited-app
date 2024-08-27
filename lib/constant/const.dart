@@ -9,6 +9,9 @@ const Color errorColor = Color.fromARGB(255, 173, 37, 37);
 //SENDING EMAIL VERIFICATION COOL DOWN in (Seconds)
 const int emailMessageCoolDown = 60;
 
+//PASSWORD MINIMUM CHARACTERS
+const int passwordMinLength= 6;
+
 //APP FONTS
 TextStyle _kFontStyle = GoogleFonts.montserrat(color: Colors.white, fontWeight: FontWeight.w600);
 TextStyle kArabicFontStyle = GoogleFonts.cairo(color: Colors.black);
