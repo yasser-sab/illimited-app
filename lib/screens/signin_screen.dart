@@ -137,22 +137,21 @@ class _SignInScreenState extends State<SignInScreen> {
                             //           "Password Must be at least 8 character",
                             //       snackBarType: SnackBarType.failure);
                             // } else {
-                              
+
                             // }
 
                             UserCredential? userCrendential =
-                                  await AuthService()
-                                      .signInWithEmailAndPassword(
-                                          context,
-                                          _emailController.text.trim(),
-                                          _passwordController.text);
-                              if (userCrendential != null) {
-                                if (FirebaseAuth
-                                    .instance.currentUser!.emailVerified) {
-                                  mySnackBar(
-                                      context: context,
-                                      message: "Succefully Signed In");
-                                  FirebaseFirestore.instance
+                                await AuthService().signInWithEmailAndPassword(
+                                    context,
+                                    _emailController.text.trim(),
+                                    _passwordController.text);
+                            if (userCrendential != null) {
+                              if (FirebaseAuth
+                                  .instance.currentUser!.emailVerified) {
+                                mySnackBar(
+                                    context: context,
+                                    message: "Succefully Signed In");
+                                FirebaseFirestore.instance
                                     .collection('users')
                                     .doc(userCrendential.user!.uid)
                                     .get()
@@ -184,42 +183,39 @@ class _SignInScreenState extends State<SignInScreen> {
                                 }).catchError((error) {
                                   print('Failed to retrieve user data: $error');
                                 });
-                                  
-                                } else {
-                                  showEmailVerificationDialog(
-                                    context: context,
-                                    message:
-                                        "Your Email Has a Pending Verification",
-                                    subtitle:
-                                        "Didn't receive a verification email ? \n please check your Spam folder or Re-send",
-                                    verifyButtonCallBack: () {
-                                      userCrendential.user!
-                                          .sendEmailVerification()
-                                          .then(
-                                        (value) {
-                                          mySnackBar(
-                                              context: context,
-                                              message:
-                                                  "Email Verification Sent",
-                                              snackBarType: SnackBarType.info);
-                                          // context.goNamed(RouteNames.signin);
-                                        },
-                                      ).onError(
-                                        (error, stackTrace) {
-                                          log("ERROR SENDING THE EMAIL VERIFICATION : $error");
-                                          mySnackBar(
-                                              context: context,
-                                              message:
-                                                  "Something Went Wrong, Please Try Again Later",
-                                              snackBarType: SnackBarType.info);
-                                        },
-                                      );
-                                    },
-                                  );
-                                }
+                              } else {
+                                showEmailVerificationDialog(
+                                  context: context,
+                                  message:
+                                      "Your Email Has a Pending Verification",
+                                  subtitle:
+                                      "Didn't receive a verification email ? \n please check your Spam folder or Re-send",
+                                  verifyButtonCallBack: () {
+                                    userCrendential.user!
+                                        .sendEmailVerification()
+                                        .then(
+                                      (value) {
+                                        mySnackBar(
+                                            context: context,
+                                            message: "Email Verification Sent",
+                                            snackBarType: SnackBarType.info);
+                                        // context.goNamed(RouteNames.signin);
+                                      },
+                                    ).onError(
+                                      (error, stackTrace) {
+                                        log("ERROR SENDING THE EMAIL VERIFICATION : $error");
+                                        mySnackBar(
+                                            context: context,
+                                            message:
+                                                "Something Went Wrong, Please Try Again Later",
+                                            snackBarType: SnackBarType.info);
+                                      },
+                                    );
+                                  },
+                                );
                               }
+                            }
                           },
-                        
                         ),
                       ),
                       const SizedBox(
@@ -283,12 +279,67 @@ class _SignInScreenState extends State<SignInScreen> {
                               await Future.delayed(
                                 const Duration(milliseconds: 1200),
                               );
-                              context.goNamed(RouteNames.home);
 
                               if (res.isNewUser) {
+                                FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(res.user!.uid)
+                                    .set({
+                                  "age": "",
+                                  "country": "",
+                                  "firstname":
+                                      res.user!.displayName!.split(" ")[0],
+                                  "lastname":
+                                      res.user!.displayName!.split(" ")[1],
+                                  "gender": "",
+                                  "improvement_preference": "",
+                                  "isQuestionsAnswered": false,
+                                }).then((value) {
+                                  print("User signed up successfully!");
+
+                                  context
+                                      .read<UserProvider>()
+                                      .setUserId(res.user!.uid);
+                                }).catchError(
+                                  (error) => print(
+                                      "Failed to sign up with google auth : $error"),
+                                );
+
                                 context.goNamed(RouteNames.question);
                               } else {
-                                context.goNamed(RouteNames.home);
+                                FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(res.user!.uid)
+                                    .get()
+                                    .then((DocumentSnapshot documentSnapshot) {
+                                  if (documentSnapshot.exists) {
+                                    Map<String, dynamic> userData =
+                                        documentSnapshot.data()
+                                            as Map<String, dynamic>;
+
+                                    context
+                                        .read<UserProvider>()
+                                        .setUserId(res.user!.uid);
+                                    context
+                                        .read<UserProvider>()
+                                        .setQuestionFlag(
+                                            userData!["isQuestionsAnswered"]
+                                                as bool);
+
+                                    if (userData["isQuestionsAnswered"]
+                                        as bool) {
+                                      print("QuestionsAnswered");
+                                      context.goNamed(RouteNames.home);
+                                    } else {
+                                      print("Questions not Answered");
+                                      context.goNamed(RouteNames.question);
+                                    }
+                                  } else {
+                                    print('No user found with this ID.');
+                                  }
+                                }).catchError((error) {
+                                  print('Failed to retrieve user data: $error');
+                                });
                               }
                             } else {
                               context
