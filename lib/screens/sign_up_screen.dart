@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/models/sign_in_result.dart';
+import 'package:illimited_app/models/user.dart';
 import 'package:illimited_app/providers/authentication_provider.dart';
+import 'package:illimited_app/providers/questions_provider.dart';
+import 'package:illimited_app/providers/user_provider.dart';
 import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/screens/signin_screen.dart';
 import 'package:illimited_app/services/authentication_service.dart';
@@ -222,14 +226,42 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       _emailController.text.trim(),
                                       _passwordController.text);
                               if (userCreds != null) {
+                                // yasser
+
+                                FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(userCreds.user!.uid)
+                                    .set({
+                                  "age": "",
+                                  "country": "",
+                                  "firstname": _fNameController.text,
+                                  "lastname": _lNameController.text,
+                                  "gender": "",
+                                  "improvement_preference": "",
+                                  "isQuestionsAnswered": false,
+                                  "isVerified": false,
+                                  "isVideoWatched": false,
+                                }).then((value) {
+                                  print("User added successfully!");
+
+                                  context
+                                      .read<UserProvider>()
+                                      .setUserId(userCreds.user!.uid);
+
+
+                                  // Map<String, dynamic>
+                                }).catchError(
+                                  (error) =>
+                                      print("Failed to add user: $error"),
+                                );
+
                                 context.goNamed(RouteNames.question);
                               }
                             } else {
                               mySnackBar(
-                                context: context,
-                                message:
-                                    "Password Confirmation is not match",
-                                snackBarType: SnackBarType.failure);
+                                  context: context,
+                                  message: "Password Confirmation is not match",
+                                  snackBarType: SnackBarType.failure);
                             }
                           }
                         },
