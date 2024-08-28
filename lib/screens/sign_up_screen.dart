@@ -111,7 +111,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     ModernTextField(
                       textFieldTextStyle:
-                          getFontStyle(context).copyWith(color: Colors.black),
+                          Theme.of(context).textTheme.labelLarge,
                       textEditingController: _fNameController,
                       iconBackgroundColor: primaryColor,
                       borderRadius: 20,
@@ -126,7 +126,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     ModernTextField(
                       textFieldTextStyle:
-                          getFontStyle(context).copyWith(color: Colors.black),
+                          Theme.of(context).textTheme.labelLarge,
                       textEditingController: _lNameController,
                       iconBackgroundColor: primaryColor,
                       borderRadius: 20,
@@ -141,7 +141,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     ModernTextField(
                       textFieldTextStyle:
-                          getFontStyle(context).copyWith(color: Colors.black),
+                          Theme.of(context).textTheme.labelLarge,
                       textEditingController: _emailController,
                       iconBackgroundColor: Colors.orange,
                       borderRadius: 20,
@@ -152,12 +152,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       hintText: "Enter Your Email",
                     ),
                     const SizedBox(
-                      height: 10,
+                      height: 20,
                     ),
                     ModernTextField(
                       isPasswordField: true,
                       textFieldTextStyle:
-                          getFontStyle(context).copyWith(color: Colors.black),
+                          Theme.of(context).textTheme.labelLarge,
                       textEditingController: _passwordController,
                       iconBackgroundColor: Colors.pink,
                       borderRadius: 20,
@@ -173,7 +173,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ModernTextField(
                       isPasswordField: true,
                       textFieldTextStyle:
-                          getFontStyle(context).copyWith(color: Colors.black),
+                          Theme.of(context).textTheme.labelLarge,
                       textEditingController: _confirmePasswordController,
                       iconBackgroundColor: Colors.pink,
                       borderRadius: 20,
@@ -190,6 +190,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: PrimaryButton(
                         text: "Sign Up",
+                        isBold: true,
                         onPressed: () async {
                           if (!isValidFirstName(_fNameController.text.trim())) {
                             mySnackBar(
@@ -397,7 +398,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     Text(
                       "Already have an account ?",
-                      style: getFontStyle(context),
+                      style: Theme.of(context).textTheme.labelSmall,
                     ),
                     const SizedBox(
                       height: 5,

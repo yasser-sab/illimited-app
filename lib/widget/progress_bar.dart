@@ -194,7 +194,9 @@ class ProgressBarState extends State<ProgressBar> {
                         AnimatedContainer(
                             duration:
                                 Duration(milliseconds: widget.milliseconds),
-                            width: widthProgress! + style!.widthShadow,
+                            width: widthProgress! > 0
+                                ? (widthProgress! + style!.widthShadow)
+                                : 0.0,
                             decoration: BoxDecoration(
                                 borderRadius: borderRadius,
                                 color: style!.colorProgressDark)),

@@ -1,11 +1,9 @@
 import 'dart:developer';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/data/questions.dart';
 import 'package:illimited_app/providers/questions_provider.dart';
-import 'package:illimited_app/providers/user_provider.dart';
 import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:illimited_app/widget/progress_bar.dart';
@@ -46,22 +44,6 @@ class _QuestionState extends State<Question> {
   void _nextPage() {
     if (_currentPage == questions.length - 1 &&
         context.read<QuestionProvider>().answers[_currentPage] != "") {
-      // [Male, Your Physical Well-being, 12-17 years, American Samoa]
-
-      FirebaseFirestore.instance
-          .collection('users')
-          .doc(context.read<UserProvider>().userId)
-          .update({
-            "age": context.read<QuestionProvider>().answers[2],
-            "country": context.read<QuestionProvider>().answers[3],
-            "gender": context.read<QuestionProvider>().answers[0],
-            "improvement_preference":
-                context.read<QuestionProvider>().answers[1],
-            "isQuestionsAnswered": true
-          })
-          .then((value) => print("user updated !!"))
-          .catchError((onError) => print("error while updating user !!"));
-
       setState(() {
         isFinished = true;
         getPercentage();
@@ -122,7 +104,7 @@ class _QuestionState extends State<Question> {
                             : Colors.blue, // Background color
                         radius: 20, // Adjust radius for size
                         child: IconButton(
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.arrow_back,
                             color: Colors.white, // Arrow color
                             size: 18, // Adjust size of the icon
