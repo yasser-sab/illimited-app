@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -268,7 +267,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         Text(
                           "Or",
-                          style: getFontStyle(context),
+                          style: Theme.of(context).textTheme.labelSmall,
                         ),
                         const SizedBox(
                           width: 5,
