@@ -5,10 +5,26 @@ import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class GetStarted extends StatelessWidget {
+class GetStarted extends StatefulWidget {
+  
   const GetStarted({super.key});
 
+  @override
+  State<GetStarted> createState() => _GetStartedState();
+}
+
+class _GetStartedState extends State<GetStarted> {
+  Future<void> setFalseFirstLaunch() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("isFirstLaunch", false);
+  }
+  @override
+  void initState() {
+    super.initState();
+    setFalseFirstLaunch();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

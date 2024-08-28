@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/router/router_names.dart';
-import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:lottie/lottie.dart';
 

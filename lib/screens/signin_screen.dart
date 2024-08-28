@@ -1,15 +1,14 @@
 import 'dart:developer';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/models/sign_in_result.dart';
 import 'package:illimited_app/providers/authentication_provider.dart';
-import 'package:illimited_app/providers/user_provider.dart';
 import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/screens/sign_up_screen.dart';
 import 'package:illimited_app/services/authentication_service.dart';
+import 'package:illimited_app/services/user_repository.dart';
 import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/google_sign_button.dart';
 import 'package:illimited_app/widget/primary_button.dart';
@@ -124,22 +123,6 @@ class _SignInScreenState extends State<SignInScreen> {
                         child: PrimaryButton(
                           text: "Sign In",
                           onPressed: () async {
-                            // if (!isValidEmail(_emailController.text.trim())) {
-                            //   mySnackBar(
-                            //       context: context,
-                            //       message: "Invalid Email",
-                            //       snackBarType: SnackBarType.failure);
-                            // } else if (!isValidPassword(
-                            //     _passwordController.text)) {
-                            //   mySnackBar(
-                            //       context: context,
-                            //       message:
-                            //           "Password Must be at least 8 character",
-                            //       snackBarType: SnackBarType.failure);
-                            // } else {
-
-                            // }
-
                             UserCredential? userCrendential =
                                 await AuthService().signInWithEmailAndPassword(
                                     context,
@@ -151,38 +134,16 @@ class _SignInScreenState extends State<SignInScreen> {
                                 mySnackBar(
                                     context: context,
                                     message: "Succefully Signed In");
-                                FirebaseFirestore.instance
-                                    .collection('users')
-                                    .doc(userCrendential.user!.uid)
-                                    .get()
-                                    .then((DocumentSnapshot documentSnapshot) {
-                                  if (documentSnapshot.exists) {
-                                    Map<String, dynamic>? userData =
-                                        documentSnapshot.data()
-                                            as Map<String, dynamic>?;
 
-                                    context
-                                        .read<UserProvider>()
-                                        .setUserId(userCrendential.user!.uid);
-                                    context
-                                        .read<UserProvider>()
-                                        .setQuestionFlag(
-                                            userData!["isQuestionsAnswered"]
-                                                as bool);
-
-                                    if (context
-                                        .read<UserProvider>()
-                                        .isQuestionsAnswered) {
+                                UserRepository().getQuestionFlag().then(
+                                  (isAnsweredQuestions) {
+                                    if (isAnsweredQuestions) {
                                       context.goNamed(RouteNames.home);
                                     } else {
                                       context.goNamed(RouteNames.question);
                                     }
-                                  } else {
-                                    print('No user found with this ID.');
-                                  }
-                                }).catchError((error) {
-                                  print('Failed to retrieve user data: $error');
-                                });
+                                  },
+                                );
                               } else {
                                 showEmailVerificationDialog(
                                   context: context,
@@ -281,65 +242,35 @@ class _SignInScreenState extends State<SignInScreen> {
                               );
 
                               if (res.isNewUser) {
-                                FirebaseFirestore.instance
-                                    .collection('users')
-                                    .doc(res.user!.uid)
-                                    .set({
-                                  "age": "",
-                                  "country": "",
-                                  "firstname":
-                                      res.user!.displayName!.split(" ")[0],
-                                  "lastname":
-                                      res.user!.displayName!.split(" ")[1],
-                                  "gender": "",
-                                  "improvement_preference": "",
-                                  "isQuestionsAnswered": false,
-                                }).then((value) {
-                                  print("User signed up successfully!");
-
-                                  context
-                                      .read<UserProvider>()
-                                      .setUserId(res.user!.uid);
-                                }).catchError(
-                                  (error) => print(
-                                      "Failed to sign up with google auth : $error"),
-                                );
-
-                                context.goNamed(RouteNames.question);
+                                UserRepository()
+                                    .createUser(
+                                        FirebaseAuth.instance.currentUser)
+                                    .then(
+                                      (value) {
+                                        context.goNamed(RouteNames.question);
+                                      },
+                                    )
+                                    .then(
+                                      (value) {},
+                                    )
+                                    .onError(
+                                      (error, stackTrace) {
+                                        log("FAILED TO CREATE USER IN FIRESTORE $error");
+                                        mySnackBar(
+                                            context: context,
+                                            message: "Failed  to create user");
+                                      },
+                                    );
                               } else {
-                                FirebaseFirestore.instance
-                                    .collection('users')
-                                    .doc(res.user!.uid)
-                                    .get()
-                                    .then((DocumentSnapshot documentSnapshot) {
-                                  if (documentSnapshot.exists) {
-                                    Map<String, dynamic> userData =
-                                        documentSnapshot.data()
-                                            as Map<String, dynamic>;
-
-                                    context
-                                        .read<UserProvider>()
-                                        .setUserId(res.user!.uid);
-                                    context
-                                        .read<UserProvider>()
-                                        .setQuestionFlag(
-                                            userData!["isQuestionsAnswered"]
-                                                as bool);
-
-                                    if (userData["isQuestionsAnswered"]
-                                        as bool) {
-                                      print("QuestionsAnswered");
+                                UserRepository().getQuestionFlag().then(
+                                  (isAnsweredQuestion) {
+                                    if (isAnsweredQuestion) {
                                       context.goNamed(RouteNames.home);
                                     } else {
-                                      print("Questions not Answered");
                                       context.goNamed(RouteNames.question);
                                     }
-                                  } else {
-                                    print('No user found with this ID.');
-                                  }
-                                }).catchError((error) {
-                                  print('Failed to retrieve user data: $error');
-                                });
+                                  },
+                                );
                               }
                             } else {
                               context

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/primary_button.dart';
@@ -32,7 +31,7 @@ class _IntroVideoScreenState extends State<IntroVideoScreen> {
       if (_controller.value.position == _controller.value.duration) {
         // Video has finished playing, wait 2 seconds and then navigate
         Future.delayed(const Duration(seconds: 2), () {
-          context.goNamed(RouteNames.home);
+          // context.goNamed(RouteNames.home);
         });
       }
     });
@@ -57,47 +56,50 @@ class _IntroVideoScreenState extends State<IntroVideoScreen> {
               width: double.infinity,
               height: double.infinity,
             ),
-            Column(
-              children: [
-                SizedBox(
-                  height: getScreenHeight(context) * 0.2,
-                ),
-                _controller.value.isInitialized
-                    ? Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                width: 10,
-                                color: Color.fromARGB(255, 197, 216, 179)),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(videoBorderRadius + 10),
-                            ),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(videoBorderRadius),
-                            ),
-                            child: AspectRatio(
-                              aspectRatio: _controller.value.aspectRatio,
-                              child: VideoPlayer(_controller),
-                            ),
-                          ),
-                        ),
-                      )
-                    : Container(),
-                const Spacer(),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: PrimaryButton(
-                    enabled: isButtonEnabled,
-                    text: "Skip",
-                    onPressed: () {
-                      context.goNamed(RouteNames.home);
-                    },
+            SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    height: getScreenHeight(context) * 0.2,
                   ),
-                ),
-              ],
+                  _controller.value.isInitialized
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  width: 10,
+                                  color: Color.fromARGB(255, 197, 216, 179)),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(videoBorderRadius + 10),
+                              ),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(videoBorderRadius),
+                              ),
+                              child: AspectRatio(
+                                aspectRatio: _controller.value.aspectRatio,
+                                child: VideoPlayer(_controller),
+                              ),
+                              
+                            ),
+                          ),
+                        )
+                      : Container(),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: PrimaryButton(
+                      enabled: isButtonEnabled,
+                      text: "Skip",
+                      onPressed: () {
+                        context.goNamed(RouteNames.home);
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
