@@ -224,6 +224,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                       InkWell(
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               "Forgot your Password ? ",

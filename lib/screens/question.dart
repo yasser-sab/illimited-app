@@ -145,6 +145,7 @@ class _QuestionState extends State<Question> {
                     ),
                   ),
                   PrimaryButton(
+                    isBold: true,
                     enabled: _questionProvider.answers[_currentPage] != "",
                     text:
                         _currentPage == questions.length - 1 ? "Done" : "Next",
