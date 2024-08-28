@@ -6,6 +6,19 @@ final TextTheme myTextTheme = TextTheme(
       fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.white),
   titleLarge: TextStyle(
       fontSize: 15.0, fontWeight: FontWeight.w600, color: Colors.grey[300]),
+  headlineLarge: const TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+    fontStyle: FontStyle.italic,
+    color: Colors.red,
+    fontFamily: 'Roboto',
+    letterSpacing: 2.0,
+    wordSpacing: 4.0,
+    height: 1.5,
+  ),
+  bodyLarge: TextStyle(),
+  labelLarge: TextStyle(),
+
   // subtitle1: TextStyle(
   //     fontSize: 18.0, fontWeight: FontWeight.w500, color: Colors.grey[700]),
   // bodyText1: TextStyle(
