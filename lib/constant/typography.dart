@@ -24,7 +24,7 @@ final TextTheme myTextTheme = TextTheme(
   ), //headline 1
   bodyLarge: baseStyle.copyWith(
     fontSize: 16, // Adjust the font size as needed
-    fontWeight: FontWeight.normal, // Set the font weight to normal
+    fontWeight: FontWeight.bold, // Set the font weight to normal
     fontStyle: FontStyle.normal, // Set the font style to normal
     color: Colors.black, // Set the text color// Specify a custom font family
     letterSpacing: 0.5, // Adjust the spacing between letters
@@ -41,7 +41,7 @@ final TextTheme myTextTheme = TextTheme(
     height: 1.2, // Adjust the line height
   ), //subtite 1 (subtitles or short descriptions)
   bodyMedium: baseStyle.copyWith(
-    fontSize: 20, // Adjust the font size as needed
+    fontSize: 25, // Adjust the font size as needed
     fontWeight: FontWeight.bold, // Set the font weight to bold
     fontStyle: FontStyle.normal, // Set the font style to normal
     color: Colors.white,
