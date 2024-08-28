@@ -36,7 +36,7 @@ final GoRouter _router = GoRouter(
       name: RouteNames.splash,
       path: RouteNames.splash,
       builder: (BuildContext context, GoRouterState state) {
-        return const SplashScreen();
+        return const SignUpScreen();
       },
     ),
     GoRoute(
@@ -88,7 +88,7 @@ final GoRouter _router = GoRouter(
         return const EmailVerificationMessage();
       },
     ),
-        GoRoute(
+    GoRoute(
       name: RouteNames.resetPassword,
       path: RouteNames.resetPassword,
       builder: (BuildContext context, GoRouterState state) {
