@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:illimited_app/data/questions.dart';
 import 'package:illimited_app/providers/questions_provider.dart';
-
 import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/services/user_repository.dart';
 import 'package:illimited_app/widget/primary_button.dart';
@@ -44,6 +43,7 @@ class _QuestionState extends State<Question> {
   void _nextPage() {
     if (_currentPage == questions.length - 1 &&
         context.read<QuestionProvider>().answers[_currentPage] != "") {
+
       var userData = {
         "age": context.read<QuestionProvider>().answers[2],
         "country": context.read<QuestionProvider>().answers[3],
@@ -57,7 +57,6 @@ class _QuestionState extends State<Question> {
       }).catchError((onError) {
         log("error while updating user !!");
       });
-
 
       setState(() {
         isFinished = true;
@@ -119,7 +118,7 @@ class _QuestionState extends State<Question> {
                             : Colors.blue, // Background color
                         radius: 20, // Adjust radius for size
                         child: IconButton(
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.arrow_back,
                             color: Colors.white, // Arrow color
                             size: 18, // Adjust size of the icon
@@ -160,6 +159,7 @@ class _QuestionState extends State<Question> {
                     ),
                   ),
                   PrimaryButton(
+                    isBold: true,
                     enabled: _questionProvider.answers[_currentPage] != "",
                     text:
                         _currentPage == questions.length - 1 ? "Done" : "Next",

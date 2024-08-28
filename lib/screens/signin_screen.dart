@@ -89,7 +89,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                       ModernTextField(
                         textFieldTextStyle:
-                            getFontStyle(context).copyWith(color: Colors.black),
+                            Theme.of(context).textTheme.labelLarge,
                         textEditingController: _emailController,
                         iconBackgroundColor: primaryColor,
                         borderRadius: 20,
@@ -105,7 +105,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       ModernTextField(
                         isPasswordField: true,
                         textFieldTextStyle:
-                            getFontStyle(context).copyWith(color: Colors.black),
+                            Theme.of(context).textTheme.labelLarge,
                         textEditingController: _passwordController,
                         iconBackgroundColor: Colors.pink,
                         borderRadius: 20,
@@ -122,6 +122,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         padding: const EdgeInsets.all(8.0),
                         child: PrimaryButton(
                           text: "Sign In",
+                          isBold: true,
                           onPressed: () async {
                             UserCredential? userCrendential =
                                 await AuthService().signInWithEmailAndPassword(
@@ -183,9 +184,26 @@ class _SignInScreenState extends State<SignInScreen> {
                         height: 10,
                       ),
                       InkWell(
-                        child: Text(
-                          "Forgot your Password ? Click to reset",
-                          style: getFontStyle(context),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Forgot your Password ? ",
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.labelSmall,
+                            ),
+                            Text(
+                              "Click to reset",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelSmall!
+                                  .copyWith(
+                                    color: Colors.cyan,
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: Colors.cyan,
+                                  ),
+                            ),
+                          ],
                         ),
                         onTap: () {
                           context.pushNamed(RouteNames.resetPassword);
@@ -291,7 +309,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                       Text(
                         "Don't have an account ?",
-                        style: getFontStyle(context),
+                        style: Theme.of(context).textTheme.labelSmall,
                       ),
                       SizedBox(
                         height: 5,

@@ -40,16 +40,16 @@ class PrimaryButton extends StatelessWidget {
           foregroundColor: textColor,
           backgroundColor: enabled == true ? color : Colors.grey,
           padding: EdgeInsets.zero,
-          textStyle: getFontStyle(context).copyWith(
-              fontWeight: isBold! ? FontWeight.bold : FontWeight.normal,
-              fontSize: 20),
+          textStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                fontWeight: isBold! ? FontWeight.bold : FontWeight.normal,
+              ),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(25),
               side: BorderSide(
-                color: primaryColor,
-                width: borderWith,
-                style: borderWith == 0 ? BorderStyle.none : BorderStyle.solid 
-              )),
+                  color: primaryColor,
+                  width: borderWith,
+                  style:
+                      borderWith == 0 ? BorderStyle.none : BorderStyle.solid)),
         ),
         onPressed: enabled ? onPressed : () {},
         child: Row(

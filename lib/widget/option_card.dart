@@ -50,9 +50,17 @@ class _OptionCardState extends State<OptionCard> {
         height: 70,
         child: Center(
           child: ListTile(
-            leading: widget.icon == "" ? null :  Image.asset(widget.icon, width: 50,),
+            leading: widget.icon == ""
+                ? null
+                : Image.asset(
+                    widget.icon,
+                    width: 50,
+                  ),
             splashColor: Colors.transparent,
-            title: Text(widget.text, style: getFontStyle(context).copyWith(color: Colors.black),),
+            title: Text(
+              widget.text,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
             onTap: () {
               setState(() {
                 widget.updateSelection(widget.text);

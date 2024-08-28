@@ -65,8 +65,7 @@ class _QuestionPageState extends State<QuestionPage> {
           padding: const EdgeInsets.symmetric(horizontal: 5),
           child: Text(
             widget.question,
-            style: getFontStyle(context)
-                .copyWith(color: Colors.black, fontSize: 20),
+            style: Theme.of(context).textTheme.headlineLarge,
           ),
         ),
         const SizedBox(

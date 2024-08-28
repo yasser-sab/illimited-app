@@ -54,7 +54,6 @@ class _GetStartedState extends State<GetStarted> {
                 height: 10,
               ),
               FadeIn(
-                
                 duration: Duration(seconds: 4),
                 delay: Duration(seconds: 1),
                 child: Text("The goal is to help you",
@@ -69,11 +68,16 @@ class _GetStartedState extends State<GetStarted> {
           right: 20,
           child: Column(
             children: [
-              PrimaryButton(text: "Get started", onPressed: () => context.goNamed(RouteNames.signup),),
+              PrimaryButton(
+                isBold: true,
+                text: "Get started",
+                onPressed: () => context.goNamed(RouteNames.signup),
+              ),
               const SizedBox(
                 height: 10,
               ),
               PrimaryButton(
+                isBold: true,
                 text: "Sign in",
                 onPressed: () => context.goNamed(RouteNames.signin),
                 color: primaryColor.withOpacity(0.1),

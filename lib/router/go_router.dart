@@ -86,7 +86,7 @@ final GoRouter _router = GoRouter(
         return const EmailVerificationMessage();
       },
     ),
-        GoRoute(
+    GoRoute(
       name: RouteNames.resetPassword,
       path: RouteNames.resetPassword,
       builder: (BuildContext context, GoRouterState state) {
