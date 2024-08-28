@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:illimited_app/constant/const.dart';
@@ -183,17 +184,14 @@ class _SignInScreenState extends State<SignInScreen> {
                       const SizedBox(
                         height: 10,
                       ),
-                      InkWell(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                      RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          style: Theme.of(context).textTheme.labelSmall,
                           children: [
-                            Text(
-                              "Forgot your Password ? ",
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.labelSmall,
-                            ),
-                            Text(
-                              "Click to reset",
+                            const TextSpan(text: "Forgot your Passwordw ? "),
+                            TextSpan(
+                              text: "Click to reset",
                               style: Theme.of(context)
                                   .textTheme
                                   .labelSmall!
@@ -202,12 +200,12 @@ class _SignInScreenState extends State<SignInScreen> {
                                     decoration: TextDecoration.underline,
                                     decorationColor: Colors.cyan,
                                   ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () =>
+                                    context.pushNamed(RouteNames.resetPassword),
                             ),
                           ],
                         ),
-                        onTap: () {
-                          context.pushNamed(RouteNames.resetPassword);
-                        },
                       ),
                       const SizedBox(
                         height: 10,
@@ -224,7 +222,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           ),
                           Text(
                             "Or",
-                            style: getFontStyle(context),
+                            style: Theme.of(context).textTheme.labelSmall,
                           ),
                           SizedBox(
                             width: 5,
