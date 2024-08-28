@@ -1,19 +1,26 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:illimited_app/models/sign_in_result.dart';
 
 class UserRepository {
-  Future<void> createUser(User? user) async {
+  String getUserUid() {
+    return FirebaseAuth.instance.currentUser!.uid;
+  }
+
+  Future<void> createUser(User? user,
+      {String? firstName = "NONAME", String? lastName = "NONAME"}) async {
+    log("Creatingf User");
     DocumentReference<Map<String, dynamic>> userDoc =
         FirebaseFirestore.instance.collection('users').doc(user!.uid);
-    String firstName = "";
-    String lastName = "";
 
-    if (user.displayName!.split(" ").length == 1) {
-      firstName = user.displayName!.split(" ")[0];
-    } else {
-      firstName = user.displayName!.split(" ")[0];
-      lastName = user.displayName!.split(" ")[1];
+    if (user.displayName != null) {
+      if (user.displayName!.split(" ").length == 1) {
+        firstName = user.displayName!.split(" ")[0];
+      } else {
+        firstName = user.displayName!.split(" ")[0];
+        lastName = user.displayName!.split(" ")[1];
+      }
     }
 
     Map<String, dynamic> userData = {
@@ -29,11 +36,11 @@ class UserRepository {
     await userDoc.set(userData);
   }
 
-  Future<bool> getQuestionFlag(User? user) async {
+  Future<bool> getQuestionFlag() async {
     final DocumentSnapshot<Map<String, dynamic>> userDoc =
         await FirebaseFirestore.instance
             .collection('users')
-            .doc(user!.uid)
+            .doc(getUserUid())
             .get();
 
     if (userDoc.exists) {
@@ -43,9 +50,23 @@ class UserRepository {
     }
   }
 
-  Future<void> update(User? user, Map<String, dynamic> userData) async {
+  Future<void> setQuestionFlag(bool flag) async {
+    final DocumentSnapshot<Map<String, dynamic>> userDoc =
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(getUserUid())
+            .get();
+
+    if (userDoc.exists) {
+      userDoc.data()!['isQuestionsAnswered'] = true;
+    } else {
+      throw Exception('User document does not exist !');
+    }
+  }
+
+  Future<void> update(Map<String, dynamic> userData) async {
     DocumentReference<Map<String, dynamic>> userDoc =
-        FirebaseFirestore.instance.collection('users').doc(user!.uid);
+        FirebaseFirestore.instance.collection('users').doc(getUserUid());
 
     return await userDoc.update(userData);
   }

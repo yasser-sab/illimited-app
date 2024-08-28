@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/providers/questions_provider.dart';
-import 'package:illimited_app/widget/primary_button.dart';
 import 'package:illimited_app/widget/single_choice_selector.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:modern_textfield/modern_textfield.dart';
 import 'package:provider/provider.dart';
 
 class QuestionPage extends StatefulWidget {

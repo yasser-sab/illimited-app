@@ -1,14 +1,13 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/data/questions.dart';
 import 'package:illimited_app/providers/questions_provider.dart';
 import 'package:illimited_app/router/router_names.dart';
+import 'package:illimited_app/services/user_repository.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:illimited_app/widget/progress_bar.dart';
 import 'package:illimited_app/widget/question_page.dart';
-import 'package:illimited_app/widget/single_choice_selector.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -44,6 +43,21 @@ class _QuestionState extends State<Question> {
   void _nextPage() {
     if (_currentPage == questions.length - 1 &&
         context.read<QuestionProvider>().answers[_currentPage] != "") {
+
+      var userData = {
+        "age": context.read<QuestionProvider>().answers[2],
+        "country": context.read<QuestionProvider>().answers[3],
+        "gender": context.read<QuestionProvider>().answers[0],
+        "improvement_preference": context.read<QuestionProvider>().answers[1],
+        "isQuestionsAnswered": true
+      };
+
+      UserRepository().update(userData).then((value) {
+        log("USER UPDATED!");
+      }).catchError((onError) {
+        log("error while updating user !!");
+      });
+
       setState(() {
         isFinished = true;
         getPercentage();

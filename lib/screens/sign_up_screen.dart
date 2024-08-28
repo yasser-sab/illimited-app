@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,11 +6,10 @@ import 'package:go_router/go_router.dart';
 import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/models/sign_in_result.dart';
 import 'package:illimited_app/providers/authentication_provider.dart';
-import 'package:illimited_app/providers/questions_provider.dart';
-import 'package:illimited_app/providers/user_provider.dart';
 import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/screens/signin_screen.dart';
 import 'package:illimited_app/services/authentication_service.dart';
+import 'package:illimited_app/services/user_repository.dart';
 import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/google_sign_button.dart';
 import 'package:illimited_app/widget/primary_button.dart';
@@ -227,27 +226,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       _emailController.text.trim(),
                                       _passwordController.text);
                               if (userCreds != null) {
-                                FirebaseFirestore.instance
-                                    .collection('users')
-                                    .doc(userCreds.user!.uid)
-                                    .set({
-                                  "age": "",
-                                  "country": "",
-                                  "firstname": _fNameController.text,
-                                  "lastname": _lNameController.text,
-                                  "gender": "",
-                                  "improvement_preference": "",
-                                  "isQuestionsAnswered": false,
-                                }).then((value) {
-                                  print("User added successfully!");
-
-                                  context
-                                      .read<UserProvider>()
-                                      .setUserId(userCreds.user!.uid);
-                                }).catchError(
-                                  (error) =>
-                                      print("Failed to add user: $error"),
-                                );
+                                UserRepository().createUser(
+                                    FirebaseAuth.instance.currentUser,
+                                    firstName: _fNameController.text.trim(),
+                                    lastName: _lNameController.text.trim());
 
                                 userCreds.user!.sendEmailVerification().then(
                                   (value) {
@@ -323,62 +305,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             );
 
                             if (res.isNewUser) {
-                              FirebaseFirestore.instance
-                                  .collection('users')
-                                  .doc(res.user!.uid)
-                                  .set({
-                                "age": "",
-                                "country": "",
-                                "firstname":
-                                    res.user!.displayName!.split(" ")[0],
-                                "lastname":
-                                    res.user!.displayName!.split(" ")[1],
-                                "gender": "",
-                                "improvement_preference": "",
-                                "isQuestionsAnswered": false,
-                              }).then((value) {
-                                print("User signed up successfully!");
-
-                                context
-                                    .read<UserProvider>()
-                                    .setUserId(res.user!.uid);
-                              }).catchError(
-                                (error) => print(
-                                    "Failed to sign up with google auth : $error"),
-                              );
+                              UserRepository().createUser(
+                                  FirebaseAuth.instance.currentUser);
 
                               context.goNamed(RouteNames.question);
                             } else {
-                              // context.goNamed(RouteNames.home);
-                              FirebaseFirestore.instance
-                                  .collection('users')
-                                  .doc(res.user!.uid)
-                                  .get()
-                                  .then((DocumentSnapshot documentSnapshot) {
-                                if (documentSnapshot.exists) {
-                                  Map<String, dynamic>? userData =
-                                      documentSnapshot.data()
-                                          as Map<String, dynamic>?;
-
-                                  context
-                                      .read<UserProvider>()
-                                      .setUserId(res.user!.uid);
-                                  context.read<UserProvider>().setQuestionFlag(
-                                      userData!["isQuestionsAnswered"] as bool);
-
-                                  if (context
-                                      .read<UserProvider>()
-                                      .isQuestionsAnswered) {
+                              UserRepository().getQuestionFlag().then(
+                                (isAnsweredQuestions) {
+                                  if (isAnsweredQuestions) {
                                     context.goNamed(RouteNames.home);
                                   } else {
                                     context.goNamed(RouteNames.question);
                                   }
-                                } else {
-                                  print('No user found with this ID.');
-                                }
-                              }).catchError((error) {
-                                print('Failed to retrieve user data: $error');
-                              });
+                                },
+                              );
                             }
                           } else {
                             context

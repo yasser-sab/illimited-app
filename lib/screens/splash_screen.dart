@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/router/router_names.dart';
+import 'package:illimited_app/services/user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -33,10 +34,12 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-
+    log("in init");
     checkFirstLaunch().then(
       (value) => isFirstLaunch = value,
     );
+    log("in init 2");
+
     startTimer();
   }
 
@@ -86,24 +89,37 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void startTimer() async {
+    log("in startTimer 1");
+
     await Future.delayed(
       const Duration(milliseconds: 3000),
     );
     final loggedIn = FirebaseAuth.instance.currentUser != null;
-    context.goNamed(RouteNames.getStarted);
-    // if (loggedIn) {
-    //   context.goNamed(RouteNames.home);
-    // } else if (isFirstLaunch == true) {
-    //   context.goNamed(RouteNames.getStarted);
-    // } else {
-      
-    //   context.goNamed(RouteNames.signin);
-    // }
 
-    // if (isFirstLaunch == true) {
-    //   context.goNamed(RouteNames.getStarted);
-    // } else if (!loggedIn) {
-    //   context.goNamed(RouteNames.signin);
-    // } else {}
+    log("in startTimer 2");
+    if (FirebaseAuth.instance.currentUser != null) {
+      log("IS EMAIL VERIF : ${FirebaseAuth.instance.currentUser!.emailVerified}");
+    }
+    
+
+    log(isFirstLaunch.toString());
+    if (isFirstLaunch == true) {
+      context.goNamed(RouteNames.getStarted);
+    } else if (!loggedIn) {
+      context.goNamed(RouteNames.signin);
+
+    } else if (!FirebaseAuth.instance.currentUser!.emailVerified) {
+      context.goNamed(RouteNames.signin);
+    } else {
+      UserRepository().getQuestionFlag().then(
+        (isQuestionsAnswered) {
+          if (isQuestionsAnswered) {
+            context.goNamed(RouteNames.home);
+          } else {
+            context.goNamed(RouteNames.question);
+          }
+        },
+      );
+    }
   }
 }

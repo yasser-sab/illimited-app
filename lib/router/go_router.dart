@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:illimited_app/models/sign_in_result.dart';
 import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/screens/email_verification_message_screen.dart';
 import 'package:illimited_app/screens/forgot_password_screen.dart';
@@ -14,7 +13,6 @@ import 'package:illimited_app/screens/question.dart';
 import 'package:illimited_app/screens/sign_up_screen.dart';
 import 'package:illimited_app/screens/signin_screen.dart';
 import 'package:illimited_app/screens/splash_screen.dart';
-import 'package:video_player/video_player.dart';
 
 final GoRouter _router = GoRouter(
   redirect: (BuildContext context, GoRouterState state) async {

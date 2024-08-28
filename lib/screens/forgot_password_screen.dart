@@ -3,19 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:illimited_app/constant/const.dart';
-import 'package:illimited_app/models/sign_in_result.dart';
-import 'package:illimited_app/providers/authentication_provider.dart';
 import 'package:illimited_app/router/router_names.dart';
-import 'package:illimited_app/screens/sign_up_screen.dart';
-import 'package:illimited_app/services/authentication_service.dart';
 import 'package:illimited_app/utils/utils.dart';
-import 'package:illimited_app/widget/google_sign_button.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:illimited_app/widget/top_snackbar.dart';
 import 'package:lottie/lottie.dart';
 import 'package:modern_textfield/modern_textfield.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:provider/provider.dart';
 
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key});
