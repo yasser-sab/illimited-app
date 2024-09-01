@@ -94,7 +94,7 @@ class _IntroVideoScreenState extends State<IntroVideoScreen> {
                       enabled: isButtonEnabled,
                       text: "Skip",
                       onPressed: () {
-                        context.goNamed(RouteNames.home);
+                        context.goNamed(RouteNames.dashboard);
                       },
                     ),
                   ),
@@ -109,7 +109,8 @@ class _IntroVideoScreenState extends State<IntroVideoScreen> {
 
   void startTimer() async {
     await Future.delayed(
-      const Duration(milliseconds: 30000), // 30 seconds
+      // const Duration(milliseconds: 30000),
+      const Duration(milliseconds: 1000), // 30 seconds
     );
     setState(() {
       isButtonEnabled = true;

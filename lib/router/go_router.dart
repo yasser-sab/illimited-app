@@ -4,11 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:illimited_app/router/router_names.dart';
+import 'package:illimited_app/screens/dashboard.dart';
 import 'package:illimited_app/screens/email_verification_message_screen.dart';
 import 'package:illimited_app/screens/forgot_password_screen.dart';
 import 'package:illimited_app/screens/getstarted_screen.dart';
 import 'package:illimited_app/screens/home_screen.dart';
 import 'package:illimited_app/screens/intro_video_screen.dart';
+import 'package:illimited_app/screens/profile_screen.dart';
 import 'package:illimited_app/screens/question.dart';
 import 'package:illimited_app/screens/sign_up_screen.dart';
 import 'package:illimited_app/screens/signin_screen.dart';
@@ -34,7 +36,7 @@ final GoRouter _router = GoRouter(
       name: RouteNames.splash,
       path: RouteNames.splash,
       builder: (BuildContext context, GoRouterState state) {
-        return const SplashScreen();
+        return SplashScreen();
       },
     ),
     GoRoute(
@@ -91,6 +93,20 @@ final GoRouter _router = GoRouter(
       path: RouteNames.resetPassword,
       builder: (BuildContext context, GoRouterState state) {
         return const ResetPassword();
+      },
+    ),
+        GoRoute(
+      name: RouteNames.dashboard,
+      path: RouteNames.dashboard,
+      builder: (BuildContext context, GoRouterState state) {
+        return const Dashboard();
+      },
+    ),
+    GoRoute(
+      name: RouteNames.profile,
+      path: RouteNames.profile,
+      builder: (BuildContext context, GoRouterState state) {
+        return const ProfileScreen();
       },
     ),
   ],

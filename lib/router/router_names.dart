@@ -10,6 +10,8 @@ class RouteNames {
   static const introVideo = '/introVideo';
   static const emailVerificationMessage = '/emailVerificationMessage';
   static const resetPassword = '/resetPassword';
+  static const dashboard = '/dashboard';
+  static const profile = '/profile';
 
 
   static List<String> noLoginScreens = [splash, getStarted, signup, emailVerificationMessage, resetPassword]; 
