@@ -140,7 +140,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                 UserRepository().getQuestionFlag().then(
                                   (isAnsweredQuestions) {
                                     if (isAnsweredQuestions) {
-                                      context.goNamed(RouteNames.home);
+                                      context.goNamed(RouteNames.dashboard);
                                     } else {
                                       context.goNamed(RouteNames.question);
                                     }
@@ -281,7 +281,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                 UserRepository().getQuestionFlag().then(
                                   (isAnsweredQuestion) {
                                     if (isAnsweredQuestion) {
-                                      context.goNamed(RouteNames.home);
+                                      context.goNamed(RouteNames.dashboard);
                                     } else {
                                       context.goNamed(RouteNames.question);
                                     }

@@ -45,7 +45,7 @@ final TextTheme myTextTheme = TextTheme(
     fontWeight: FontWeight.bold, // Set the font weight to bold
     fontStyle: FontStyle.normal, // Set the font style to normal
     color: Colors.white,
-    letterSpacing: 1.2, // Adjust the spacing between letters
+    // letterSpacing: 1.2, // Adjust the spacing between letters
     wordSpacing: 2.0, // Adjust the spacing between words
     height: 1.4, // Adjust the line height
   ), // button,

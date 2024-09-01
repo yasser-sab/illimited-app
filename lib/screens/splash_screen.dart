@@ -114,7 +114,7 @@ class _SplashScreenState extends State<SplashScreen> {
       UserRepository().getQuestionFlag().then(
         (isQuestionsAnswered) {
           if (isQuestionsAnswered) {
-            context.goNamed(RouteNames.home);
+            context.goNamed(RouteNames.dashboard);
           } else {
             context.goNamed(RouteNames.question);
           }

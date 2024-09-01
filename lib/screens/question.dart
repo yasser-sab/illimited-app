@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:illimited_app/data/questions.dart';
 import 'package:illimited_app/providers/questions_provider.dart';
 import 'package:illimited_app/router/router_names.dart';
+import 'package:illimited_app/services/authentication_service.dart';
 import 'package:illimited_app/services/user_repository.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:illimited_app/widget/progress_bar.dart';
@@ -43,6 +44,8 @@ class _QuestionState extends State<Question> {
   void _nextPage() {
     if (_currentPage == questions.length - 1 &&
         context.read<QuestionProvider>().answers[_currentPage] != "") {
+
+          
 
       var userData = {
         "age": context.read<QuestionProvider>().answers[2],

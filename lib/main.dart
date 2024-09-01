@@ -6,6 +6,7 @@ import 'package:illimited_app/firebase_options.dart';
 import 'package:illimited_app/providers/app_provider.dart';
 import 'package:illimited_app/providers/authentication_provider.dart';
 import 'package:illimited_app/providers/questions_provider.dart';
+import 'package:illimited_app/providers/week_provider.dart';
 
 import 'package:illimited_app/router/go_router.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,6 +26,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => AuthenticationProvider()),
         ChangeNotifierProvider(create: (context) => QuestionProvider()),
         ChangeNotifierProvider(create: (context) => AppProvider()),
+        ChangeNotifierProvider(create: (context) => WeekProvider()),
       ],
       child: const MyApp(),
     ),
