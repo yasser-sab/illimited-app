@@ -31,7 +31,7 @@ class _IntroVideoScreenState extends State<IntroVideoScreen> {
       if (_controller.value.position == _controller.value.duration) {
         // Video has finished playing, wait 2 seconds and then navigate
         Future.delayed(const Duration(seconds: 2), () {
-          // context.goNamed(RouteNames.home);
+          context.goNamed(RouteNames.dashboard);
         });
       }
     });
