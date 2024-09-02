@@ -7,7 +7,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:illimited_app/constant/const.dart';
-import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/services/authentication_service.dart';
 import 'package:illimited_app/services/user_repository.dart';
 import 'package:illimited_app/utils/utils.dart';
@@ -18,6 +17,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:modern_textfield/modern_textfield.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -31,22 +31,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController _lNameController = TextEditingController();
   final TextEditingController _emailNameController = TextEditingController();
   User? user = FirebaseAuth.instance.currentUser;
-  String? photoURL;
 
   final Color _fontColor = Colors.black;
   bool isEditing = false;
   bool isUploading = false;
 
+  String? photoURL;
   File? _imageFile;
   final ImagePicker _picker = ImagePicker();
 
   Future<void> _pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      setState(() {
-        _imageFile = File(pickedFile.path);
-      });
-      await _uploadImageToFirebase();
+      File? croppedFile = await _cropImage(File(pickedFile.path));
+      if (croppedFile != null) {
+        setState(() {
+          _imageFile = croppedFile;
+        });
+        _showPhotoConfirmationDialog();
+      }
     }
   }
 
@@ -110,9 +113,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Scaffold(
           appBar: AppBar(
             leading: InkWell(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
                 onTap: () {
                   if (isEditing) {
-                    showConfirmationDialog(context,
+                    _showConfirmationDialog(context,
                         "Are you sure you want to discard changes ?", true);
                   } else {
                     context.pop();
@@ -123,9 +128,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Visibility(
                 visible: !isEditing,
                 child: InkWell(
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
                   onTap: () => openEdit(),
                   child: const Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    padding: EdgeInsets.symmetric(horizontal: 12),
                     child: Icon(Icons.edit),
                   ),
                 ),
@@ -143,16 +150,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Stack(
                       alignment: Alignment.center,
                       children: [
-                        ProfileFrame(
-                          onPressed: _pickImage,
-                          image: user!.photoURL,
-                          canEditPicture: !isEditing,
-                        ),
-                        Visibility(
-                          visible: isUploading,
-                          child: const SpinKitPulse(
-                            color: Colors.white,
-                            size: 110,
+                        InkWell(
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          onTap: () {
+                            _showProfilePictureDialog(context, user!.photoURL);
+                          },
+                          child: ProfileFrame(
+                            onPressed: _pickImage,
+                            image: user!.photoURL,
+                            canEditPicture: !isEditing,
+                            isLoading: isUploading,
                           ),
                         ),
                         Visibility(
@@ -266,7 +274,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           color: errorColor,
                           text: "Cancel",
                           onPressed: () {
-                            showConfirmationDialog(
+                            _showConfirmationDialog(
                                 context,
                                 "Are you sure you want to discard changes ?",
                                 false);
@@ -343,7 +351,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
-  void showConfirmationDialog(
+  void _showConfirmationDialog(
       BuildContext context, String message, bool isPoping) {
     Widget yesButton = PrimaryButton(
       text: "Discard",
@@ -393,5 +401,121 @@ class _ProfileScreenState extends State<ProfileScreen> {
         return alert;
       },
     );
+  }
+
+  void _showProfilePictureDialog(BuildContext context, String? photoURL) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return GestureDetector(
+          onTap: () => context.pop(),
+          child: Dialog(
+            backgroundColor: Colors.transparent,
+            child: photoURL != null
+                ? Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(photoURL),
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  )
+                // Image.network(photoURL, fit: BoxFit.contain,)
+                : Container(
+                    padding: EdgeInsets.all(20),
+                    child: const Text(
+                      'No Profile Picture Available',
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showPhotoConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          actionsAlignment: MainAxisAlignment.center,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _imageFile != null
+                  ? Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(width: 1, color: Colors.black)),
+                      child: Image.file(_imageFile!))
+                  : Container(),
+              const SizedBox(height: 20),
+              Text(
+                textAlign: TextAlign.center,
+                'Confirm your new profile picture ?',
+                style: getFontStyle(context)
+                    .copyWith(color: Colors.black, fontSize: 17),
+              ),
+            ],
+          ),
+          actions: [
+            PrimaryButton(
+              fontSize: 18,
+              width: getScreenWidth(context) * 0.30,
+              onPressed: () {
+                Navigator.of(context)
+                    .pop(); // Close the dialog without uploading
+              },
+              text: "Cancel",
+              color: Colors.grey,
+            ),
+            PrimaryButton(
+              width: getScreenWidth(context) * 0.30,
+              fontSize: 18,
+              onPressed: () async {
+                Navigator.of(context).pop(); // Close the dialog
+                await _uploadImageToFirebase(); // Proceed to upload
+              },
+              text: "Confirm",
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<File?> _cropImage(File imageFile) async {
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
+      sourcePath: imageFile.path,
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarTitle: 'Adjust Your Image',
+          toolbarColor: primaryColor,
+          toolbarWidgetColor: Colors.white,
+          activeControlsWidgetColor: primaryColor,
+          aspectRatioPresets: [
+            CropAspectRatioPreset.square,
+          ],
+          cropStyle: CropStyle.circle,
+          lockAspectRatio: true,
+          initAspectRatio: CropAspectRatioPreset.square,
+        ),
+        IOSUiSettings(
+          title: 'Adjust Your Image',
+          aspectRatioPresets: [
+            CropAspectRatioPreset.original,
+            CropAspectRatioPreset.square,
+            // CropAspectRatioPresetCustom(), // IMPORTANT: iOS supports only one custom aspect ratio in preset list
+          ],
+        ),
+      ],
+    );
+    if (croppedFile != null) {
+      return File(croppedFile.path);
+    }
+    return null;
   }
 }

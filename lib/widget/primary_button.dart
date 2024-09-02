@@ -13,6 +13,7 @@ class PrimaryButton extends StatelessWidget {
   final double? elevation;
   final bool enabled;
   final double borderWith;
+  final double? fontSize;
 
   const PrimaryButton({
     Key? key,
@@ -27,6 +28,7 @@ class PrimaryButton extends StatelessWidget {
     this.elevation,
     this.enabled = true,
     this.borderWith = 0,
+    this.fontSize,
   }) : super(key: key);
 
   @override
@@ -41,8 +43,8 @@ class PrimaryButton extends StatelessWidget {
           backgroundColor: enabled == true ? color : Colors.grey,
           padding: EdgeInsets.zero,
           textStyle: getFontStyle(context).copyWith(
-                fontWeight: isBold! ? FontWeight.bold : FontWeight.normal, fontSize: 23
-              ),
+              fontWeight: isBold! ? FontWeight.bold : FontWeight.normal,
+              fontSize: fontSize ?? 23),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(25),
               side: BorderSide(
