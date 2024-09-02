@@ -131,18 +131,13 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ),
             ),
-            Positioned(
-              bottom: 10,
-              left: 35,
-              child: DrawerIconButton(
-                iconPath: "assets/icon/shutdown.png",
-                text: "Log out",
-                color: Colors.red,
-                onPressed: () {
-                  AuthService().signOut();
-                  context.read<QuestionProvider>().resetProvider();
-                },
-              ),
+            Center(
+              child: ElevatedButton(
+                  onPressed: () {
+                    AuthService().signOut();
+                    context.read<QuestionProvider>().resetProvider();
+                  },
+                  child: Text("Sign out")),
             ),
           ],
         ),
@@ -155,7 +150,7 @@ class _DashboardState extends State<Dashboard> {
         centerTitle: true,
         title: Text(
           'Weeks',
-          style: getFontStyle(context).copyWith(fontSize: 23),
+          style: GoogleFonts.roboto().copyWith(fontSize: 27, letterSpacing: 1.5),
         ),
       ),
       body: RefreshIndicator(
@@ -254,12 +249,16 @@ class _DashboardState extends State<Dashboard> {
                                     percent: getPercentage(nbCompletedWeeks),
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 15, bottom: 7),
-                                  child: Image.asset(
-                                    "assets/icon/trophy.png",
-                                    width: 40,
+                                InkWell(
+                                  onTap: () =>
+                                      context.pushNamed(RouteNames.profile),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 15, bottom: 7),
+                                    child: Image.asset(
+                                      "assets/icon/trophy.png",
+                                      width: 40,
+                                    ),
                                   ),
                                 )
                               ],

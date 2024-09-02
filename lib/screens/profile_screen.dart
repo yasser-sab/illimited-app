@@ -1,8 +1,9 @@
 import 'dart:developer';
-
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:illimited_app/constant/const.dart';
@@ -13,8 +14,10 @@ import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:illimited_app/widget/profile_frame.dart';
 import 'package:illimited_app/widget/top_snackbar.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:modern_textfield/modern_textfield.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -24,35 +27,82 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  TextEditingController _fNameController = TextEditingController();
-  TextEditingController _lNameController = TextEditingController();
-  TextEditingController _emailNameController = TextEditingController();
+  final TextEditingController _fNameController = TextEditingController();
+  final TextEditingController _lNameController = TextEditingController();
+  final TextEditingController _emailNameController = TextEditingController();
+  User? user = FirebaseAuth.instance.currentUser;
+  String? photoURL;
 
-  Color _fontColor = Colors.black;
+  final Color _fontColor = Colors.black;
   bool isEditing = false;
+  bool isUploading = false;
 
-  @override
-  void initState() {
-    super.initState();
+  File? _imageFile;
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+      await _uploadImageToFirebase();
+    }
+  }
+
+  Future<void> _uploadImageToFirebase() async {
+    setState(() {
+      isUploading = true;
+    });
+    if (_imageFile == null) return;
+
+    try {
+      if (user == null) return;
+
+      String uid = user!.uid;
+      Reference storageRef =
+          FirebaseStorage.instance.ref().child('userProfilePics/$uid.jpg');
+
+      UploadTask uploadTask = storageRef.putFile(_imageFile!);
+      TaskSnapshot taskSnapshot = await uploadTask;
+
+      String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+
+      await user!.updatePhotoURL(downloadUrl);
+
+      await user!.reload();
+      user = FirebaseAuth.instance.currentUser;
+
+      setState(() {
+        isUploading = false;
+      });
+      mySnackBar(
+          context: context, message: "Profile picture updated successfully!");
+    } catch (e) {
+      log("Failed To Update Picture : $e");
+      mySnackBar(
+          context: context,
+          message: "Profile picture updated successfully!",
+          snackBarType: SnackBarType.failure);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       AuthService().signOut();
     }
     String userDisplayName = user!.displayName!;
 
-    if (user.displayName != null) {
-      if (user.displayName!.split(" ").length == 1) {
-        _fNameController.text = user.displayName!.split(" ")[0];
+    if (user!.displayName != null) {
+      if (user!.displayName!.split(" ").length == 1) {
+        _fNameController.text = user!.displayName!.split(" ")[0];
       } else {
-        _fNameController.text = user.displayName!.split(" ")[0];
-        _lNameController.text = user.displayName!.split(" ")[1];
+        _fNameController.text = user!.displayName!.split(" ")[0];
+        _lNameController.text = user!.displayName!.split(" ")[1];
       }
     }
-    _emailNameController.text = user.email!;
+    _emailNameController.text = user!.email!;
 
     return SafeArea(
       child: PopScope(
@@ -90,8 +140,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
                 child: Column(
                   children: [
-                    ProfileFrame(
-                      image: user.photoURL,
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        ProfileFrame(
+                          onPressed: _pickImage,
+                          image: user!.photoURL,
+                          canEditPicture: !isEditing,
+                        ),
+                        Visibility(
+                          visible: isUploading,
+                          child: const SpinKitPulse(
+                            color: Colors.white,
+                            size: 110,
+                          ),
+                        ),
+                        Visibility(
+                          visible: isUploading,
+                          child: const SpinKitFadingCircle(
+                            color: Colors.white,
+                            size: 40,
+                          ),
+                        )
+                      ],
                     ),
                     const SizedBox(
                       height: 10,
@@ -222,16 +293,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               setState(() {
                                 isEditing = false;
                               });
-                  
-                              user.updateDisplayName("$firstName $lastName").then(
+
+                              user!
+                                  .updateDisplayName("$firstName $lastName")
+                                  .then(
                                 (value) {
                                   mySnackBar(
                                       context: context,
                                       message: "Profile Updated Successfully!");
-                  
+
                                   _fNameController.text = firstName;
                                   _lNameController.text = lastName;
-                  
+
                                   setState(() {
                                     userDisplayName = "$firstName $lastName";
                                   });
