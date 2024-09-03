@@ -69,7 +69,7 @@ class _DashboardState extends State<Dashboard> {
         child: Stack(
           children: [
             Visibility(
-              visible: false,
+              visible: true,
               child: SafeArea(
                 child: Padding(
                   padding:
@@ -131,14 +131,14 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ),
             ),
-            Center(
-              child: ElevatedButton(
-                  onPressed: () {
-                    AuthService().signOut();
-                    context.read<QuestionProvider>().resetProvider();
-                  },
-                  child: Text("Sign out")),
-            ),
+            // Center(
+            //   child: ElevatedButton(
+            //       onPressed: () {
+            //         AuthService().signOut();
+            //         context.read<QuestionProvider>().resetProvider();
+            //       },
+            //       child: Text("Sign out")),
+            // ),
           ],
         ),
       ),
@@ -150,7 +150,8 @@ class _DashboardState extends State<Dashboard> {
         centerTitle: true,
         title: Text(
           'Weeks',
-          style: GoogleFonts.roboto().copyWith(fontSize: 27, letterSpacing: 1.5),
+          style:
+              GoogleFonts.roboto().copyWith(fontSize: 27, letterSpacing: 1.5),
         ),
       ),
       body: RefreshIndicator(
@@ -225,6 +226,7 @@ class _DashboardState extends State<Dashboard> {
             if (lastWeekUnlocked != 0) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 showLevelUnlocked(context: context, weekNB: lastWeekUnlocked);
+                lastWeekUnlocked = 0;
               });
             }
 
@@ -250,8 +252,9 @@ class _DashboardState extends State<Dashboard> {
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: () =>
-                                      context.pushNamed(RouteNames.profile),
+                                  onTap: () {
+                                    // context.pushNamed(RouteNames.profile);
+                                  },
                                   child: Padding(
                                     padding: const EdgeInsets.only(
                                         right: 15, bottom: 7),

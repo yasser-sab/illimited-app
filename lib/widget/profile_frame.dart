@@ -5,7 +5,15 @@ class ProfileFrame extends StatelessWidget {
   final double size;
   final bool canEditPicture;
   final VoidCallback? onPressed;
-  const ProfileFrame({super.key, this.image, this.size = 100, this.canEditPicture = false, this.onPressed});
+  final bool isLoading;
+  const ProfileFrame(
+      {super.key,
+      this.image,
+      this.size = 100,
+      this.canEditPicture = false,
+      this.onPressed,
+      this.isLoading = false});
+
 
   @override
   Widget build(BuildContext context) {
@@ -21,20 +29,26 @@ class ProfileFrame extends StatelessWidget {
             width: size,
             height: size,
             child: ClipOval(
-              child: image != null
-                  ? Image.network(
-                      image!,
-                      fit: BoxFit.cover,
+              child: isLoading
+                  ? Container(
+                      width: 100,
+                      height: 100,
+                      color: Colors.grey,
                     )
-                  : Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Image.asset(
-                        image ?? "assets/icon/defaultUser.png",
-                        width: size * 0.8,
-                        height: size * 0.8,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
+                  : image != null
+                      ? Image.network(
+                          image!,
+                          fit: BoxFit.cover,
+                        )
+                      : Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Image.asset(
+                            image ?? "assets/icon/defaultUser.png",
+                            width: size * 0.8,
+                            height: size * 0.8,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
             ),
           ),
         ),
@@ -44,6 +58,8 @@ class ProfileFrame extends StatelessWidget {
             bottom: 0,
             right: 0,
             child: InkWell(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
               onTap: onPressed,
               child: Container(
                 height: 35,
@@ -54,11 +70,11 @@ class ProfileFrame extends StatelessWidget {
                     border: Border.all(width: 2, color: Colors.white)),
                 child: Center(
                   child: SizedBox(
-                    width: 20,
-                    height: 20,
+                      width: 20,
+                      height: 20,
                       child: Image.asset(
-                    "assets/icon/pencil.png",
-                  )),
+                        "assets/icon/pencil.png",
+                      )),
                 ),
               ),
             ),
