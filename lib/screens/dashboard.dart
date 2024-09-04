@@ -15,6 +15,7 @@ import 'package:illimited_app/services/authentication_service.dart';
 import 'package:illimited_app/services/user_repository.dart';
 import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/drawer_button.dart';
+import 'package:illimited_app/widget/end_drawer.dart';
 import 'package:illimited_app/widget/levelsButton.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:illimited_app/widget/profile_frame.dart';
@@ -62,85 +63,10 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    User? user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 222, 253, 221),
-      endDrawer: Drawer(
-        child: Stack(
-          children: [
-            Visibility(
-              visible: true,
-              child: SafeArea(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ProfileFrame(
-                        image: user!.photoURL,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      GestureDetector(
-                        child: Text(
-                          user.displayName!.toUpperCase(),
-                          style: GoogleFonts.chakraPetch().copyWith(
-                              fontSize: 28,
-                              color: Colors.black,
-                              letterSpacing: 1),
-                        ),
-                        onTap: () => log(user.uid),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Divider(),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      DrawerIconButton(
-                        iconPath: "assets/icon/user.png",
-                        text: "Profile",
-                        onPressed: () => context.pushNamed(RouteNames.profile),
-                      ),
-                      DrawerIconButton(
-                        iconPath: "assets/icon/setting.png",
-                        text: "Settings",
-                        onPressed: () => {user.updateDisplayName("Poclam ann")},
-                      ),
-                      DrawerIconButton(
-                        iconPath: "assets/icon/question.png",
-                        text: "FAQ",
-                        onPressed: () => {},
-                      ),
-                      const Spacer(),
-                      Divider(),
-                      DrawerIconButton(
-                        iconPath: "assets/icon/shutdown.png",
-                        text: "Log out",
-                        color: Colors.red,
-                        onPressed: () {
-                          AuthService().signOut();
-                          context.read<QuestionProvider>().resetProvider();
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            // Center(
-            //   child: ElevatedButton(
-            //       onPressed: () {
-            //         AuthService().signOut();
-            //         context.read<QuestionProvider>().resetProvider();
-            //       },
-            //       child: Text("Sign out")),
-            // ),
-          ],
-        ),
+      endDrawer: const Drawer(
+        child:  EndDrawerContent()
       ),
       appBar: AppBar(
         foregroundColor: Colors.white,
@@ -177,7 +103,7 @@ class _DashboardState extends State<Dashboard> {
                 ),
               );
             }
-
+            
             Map<String, dynamic> weeksData = snapshot.data!;
             DateTime serverTime = weeksData['serverTime'];
             NumberSequence sequence = NumberSequence();
@@ -188,6 +114,14 @@ class _DashboardState extends State<Dashboard> {
             int nbCompletedWeeks = 0;
 
             for (int i = 0; i < 8; i++) {
+              // if (i == 0) {
+              //   Map<String, dynamic> week = weeksData['week1'];
+              //   final days = week['days'] as DocumentReference<Map<String, dynamic>>;
+              //   days.get().then((value) {
+              //     log(value['DAY1']);
+              //   },);
+                
+              // }
               String weekKey = 'week${i + 1}';
               Map<String, dynamic> week = weeksData[weekKey];
               DateTime unlockTime =
@@ -216,6 +150,9 @@ class _DashboardState extends State<Dashboard> {
                   right:
                       getScreenWidth(context) * 0.5 + sequence.getNextNumber(),
                   child: LevelButton(
+                    onPressed: () {
+                      context.pushNamed(RouteNames.weekDetails, extra: week['days']);
+                    },
                     status: status,
                     nbLevel: "${i + 1}",
                   ),
@@ -225,7 +162,7 @@ class _DashboardState extends State<Dashboard> {
             log("COMPLETED WEEKS $nbCompletedWeeks");
             if (lastWeekUnlocked != 0) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                showLevelUnlocked(context: context, weekNB: lastWeekUnlocked);
+                showLevelUnlocked(context: context, nb: lastWeekUnlocked);
                 lastWeekUnlocked = 0;
               });
             }
@@ -253,7 +190,7 @@ class _DashboardState extends State<Dashboard> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    // context.pushNamed(RouteNames.profile);
+                                    // context.pushNamed(RouteNames.weekDetails);
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.only(

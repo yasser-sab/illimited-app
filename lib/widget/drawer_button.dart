@@ -13,7 +13,7 @@ class DrawerIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double _size = 22;
+    double size = 22;
     return GestureDetector(
       onTap: onPressed,
       child: SizedBox(
@@ -23,8 +23,8 @@ class DrawerIconButton extends StatelessWidget {
             children: [
               Image.asset(
                 iconPath,
-                width: _size,
-                height: _size,
+                width: size,
+                height: size,
                 color: color == Colors.red ? color : null,
               ),
               const SizedBox(
@@ -33,7 +33,7 @@ class DrawerIconButton extends StatelessWidget {
               Text(
                 text,
                 // style: getFontStyle(context).copyWith(fontSize: _size, color: color),
-                style: GoogleFonts.roboto().copyWith(fontSize: _size, color: color, fontWeight: FontWeight.normal),
+                style: GoogleFonts.roboto().copyWith(fontSize: size, color: color, fontWeight: FontWeight.normal),
               ),
             ],
           ),

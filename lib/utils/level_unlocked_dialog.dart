@@ -5,11 +5,11 @@ import 'package:lottie/lottie.dart'; // Import your AppProvider
 import 'package:just_audio/just_audio.dart';
 
 class LevelUnlockedDialog extends StatefulWidget {
-  final int weekNumber;
-
+  final int number;
+  final bool isDay;
   const LevelUnlockedDialog({
     super.key,
-    required this.weekNumber,
+    required this.number, this.isDay = false,
   });
 
   @override
@@ -22,8 +22,8 @@ class _LevelUnlockedDialogState extends State<LevelUnlockedDialog> {
   @override
   void initState() {
     super.initState();
-    soundPlayer.setAsset(// Load a URL
-        'assets/sounds/levelUnlocked.mp3');
+    soundPlayer.setAsset(widget.isDay ? 'assets/sounds/levelUnlocked2.mp3'
+        :'assets/sounds/levelUnlocked.mp3');
     soundPlayer.play();
   }
 
@@ -53,8 +53,8 @@ class _LevelUnlockedDialogState extends State<LevelUnlockedDialog> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                "WEEK ${widget.weekNumber}",
+              Text(widget.isDay ? "DAY ${widget.number}":
+                "WEEK ${widget.number}",
                 style: getFontStyle(context).copyWith(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,

@@ -11,7 +11,7 @@ class UserRepository {
 
   Future<void> createUser(User? user,
       {String? firstName = "NONAME", String? lastName = "NONAME"}) async {
-    log("Creatingf User");
+    DateTime serverTime = await getServerTime();
     DocumentReference<Map<String, dynamic>> userDoc =
         FirebaseFirestore.instance.collection('users').doc(user!.uid);
     DocumentReference<Map<String, dynamic>> weekDoc =
@@ -21,16 +21,12 @@ class UserRepository {
       if (user.displayName!.split(" ").length == 1) {
         firstName = user.displayName!.split(" ")[0];
       } else {
-        
         firstName = user.displayName!.split(" ")[0];
         lastName = user.displayName!.split(" ")[1];
       }
+    } else {
+      user.updateDisplayName("$firstName $lastName");
     }
-    else{
-        user.updateDisplayName("$firstName $lastName");
-      
-    }
-
 
     Map<String, dynamic> userData = {
       "age": "",
@@ -45,11 +41,47 @@ class UserRepository {
     await userDoc.set(userData);
 
     //SETTING USER WEEKS
-    DateTime serverTime = await getServerTime();
-
     Map<String, Map<String, dynamic>> weekData = {};
-
+  DateTime dayUnlockTime = serverTime;
+    int day = 0;
     for (int i = 0; i < 8; i++) {
+      //SETTING USER WEEK DAY
+      DocumentReference<Map<String, dynamic>> dayDoc =
+          FirebaseFirestore.instance.collection('userDays').doc();
+      Map<String, Map<String, dynamic>> weekDays = {};
+      
+      for (int j = 0; j < 7; j++) {
+        if (j == 0 && day == 0) {
+          dayUnlockTime = serverTime;
+        } else {
+          dayUnlockTime = serverTime.add(Duration(days: day));
+        }
+
+        weekDays['day${j + 1}'] = {
+          'unlockedTime': Timestamp.fromDate(dayUnlockTime),
+          'isNotified': false,
+          'isCompleted': false,
+        };
+        day++;
+      }
+
+      weekDays.forEach(
+        (key, value) {
+          log("'$key' : $value");
+        },
+      );
+
+      await dayDoc.set(weekDays).then(
+        (value) {
+          log("DAYS SAVED");
+        },
+      ).onError(
+        (error, stackTrace) {
+          log("$error");
+        },
+      );
+      ////Finishing user week days/////
+
       DateTime weekUnlockTime;
 
       if (i == 0) {
@@ -62,6 +94,7 @@ class UserRepository {
         'unlockedTime': Timestamp.fromDate(weekUnlockTime),
         'isNotified': false,
         'isCompleted': false,
+        'days': dayDoc
       };
     }
 
@@ -117,12 +150,23 @@ class UserRepository {
     return await userDoc.update(userData);
   }
 
-  void updateIsWeekNotified({required String week, required bool isNotified}) async {
+  void updateIsWeekNotified(
+      {required String week, required bool isNotified}) async {
     DocumentReference userWeeksRef =
         FirebaseFirestore.instance.collection('userWeeks').doc(getUserUid());
 
     await userWeeksRef.update({
       '$week.isNotified': isNotified,
+    });
+  }
+
+  void updateIsDayNotified({
+    required DocumentReference<Map<String, dynamic>> weekDays,
+    required String day,
+    required bool isNotified,
+  }) async {
+    await weekDays.update({
+      '$day.isNotified': isNotified,
     });
   }
 }
