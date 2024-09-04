@@ -12,6 +12,7 @@ class RouteNames {
   static const resetPassword = '/resetPassword';
   static const dashboard = '/dashboard';
   static const profile = '/profile';
+  static const weekDetails = '/weekDetails';
 
 
   static List<String> noLoginScreens = [splash, getStarted, signup, emailVerificationMessage, resetPassword]; 

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -15,6 +16,7 @@ import 'package:illimited_app/screens/question.dart';
 import 'package:illimited_app/screens/sign_up_screen.dart';
 import 'package:illimited_app/screens/signin_screen.dart';
 import 'package:illimited_app/screens/splash_screen.dart';
+import 'package:illimited_app/screens/week_details.dart';
 
 final GoRouter _router = GoRouter(
   redirect: (BuildContext context, GoRouterState state) async {
@@ -95,7 +97,7 @@ final GoRouter _router = GoRouter(
         return const ResetPassword();
       },
     ),
-        GoRoute(
+    GoRoute(
       name: RouteNames.dashboard,
       path: RouteNames.dashboard,
       builder: (BuildContext context, GoRouterState state) {
@@ -107,6 +109,14 @@ final GoRouter _router = GoRouter(
       path: RouteNames.profile,
       builder: (BuildContext context, GoRouterState state) {
         return const ProfileScreen();
+      },
+    ),
+    GoRoute(
+      name: RouteNames.weekDetails,
+      path: RouteNames.weekDetails,
+      builder: (BuildContext context, GoRouterState state) {
+        final dayDocRef = state.extra as DocumentReference<Map<String, dynamic>>;
+        return WeekDetails(weekDays: dayDocRef);
       },
     ),
   ],

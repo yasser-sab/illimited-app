@@ -7,6 +7,8 @@ import 'package:illimited_app/utils/level_unlocked_dialog.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:lottie/lottie.dart';
 
+enum Status { locked, inProgress, completed }
+
 double getScreenWidth(BuildContext context) {
   return MediaQuery.of(context).size.width;
 }
@@ -43,13 +45,15 @@ Future<DateTime> getServerTime() async {
 
 void showLevelUnlocked({
   required BuildContext context,
-  required int weekNB,
+  required int nb,
+  bool isDay = false,
 }) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return LevelUnlockedDialog(
-        weekNumber: weekNB,
+        number: nb,
+        isDay: isDay,
       );
     },
   );
