@@ -312,7 +312,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               UserRepository().getQuestionFlag().then(
                                 (isAnsweredQuestions) {
                                   if (isAnsweredQuestions) {
-                                    context.goNamed(RouteNames.home);
+                                    context.goNamed(RouteNames.dashboard);
                                   } else {
                                     context.goNamed(RouteNames.question);
                                   }

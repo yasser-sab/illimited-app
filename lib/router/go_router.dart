@@ -5,11 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:illimited_app/router/router_names.dart';
+import 'package:illimited_app/screens/contact_screen.dart';
 import 'package:illimited_app/screens/dashboard.dart';
 import 'package:illimited_app/screens/email_verification_message_screen.dart';
 import 'package:illimited_app/screens/forgot_password_screen.dart';
 import 'package:illimited_app/screens/getstarted_screen.dart';
-import 'package:illimited_app/screens/home_screen.dart';
 import 'package:illimited_app/screens/intro_video_screen.dart';
 import 'package:illimited_app/screens/profile_screen.dart';
 import 'package:illimited_app/screens/question.dart';
@@ -53,13 +53,6 @@ final GoRouter _router = GoRouter(
       path: RouteNames.signup,
       builder: (BuildContext context, GoRouterState state) {
         return const SignUpScreen();
-      },
-    ),
-    GoRoute(
-      name: RouteNames.home,
-      path: RouteNames.home,
-      builder: (BuildContext context, GoRouterState state) {
-        return const HomeScreen();
       },
     ),
     GoRoute(
@@ -117,6 +110,13 @@ final GoRouter _router = GoRouter(
       builder: (BuildContext context, GoRouterState state) {
         final dayDocRef = state.extra as DocumentReference<Map<String, dynamic>>;
         return WeekDetails(weekDays: dayDocRef);
+      },
+    ),
+    GoRoute(
+      name: RouteNames.contact,
+      path: RouteNames.contact,
+      builder: (BuildContext context, GoRouterState state) {
+        return HelpFormSceen();
       },
     ),
   ],

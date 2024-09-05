@@ -190,7 +190,7 @@ class _DashboardState extends State<Dashboard> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    // context.pushNamed(RouteNames.weekDetails);
+                                    // context.pushNamed(RouteNames.contact);
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.only(

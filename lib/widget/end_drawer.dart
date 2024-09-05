@@ -21,15 +21,14 @@ class EndDrawerContent extends StatelessWidget {
     if (user == null) {
       AuthService().signOut();
     }
-    
+
     return Stack(
       children: [
         Visibility(
           visible: true,
           child: SafeArea(
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -43,9 +42,7 @@ class EndDrawerContent extends StatelessWidget {
                     child: Text(
                       user.displayName!.toUpperCase(),
                       style: GoogleFonts.chakraPetch().copyWith(
-                          fontSize: 28,
-                          color: Colors.black,
-                          letterSpacing: 1),
+                          fontSize: 28, color: Colors.black, letterSpacing: 1),
                     ),
                     onTap: () => log(user.uid),
                   ),
@@ -59,24 +56,28 @@ class EndDrawerContent extends StatelessWidget {
                   DrawerIconButton(
                     iconPath: "assets/icon/profile.png",
                     text: "Profile",
-                    onPressed: () => context.pushNamed(RouteNames.profile),
+                    onPressed: () {
+                      context.pushNamed(RouteNames.profile);
+                    },
                   ),
                   DrawerIconButton(
                     iconPath: "assets/icon/customer.png",
                     text: "Contact",
-                    onPressed: () => {user.updateDisplayName("Poclam ann")},
+                    onPressed: () {
+                      context.pushNamed(RouteNames.contact);
+                    },
                   ),
                   DrawerIconButton(
                     iconPath: "assets/icon/language.png",
                     text: "Languages",
                     onPressed: () => {},
                   ),
-                                  DrawerIconButton(
+                  DrawerIconButton(
                     iconPath: "assets/icon/goal.png",
                     text: "Goals",
                     onPressed: () => {},
                   ),
-                                  DrawerIconButton(
+                  DrawerIconButton(
                     iconPath: "assets/icon/forum.png",
                     text: "Forum",
                     onPressed: () => {},

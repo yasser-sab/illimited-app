@@ -53,6 +53,8 @@ dependencies:
   firebase_storage: ^11.7.7
   image_picker: ^1.1.2
   image_cropper: ^8.0.2
+  mailer: ^6.1.2
+  flutter_email_sender: ^6.0.3
 
 
 
