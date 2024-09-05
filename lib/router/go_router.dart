@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/screens/contact_screen.dart';
 import 'package:illimited_app/screens/dashboard.dart';
+import 'package:illimited_app/screens/day_details.dart';
 import 'package:illimited_app/screens/email_verification_message_screen.dart';
 import 'package:illimited_app/screens/forgot_password_screen.dart';
 import 'package:illimited_app/screens/getstarted_screen.dart';
@@ -17,6 +18,7 @@ import 'package:illimited_app/screens/sign_up_screen.dart';
 import 'package:illimited_app/screens/signin_screen.dart';
 import 'package:illimited_app/screens/splash_screen.dart';
 import 'package:illimited_app/screens/week_details.dart';
+import 'package:illimited_app/widget/task_card.dart';
 
 final GoRouter _router = GoRouter(
   redirect: (BuildContext context, GoRouterState state) async {
@@ -38,7 +40,7 @@ final GoRouter _router = GoRouter(
       name: RouteNames.splash,
       path: RouteNames.splash,
       builder: (BuildContext context, GoRouterState state) {
-        return SplashScreen();
+        return DayDetails();
       },
     ),
     GoRoute(
