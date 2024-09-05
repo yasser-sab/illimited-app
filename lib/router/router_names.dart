@@ -4,7 +4,6 @@ class RouteNames {
   static const splash = '/';
   static const signin = '/signin';
   static const signup = '/signup';
-  static const home = '/home';
   static const question = '/question';
   static const getStarted = '/getStarted';
   static const introVideo = '/introVideo';
@@ -13,6 +12,7 @@ class RouteNames {
   static const dashboard = '/dashboard';
   static const profile = '/profile';
   static const weekDetails = '/weekDetails';
+  static const contact = '/contact';
 
 
   static List<String> noLoginScreens = [splash, getStarted, signup, emailVerificationMessage, resetPassword]; 
