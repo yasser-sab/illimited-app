@@ -55,6 +55,7 @@ dependencies:
   image_cropper: ^8.0.2
   mailer: ^6.1.2
   flutter_email_sender: ^6.0.3
+  simple_ripple_animation: ^0.0.9
 
 
 
