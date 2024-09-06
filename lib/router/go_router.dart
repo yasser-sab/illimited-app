@@ -41,7 +41,7 @@ final GoRouter _router = GoRouter(
       name: RouteNames.splash,
       path: RouteNames.splash,
       builder: (BuildContext context, GoRouterState state) {
-        return SplashScreen();
+        return DayDetails();
       },
     ),
     GoRoute(
