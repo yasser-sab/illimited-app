@@ -17,6 +17,7 @@ import 'package:illimited_app/screens/question.dart';
 import 'package:illimited_app/screens/sign_up_screen.dart';
 import 'package:illimited_app/screens/signin_screen.dart';
 import 'package:illimited_app/screens/splash_screen.dart';
+import 'package:illimited_app/screens/task_details.dart';
 import 'package:illimited_app/screens/week_details.dart';
 import 'package:illimited_app/widget/task_card.dart';
 

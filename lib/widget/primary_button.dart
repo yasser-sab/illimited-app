@@ -14,9 +14,10 @@ class PrimaryButton extends StatelessWidget {
   final bool enabled;
   final double borderWith;
   final double? fontSize;
+  final double borderRadius;
 
   const PrimaryButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.onPressed,
     this.color = primaryColor,
@@ -29,7 +30,8 @@ class PrimaryButton extends StatelessWidget {
     this.enabled = true,
     this.borderWith = 0,
     this.fontSize,
-  }) : super(key: key);
+    this.borderRadius = 25,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +48,12 @@ class PrimaryButton extends StatelessWidget {
               fontWeight: isBold! ? FontWeight.bold : FontWeight.normal,
               fontSize: fontSize ?? 23),
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
-              side: BorderSide(
-                  color: primaryColor,
-                  width: borderWith,
-                  style:
-                      borderWith == 0 ? BorderStyle.none : BorderStyle.solid)),
+            borderRadius: BorderRadius.circular(borderRadius),
+            side: BorderSide(
+                color: primaryColor,
+                width: borderWith,
+                style: borderWith == 0 ? BorderStyle.none : BorderStyle.solid),
+          ),
         ),
         onPressed: enabled ? onPressed : () {},
         child: Row(
