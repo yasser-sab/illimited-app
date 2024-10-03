@@ -4,7 +4,7 @@ import 'package:illimited_app/constant/const.dart';
 class PrimaryButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
-  final Color color;
+  final Color? color;
   final Color? textColor;
   final double width;
   final double height;
@@ -59,13 +59,13 @@ class PrimaryButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text(text),
             if (icon != null)
               Padding(
-                padding: const EdgeInsets.all(15),
+                padding: const EdgeInsets.only(top: 15, bottom: 15, left: 15),
                 child: icon!,
               ),
             if (icon != null) const SizedBox(width: 5),
-            Text(text),
           ],
         ),
       ),

@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'package:animate_do/animate_do.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,20 +8,17 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/models/number_sequence.dart';
-import 'package:illimited_app/providers/questions_provider.dart';
-import 'package:illimited_app/providers/week_provider.dart';
+import 'package:illimited_app/providers/app_provider.dart';
+import 'package:illimited_app/providers/progress_provider.dart';
 import 'package:illimited_app/router/router_names.dart';
-import 'package:illimited_app/services/authentication_service.dart';
 import 'package:illimited_app/services/user_repository.dart';
 import 'package:illimited_app/utils/utils.dart';
-import 'package:illimited_app/widget/drawer_button.dart';
 import 'package:illimited_app/widget/end_drawer.dart';
 import 'package:illimited_app/widget/levelsButton.dart';
-import 'package:illimited_app/widget/primary_button.dart';
-import 'package:illimited_app/widget/profile_frame.dart';
 import 'package:illimited_app/widget/progress_bar.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -32,9 +29,10 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   late Future<Map<String, dynamic>> _futureData;
-
+  late double screenWidth;
   @override
   void initState() {
+    screenWidth = context.read<AppProvider>().screenWidth;
     super.initState();
     _futureData =
         getUserWeeksWithServerTime(FirebaseAuth.instance.currentUser!.uid);
@@ -42,12 +40,27 @@ class _DashboardState extends State<Dashboard> {
 
   Future<Map<String, dynamic>> getUserWeeksWithServerTime(String userId) async {
     DateTime serverTime = await getServerTime();
-    DocumentSnapshot userWeeksSnapshot = await FirebaseFirestore.instance
-        .collection('userWeeks')
+
+    // Reference to the user's weeks collection
+    CollectionReference<Map<String, dynamic>> weeksRef = FirebaseFirestore
+        .instance
+        .collection('users')
         .doc(userId)
-        .get();
-    Map<String, dynamic> weeksData =
-        userWeeksSnapshot.data() as Map<String, dynamic>;
+        .collection('weeks');
+
+    // Fetch all weeks for the user
+    QuerySnapshot<Map<String, dynamic>> weeksSnapshot = await weeksRef.get();
+
+    Map<String, dynamic> weeksData = {};
+
+    // Loop through each week's documents
+    for (var weekDoc in weeksSnapshot.docs) {
+      String weekId = weekDoc.id;
+      Map<String, dynamic> weekData = weekDoc.data();
+      weeksData[weekId] = weekData;
+    }
+
+    // Add server time to the data
     weeksData['serverTime'] = serverTime;
 
     return weeksData;
@@ -61,23 +74,31 @@ class _DashboardState extends State<Dashboard> {
     await _futureData;
   }
 
+  int animationDelay = -100;
+  int getDelay() {
+    animationDelay = animationDelay + 100;
+    return animationDelay;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 222, 253, 221),
-      endDrawer: const Drawer(
-        child:  EndDrawerContent()
-      ),
+      endDrawer: const Drawer(child: EndDrawerContent()),
       appBar: AppBar(
         foregroundColor: Colors.white,
-        // leading: const Icon(Icons.notifications),
         toolbarHeight: 80,
         backgroundColor: primaryColor,
         centerTitle: true,
-        title: Text(
-          'Weeks',
-          style:
-              GoogleFonts.roboto().copyWith(fontSize: 27, letterSpacing: 1.5),
+        title: InkWell(
+          onTap: () {
+            
+          },
+          child: Text(
+            'Weeks',
+            style:
+                GoogleFonts.roboto().copyWith(fontSize: 27, letterSpacing: 1.5),
+          ),
         ),
       ),
       body: RefreshIndicator(
@@ -88,9 +109,10 @@ class _DashboardState extends State<Dashboard> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
                 child: SizedBox(
-                    height: 150,
-                    width: 150,
-                    child: SpinKitDualRing(color: primaryColor)),
+                  height: 150,
+                  width: 150,
+                  child: SpinKitDualRing(color: primaryColor),
+                ),
               );
             }
 
@@ -103,7 +125,7 @@ class _DashboardState extends State<Dashboard> {
                 ),
               );
             }
-            
+
             Map<String, dynamic> weeksData = snapshot.data!;
             DateTime serverTime = weeksData['serverTime'];
             NumberSequence sequence = NumberSequence();
@@ -113,29 +135,29 @@ class _DashboardState extends State<Dashboard> {
             int lastWeekUnlocked = 0;
             int nbCompletedWeeks = 0;
 
-            for (int i = 0; i < 8; i++) {
-              // if (i == 0) {
-              //   Map<String, dynamic> week = weeksData['week1'];
-              //   final days = week['days'] as DocumentReference<Map<String, dynamic>>;
-              //   days.get().then((value) {
-              //     log(value['DAY1']);
-              //   },);
-                
-              // }
-              String weekKey = 'week${i + 1}';
-              Map<String, dynamic> week = weeksData[weekKey];
+            // Loop through weeks (1 to 8)
+            int delay = 0;
+            for (int i = 1; i <= 8; i++) {
+              String weekKey = i.toString();
+              Map<String, dynamic>? week = weeksData[weekKey];
+              if (week == null) continue;
+
               DateTime unlockTime =
                   (week['unlockedTime'] as Timestamp).toDate();
               bool isCompleted = week['isCompleted'];
               Status status;
-
+              log("WEEK $i isCompleted = $isCompleted");
               if (isCompleted) {
-                nbCompletedWeeks = nbCompletedWeeks + 1;
+                log("In iCompleted");
+                log("nbCompletedWeeks = $nbCompletedWeeks");
+                nbCompletedWeeks++;
+                log("AFTER ++ ITS : nbCompletedWeeks = $nbCompletedWeeks");
+
                 status = Status.completed;
               } else if (serverTime.isAfter(unlockTime)) {
                 bool isNotified = week['isNotified'];
                 if (!isNotified) {
-                  lastWeekUnlocked = i + 1;
+                  lastWeekUnlocked = i;
                   UserRepository()
                       .updateIsWeekNotified(week: weekKey, isNotified: true);
                 }
@@ -147,20 +169,55 @@ class _DashboardState extends State<Dashboard> {
               levelButtons.add(
                 Positioned(
                   top: height += gap,
-                  right:
-                      getScreenWidth(context) * 0.5 + sequence.getNextNumber(),
-                  child: LevelButton(
-                    onPressed: () {
-                      context.pushNamed(RouteNames.weekDetails, extra: week['days']);
-                    },
-                    status: status,
-                    nbLevel: "${i + 1}",
+                  right: screenWidth * 0.5 + sequence.getNextNumber(),
+                  child: Animate(
+                    effects: [
+                      ScaleEffect(
+                        delay: Duration(milliseconds: delay),
+                        begin: Offset(1.25, 1.25),
+                        end: Offset(1.0, 1.0),
+                        duration: 400.ms,
+                        curve: Curves.easeOut,
+                      ),
+                      FadeEffect()
+                    ],
+                    child: LevelButton(
+                      onPressed: () async {
+                        DocumentReference weekRef = FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(FirebaseAuth.instance.currentUser!.uid)
+                            .collection('weeks')
+                            .doc(weekKey);
+
+                        context
+                            .read<UserProgressProvider>()
+                            .setCurrentWeekRef(weekRef);
+
+                        CollectionReference<Map<String, dynamic>> daysRef =
+                            weekRef.collection('days');
+
+                        final bool? shouldRefresh = await context
+                            .pushNamed(RouteNames.weekDetails, extra: {
+                          "daysCollectionRef": daysRef,
+                          "weekKey": weekKey,
+                        });
+                        if (shouldRefresh != null && shouldRefresh) {
+                          _refreshData();
+                        }
+                      },
+                      status: status,
+                      nbLevel: "$i",
+                    ),
                   ),
                 ),
               );
+              delay = delay + 100;
             }
+
             log("COMPLETED WEEKS $nbCompletedWeeks");
+            log("lastWeekUnlocked WEEKS $lastWeekUnlocked");
             if (lastWeekUnlocked != 0) {
+              log("in NOTIFIYING ABOUT WEEK : $lastWeekUnlocked");
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 showLevelUnlocked(context: context, nb: lastWeekUnlocked);
                 lastWeekUnlocked = 0;
@@ -188,19 +245,12 @@ class _DashboardState extends State<Dashboard> {
                                     percent: getPercentage(nbCompletedWeeks),
                                   ),
                                 ),
-                                InkWell(
-                                  onTap: () {
-                                    // context.pushNamed(RouteNames.contact);
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 15, bottom: 7),
-                                    child: Image.asset(
-                                      "assets/icon/trophy.png",
-                                      width: 40,
-                                    ),
-                                  ),
-                                )
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 15, bottom: 7),
+                                  child: Image.asset("assets/icon/trophy.png",
+                                      width: 40),
+                                ),
                               ],
                             ),
                           ),
@@ -211,35 +261,39 @@ class _DashboardState extends State<Dashboard> {
                     SliverToBoxAdapter(
                       child: Stack(
                         children: [
-                          Container(
-                            height: 1180,
-                          ),
+                          Container(height: 1180),
                           Positioned(
                             top: 220,
                             right: 0,
-                            child: SizedBox(
+                            child: FadeInRight(
+                              child: SizedBox(
                                 height: 220,
                                 width: 220,
-                                child: Lottie.asset("assets/lottie/bird.json")),
+                                child: Lottie.asset("assets/lottie/bird.json"),
+                              ),
+                            ),
                           ),
                           Positioned(
                             top: 720,
                             left: 0,
                             child: SizedBox(
-                                height: 280,
-                                width: 280,
-                                child:
-                                    Lottie.asset("assets/lottie/birds9.json")),
+                              height: 280,
+                              width: 280,
+                              child: Lottie.asset("assets/lottie/birds9.json"),
+                            ),
                           ),
                           Positioned(
                             bottom: 0,
                             right: 0,
                             left: 0,
-                            child: SizedBox(
+                            child: FadeInLeft(
+                              child: SizedBox(
                                 height: 350,
                                 width: 350,
                                 child:
-                                    Lottie.asset("assets/lottie/birds10.json")),
+                                    Lottie.asset("assets/lottie/birds10.json"),
+                              ),
+                            ),
                           ),
                           ...levelButtons,
                         ],
@@ -249,6 +303,7 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ],
             );
+            // return  Placeholder();
           },
         ),
       ),
@@ -256,10 +311,13 @@ class _DashboardState extends State<Dashboard> {
   }
 
   double getPercentage(int nbWeeks) {
+    log("IN GET_PERCENTAGE : ");
     if (nbWeeks == 0) {
+      log("returning 0");
       return 0;
     } else {
       double percentage = (nbWeeks / 8) * 100;
+      log("$percentage");
       return percentage;
     }
   }
@@ -286,6 +344,7 @@ class MyPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
+    log("in should rebuid");
     return false;
   }
 }

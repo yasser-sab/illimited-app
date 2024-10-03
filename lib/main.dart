@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,8 +7,9 @@ import 'package:illimited_app/constant/typography.dart';
 import 'package:illimited_app/firebase_options.dart';
 import 'package:illimited_app/providers/app_provider.dart';
 import 'package:illimited_app/providers/authentication_provider.dart';
+import 'package:illimited_app/providers/logbook_provider.dart';
 import 'package:illimited_app/providers/questions_provider.dart';
-import 'package:illimited_app/providers/week_provider.dart';
+import 'package:illimited_app/providers/progress_provider.dart';
 
 import 'package:illimited_app/router/go_router.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -26,14 +29,17 @@ void main() async {
         ChangeNotifierProvider(create: (context) => AuthenticationProvider()),
         ChangeNotifierProvider(create: (context) => QuestionProvider()),
         ChangeNotifierProvider(create: (context) => AppProvider()),
-        ChangeNotifierProvider(create: (context) => WeekProvider()),
+        ChangeNotifierProvider(create: (context) => UserProgressProvider()),
+        ChangeNotifierProvider(create: (context) => LogbookProvider()),
       ],
       child: const MyApp(),
     ),
   );
 
   FirebaseAuth.instance.userChanges().listen((User? user) {
-    router.refresh();
+    if (user == null) {
+      router.refresh();
+    }
   });
 }
 

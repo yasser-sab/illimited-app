@@ -26,10 +26,8 @@ class _IntroVideoScreenState extends State<IntroVideoScreen> {
         _controller.play();
         startTimer();
       });
-    // Add listener to detect when the video finishes playing
     _controller.addListener(() {
       if (_controller.value.position == _controller.value.duration) {
-        // Video has finished playing, wait 2 seconds and then navigate
         Future.delayed(const Duration(seconds: 2), () {
           context.goNamed(RouteNames.dashboard);
         });

@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/services/authentication_service.dart';
 import 'package:illimited_app/widget/primary_button.dart';
@@ -101,6 +102,10 @@ class _HelpFormSceenState extends State<HelpFormSceen> {
                     await FlutterEmailSender.send(email);
                   },
                 ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text("*After you click 'Send' you'll be redirected to your email's message page. From there, all you need to do is click the 'Send' button.", textAlign: TextAlign.center, style: GoogleFonts.roboto(color: Colors.black.withOpacity(0.4), fontSize: 13 , fontWeight: FontWeight.w400),),
+                )
               ],
             ),
           ),

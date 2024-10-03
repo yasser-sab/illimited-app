@@ -19,6 +19,7 @@ import 'package:illimited_app/screens/signin_screen.dart';
 import 'package:illimited_app/screens/splash_screen.dart';
 import 'package:illimited_app/screens/task_details.dart';
 import 'package:illimited_app/screens/week_details.dart';
+import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/task_card.dart';
 
 final GoRouter _router = GoRouter(
@@ -108,11 +109,55 @@ final GoRouter _router = GoRouter(
       },
     ),
     GoRoute(
+      name: RouteNames.contact,
+      path: RouteNames.contact,
+      builder: (BuildContext context, GoRouterState state) {
+        return const HelpFormSceen();
+      },
+    ),
+    GoRoute(
       name: RouteNames.weekDetails,
       path: RouteNames.weekDetails,
       builder: (BuildContext context, GoRouterState state) {
-        final dayDocRef = state.extra as DocumentReference<Map<String, dynamic>>;
-        return WeekDetails(weekDays: dayDocRef);
+        final args = state.extra as Map<String, dynamic>;
+        final daysCollectionRef = args["daysCollectionRef"]
+            as CollectionReference<Map<String, dynamic>>;
+        final weekKey = args["weekKey"] as String;
+        return WeekDetails(
+          weekDays: daysCollectionRef,
+          weekkey: int.parse(weekKey),
+        );
+      },
+    ),
+    GoRoute(
+      name: RouteNames.dayDetails,
+      path: RouteNames.dayDetails,
+      builder: (BuildContext context, GoRouterState state) {
+        final args = state.extra as Map<String, dynamic>;
+        final tasksCollectionRef = args["tasksCollectionRef"]
+            as CollectionReference<Map<String, dynamic>>;
+        final dayKey = args["dayKey"] as String;
+        final weekKey = args["weekKey"] as int;
+        final isLastDay = args["isLastDay"] as bool;
+        return DayDetails(
+          isLastDay: isLastDay,
+          tasksRef: tasksCollectionRef,
+          daykey: int.parse(dayKey),
+          weekkey: weekKey,
+        );
+      },
+    ),
+    GoRoute(
+      name: RouteNames.taskDetails,
+      path: RouteNames.taskDetails,
+      builder: (BuildContext context, GoRouterState state) {
+        final args = state.extra as Map<String, dynamic>;
+        final taskType = args["taskType"] as Tasks;
+        final isLastTask = args["isLastTask"] as bool;
+        final isLastDay = args["isLastDay"] as bool;
+        final taskData = args["taskData"] as Map<String, dynamic>;
+        return TaskDetails(
+            taskType: taskType, taskData: taskData, isLastTask: isLastTask, isLastDay: isLastDay,);
       },
     ),
     GoRoute(

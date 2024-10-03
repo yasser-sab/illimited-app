@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/models/sign_in_result.dart';
 import 'package:illimited_app/providers/authentication_provider.dart';
@@ -99,10 +100,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     SizedBox(
                       height: getScreenHeight(context) * 0.05,
                     ),
-                    Text(
-                      "Sign Up",
-                      style: getFontStyle(context)
-                          .copyWith(fontSize: 40, fontWeight: FontWeight.w800),
+                    InkWell(
+                      onTap: () {
+                        // _showUnpoppableDialog(context);
+                      },
+                      child: Text(
+                        "Sign Up",
+                        style: getFontStyle(context).copyWith(
+                            fontSize: 40, fontWeight: FontWeight.w800),
+                      ),
                     ),
                     SizedBox(
                       height: getScreenHeight(context) * 0.05,
@@ -225,22 +231,42 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       _emailController.text.trim(),
                                       _passwordController.text);
                               if (userCreds != null) {
-                                UserRepository().createUser(
-                                    FirebaseAuth.instance.currentUser,
-                                    firstName: _fNameController.text.trim(),
-                                    lastName: _lNameController.text.trim());
 
-                                userCreds.user!.sendEmailVerification().then(
+                                //CREATING USER DATA IN FIRESTORE
+                                showCreatingProfileDialog(context);
+                                UserRepository()
+                                    .createUser(
+                                        FirebaseAuth.instance.currentUser,
+                                        firstName: _fNameController.text.trim(),
+                                        lastName: _lNameController.text.trim())
+                                    .then(
                                   (value) {
-                                    context.goNamed(
-                                        RouteNames.emailVerificationMessage);
+                                    //SENDING EMAIL VERIF
+                                    userCreds.user!
+                                        .sendEmailVerification()
+                                        .then(
+                                      (value) {
+                                        log("Email Sent");
+                                        context.goNamed(RouteNames
+                                            .emailVerificationMessage);
+                                      },
+                                    ).onError(
+                                      (error, stackTrace) {
+                                        log("ERROR SENDING THE EMAIL VERIFICATION : $error");
+                                      },
+                                    );
                                   },
                                 ).onError(
                                   (error, stackTrace) {
-                                    log("ERROR SENDING THE EMAIL VERIFICATION : $error");
+                                    context.goNamed(RouteNames.signin);
+                                    mySnackBar(
+                                        context: context,
+                                        message:
+                                            "Something Went Wrong While Creating User Profile, Please Try Again",
+                                        snackBarType: SnackBarType.failure);
+                                    userCreds.user!.delete();
                                   },
                                 );
-                                log("Email Sent");
                               }
                             } else {
                               mySnackBar(
@@ -296,18 +322,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             context
                                 .read<AuthenticationProvider>()
                                 .setIsAuthenticating(false);
-                            mySnackBar(
-                                context: context,
-                                message: "Successully Signed In");
-                            await Future.delayed(
-                              const Duration(milliseconds: 1000),
-                            );
+                            // mySnackBar(
+                            //     context: context,
+                            //     message: "Successully Signed In");
+                            // await Future.delayed(
+                            //   const Duration(milliseconds: 1000),
+                            // );
 
                             if (res.isNewUser) {
-                              UserRepository().createUser(
-                                  FirebaseAuth.instance.currentUser);
-
-                              context.goNamed(RouteNames.question);
+                              showCreatingProfileDialog(context);
+                              UserRepository()
+                                  .createUser(FirebaseAuth.instance.currentUser)
+                                  .then(
+                                (value) {
+                                  context.goNamed(RouteNames.question);
+                                },
+                              ).onError(
+                                (error, stackTrace) {
+                                  log("ERROR = $error");
+                                  debugPrintStack(stackTrace: stackTrace);
+                                  // print("print = $stackTrace");
+                                  context.goNamed(RouteNames.signin);
+                                  mySnackBar(
+                                      context: context,
+                                      message:
+                                          "Something Went Wrong While Creating User Profile, Please Try Again",
+                                      snackBarType: SnackBarType.failure);
+                                  res.user!.delete();
+                                },
+                              );
                             } else {
                               UserRepository().getQuestionFlag().then(
                                 (isAnsweredQuestions) {

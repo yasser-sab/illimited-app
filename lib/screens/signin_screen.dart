@@ -272,6 +272,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                     .onError(
                                       (error, stackTrace) {
                                         log("FAILED TO CREATE USER IN FIRESTORE $error");
+                                        debugPrintStack(stackTrace: stackTrace);
                                         mySnackBar(
                                             context: context,
                                             message: "Failed  to create user");
