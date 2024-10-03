@@ -42,7 +42,7 @@ final GoRouter _router = GoRouter(
       name: RouteNames.splash,
       path: RouteNames.splash,
       builder: (BuildContext context, GoRouterState state) {
-        return SplashScreen();
+        return DayDetails();
       },
     ),
     GoRoute(
@@ -158,6 +158,13 @@ final GoRouter _router = GoRouter(
         final taskData = args["taskData"] as Map<String, dynamic>;
         return TaskDetails(
             taskType: taskType, taskData: taskData, isLastTask: isLastTask, isLastDay: isLastDay,);
+      },
+    ),
+    GoRoute(
+      name: RouteNames.contact,
+      path: RouteNames.contact,
+      builder: (BuildContext context, GoRouterState state) {
+        return HelpFormSceen();
       },
     ),
   ],

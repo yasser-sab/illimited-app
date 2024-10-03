@@ -1,3 +1,4 @@
+
 import 'dart:async';
 import 'dart:developer';
 
@@ -26,11 +27,13 @@ class DayDetails extends StatefulWidget {
       required this.daykey,
       required this.weekkey, required this.isLastDay});
 
+
   @override
   State<DayDetails> createState() => _DayDetailsState();
 }
 
 class _DayDetailsState extends State<DayDetails> {
+
   late Future<QuerySnapshot<Map<String, dynamic>>> _futureTasks;
   bool animate = false;
   Timer? timer;
@@ -81,6 +84,7 @@ class _DayDetailsState extends State<DayDetails> {
         context.pop(true);
       },
       child: Scaffold(
+
         appBar: AppBar(
           foregroundColor: Colors.white,
           toolbarHeight: 80,

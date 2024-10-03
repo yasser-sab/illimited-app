@@ -17,6 +17,7 @@ class RouteNames {
   static const taskDetails = '/taskDetails';
 
 
+
   static List<String> noLoginScreens = [splash, getStarted, signup, emailVerificationMessage, resetPassword]; 
 }
 
