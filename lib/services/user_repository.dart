@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:illimited_app/data/tasks.dart';
 import 'package:illimited_app/utils/utils.dart';
 
 class UserRepository {
@@ -11,11 +12,15 @@ class UserRepository {
 
   Future<void> createUser(User? user,
       {String? firstName = "NONAME", String? lastName = "NONAME"}) async {
+        log("IN CREATE USER");
     DateTime serverTime = await getServerTime();
+
+    // Start a Firestore batch
+    WriteBatch batch = FirebaseFirestore.instance.batch();
+
+    // Reference to the user's document in the 'users' collection
     DocumentReference<Map<String, dynamic>> userDoc =
         FirebaseFirestore.instance.collection('users').doc(user!.uid);
-    DocumentReference<Map<String, dynamic>> weekDoc =
-        FirebaseFirestore.instance.collection('userWeeks').doc(user.uid);
 
     if (user.displayName != null) {
       if (user.displayName!.split(" ").length == 1) {
@@ -28,6 +33,7 @@ class UserRepository {
       user.updateDisplayName("$firstName $lastName");
     }
 
+    // User basic data
     Map<String, dynamic> userData = {
       "age": "",
       "country": "",
@@ -38,81 +44,145 @@ class UserRepository {
       "isQuestionsAnswered": false,
     };
 
-    await userDoc.set(userData);
+    // Set the user data in the batch
+    batch.set(userDoc, userData);
 
-    //SETTING USER WEEKS
-    Map<String, Map<String, dynamic>> weekData = {};
-  DateTime dayUnlockTime = serverTime;
-    int day = 0;
-    for (int i = 0; i < 8; i++) {
-      //SETTING USER WEEK DAY
-      DocumentReference<Map<String, dynamic>> dayDoc =
-          FirebaseFirestore.instance.collection('userDays').doc();
-      Map<String, Map<String, dynamic>> weekDays = {};
-      
-      for (int j = 0; j < 7; j++) {
-        if (j == 0 && day == 0) {
-          dayUnlockTime = serverTime;
-        } else {
-          dayUnlockTime = serverTime.add(Duration(days: day));
-        }
+    DateTime dayUnlockTime = serverTime;
 
-        weekDays['day${j + 1}'] = {
+    // Reference to 'weeks' subcollection under the user document
+    CollectionReference<Map<String, dynamic>> weeksCollection =
+        userDoc.collection('weeks');
+
+    // Loop through 8 weeks
+    for (int weekNum = 1; weekNum <= 8; weekNum++) {
+      // Reference for the current week (week number is the document ID)
+      DocumentReference<Map<String, dynamic>> weekDoc =
+          weeksCollection.doc(weekNum.toString());
+
+      // Initialize data for the week
+      DateTime weekUnlockTime = (weekNum == 1)
+          ? serverTime
+          : serverTime.add(Duration(days: (weekNum - 1) * 7));
+
+      Map<String, dynamic> weekData = {
+        'unlockedTime': Timestamp.fromDate(weekUnlockTime),
+        'isNotified': false,
+        'isCompleted': false,
+      };
+
+      // Add the week data to the batch
+      batch.set(weekDoc, weekData);
+
+      // Reference to 'days' subcollection under the current week
+      CollectionReference<Map<String, dynamic>> daysCollection =
+          weekDoc.collection('days');
+
+      // Loop through 7 days in a week
+      for (int dayNum = 1; dayNum <= 7; dayNum++) {
+        // Reference for the current day (day number is the document ID)
+        DocumentReference<Map<String, dynamic>> dayDoc =
+            daysCollection.doc(dayNum.toString());
+
+        dayUnlockTime = (dayNum == 1 && weekNum == 1)
+            ? serverTime
+            : serverTime.add(Duration(days: (weekNum - 1) * 7 + (dayNum - 1)));
+
+        // Initialize data for the day
+        Map<String, dynamic> dayData = {
           'unlockedTime': Timestamp.fromDate(dayUnlockTime),
           'isNotified': false,
           'isCompleted': false,
         };
-        day++;
+
+        // Add the day data to the batch
+        batch.set(dayDoc, dayData);
+
+        // Reference to 'tasks' subcollection under the current day
+        CollectionReference<Map<String, dynamic>> tasksCollection =
+            dayDoc.collection('tasks');
+
+        // Fetch tasks for the current day
+        log("week$weekNum | day$dayNum");
+        Map<String, dynamic> tasksForDay =
+            tasksOf["week$weekNum"]?["day$dayNum"]["tasks"];
+
+        if (tasksForDay.isNotEmpty) {
+          int taskIndex = 1;
+          Map<String, dynamic> taskData;
+          // Loop through tasks and create them in Firestore
+          tasksForDay.forEach((taskKey, task) {
+            switch (tasksForDay[taskKey]["type"] as Tasks) {
+              case Tasks.takePhoto:
+                taskData = {
+                  'isLocked': taskIndex > 1, // Only the first task is unlocked
+                  'isCompleted': false,
+                  "photos": {"p1": "", "p2": ""}
+                };
+                break;
+              case Tasks.questions:
+                taskData = {
+                  'isLocked': taskIndex > 1, // Only the first task is unlocked
+                  'isCompleted': false,
+                  "introText" : tasksForDay[taskKey]["introText"],
+                  'questions': tasksForDay[taskKey]["questions"],
+                  'answers' : {},
+                  "moodAnswer" : ""
+                };
+                break;
+              case Tasks.reading:
+                taskData = {
+                  'isLocked': taskIndex > 1, // Only the first task is unlocked
+                  'isCompleted': false,
+                  "goal": tasksForDay[taskKey]["goal"],
+                  "materials": tasksForDay[taskKey]["materials"],
+                  "text": tasksForDay[taskKey]["text"]
+                };
+                break;
+              case Tasks.quote:
+                taskData = {
+                  'isLocked': taskIndex > 1, // Only the first task is unlocked
+                  'isCompleted': false,
+                  "text": tasksForDay[taskKey]["text"]
+                };
+              case Tasks.video:
+                taskData = {
+                  'isLocked': taskIndex > 1, // Only the first task is unlocked
+                  'isCompleted': false,
+                  "videoUrl": tasksForDay[taskKey]["videoUrl"]
+                };
+              case Tasks.generatedVideo:
+                taskData = {
+                  'isLocked': taskIndex > 1, // Only the first task is unlocked
+                  'isCompleted': false,
+                  "videoUrl": tasksForDay[taskKey]["videoUrl"]
+                };
+                break;
+              default:
+                taskData = {
+                };
+            }
+
+            // if (tasksForDay[taskKey]["type"] == Tasks.takePhoto) {}
+
+            // Map<String, dynamic> taskData = {
+            //   'isLocked': taskIndex > 1, // Only the first task is unlocked
+            //   'isCompleted': false,
+            // };
+
+            // Add the task to the batch
+            DocumentReference<Map<String, dynamic>> taskDoc =
+                tasksCollection.doc(taskIndex.toString());
+            batch.set(taskDoc, taskData);
+
+            taskIndex++;
+          });
+        }
       }
-
-      weekDays.forEach(
-        (key, value) {
-          log("'$key' : $value");
-        },
-      );
-
-      await dayDoc.set(weekDays).then(
-        (value) {
-          log("DAYS SAVED");
-        },
-      ).onError(
-        (error, stackTrace) {
-          log("$error");
-        },
-      );
-      ////Finishing user week days/////
-
-      DateTime weekUnlockTime;
-
-      if (i == 0) {
-        weekUnlockTime = serverTime;
-      } else {
-        weekUnlockTime = serverTime.add(Duration(days: i * 7));
-      }
-
-      weekData['week${i + 1}'] = {
-        'unlockedTime': Timestamp.fromDate(weekUnlockTime),
-        'isNotified': false,
-        'isCompleted': false,
-        'days': dayDoc
-      };
     }
 
-    weekData.forEach(
-      (key, value) {
-        log("'$key' : $value");
-      },
-    );
-
-    await weekDoc.set(weekData).then(
-      (value) {
-        log("WEEKS SAVED");
-      },
-    ).onError(
-      (error, stackTrace) {
-        log("$error");
-      },
-    );
+    // Commit the batch
+    await batch.commit();
+    log("User data with nested collections created successfully with batching!");
   }
 
   Future<bool> getQuestionFlag() async {
@@ -152,21 +222,29 @@ class UserRepository {
 
   void updateIsWeekNotified(
       {required String week, required bool isNotified}) async {
-    DocumentReference userWeeksRef =
-        FirebaseFirestore.instance.collection('userWeeks').doc(getUserUid());
+    // Reference to the specific week for the user
+    DocumentReference weekRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(getUserUid())
+        .collection('weeks')
+        .doc(week);
 
-    await userWeeksRef.update({
-      '$week.isNotified': isNotified,
+    // Update the isNotified field in the specific week
+    await weekRef.update({
+      'isNotified': isNotified,
     });
   }
 
-  void updateIsDayNotified({
-    required DocumentReference<Map<String, dynamic>> weekDays,
-    required String day,
-    required bool isNotified,
-  }) async {
-    await weekDays.update({
-      '$day.isNotified': isNotified,
+  void updateIsDayNotified(
+      {required CollectionReference<Map<String, dynamic>> weekDays,
+      required String day,
+      required bool isNotified}) async {
+    // Reference to the specific day inside the week
+    DocumentReference dayRef = weekDays.doc(day);
+
+    // Update the isNotified field for the specific day
+    await dayRef.update({
+      'isNotified': isNotified,
     });
   }
 }

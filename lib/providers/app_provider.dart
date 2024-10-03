@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:illimited_app/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppProvider extends ChangeNotifier {
@@ -45,5 +46,17 @@ class AppProvider extends ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isFirstLaunch', val);
     notifyListeners();
+  }
+
+//SCREEN WIDTH & HEIGHT
+  double _screenWidth = 390;
+  double get screenWidth => _screenWidth;
+  void setScreenWidth(BuildContext context) async {
+    _screenWidth = getScreenWidth(context);
+  }
+  double _screenHeight = 810;
+  double get screenHeight => _screenHeight;
+  void setScreenHeight(BuildContext context) async {
+    _screenHeight = getScreenHeight(context);
   }
 }

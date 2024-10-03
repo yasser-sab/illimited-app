@@ -6,8 +6,10 @@ import 'package:animate_do/animate_do.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:illimited_app/constant/const.dart';
+import 'package:illimited_app/providers/app_provider.dart';
 import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/services/user_repository.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -45,6 +47,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    context.read<AppProvider>().setScreenWidth(context);
+    context.read<AppProvider>().setScreenHeight(context);
     return Scaffold(
       body: Stack(
         children: [

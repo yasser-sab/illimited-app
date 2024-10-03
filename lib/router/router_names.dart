@@ -13,6 +13,8 @@ class RouteNames {
   static const profile = '/profile';
   static const weekDetails = '/weekDetails';
   static const contact = '/contact';
+  static const dayDetails = '/dayDetails';
+  static const taskDetails = '/taskDetails';
 
 
   static List<String> noLoginScreens = [splash, getStarted, signup, emailVerificationMessage, resetPassword]; 
