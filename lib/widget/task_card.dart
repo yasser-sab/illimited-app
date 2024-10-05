@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -22,7 +21,6 @@ class TaskCard extends StatelessWidget {
   final Map<String, dynamic> taskData;
   final bool isLastTask;
   final bool isLastDay;
-  
   @override
   Widget build(BuildContext context) {
     Color sidePanel;

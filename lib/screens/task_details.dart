@@ -2,6 +2,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:illimited_app/constant/const.dart';
+
+import 'package:illimited_app/providers/progress_provider.dart';
+import 'package:illimited_app/router/forTest.dart';
+import 'package:illimited_app/screens/video_generation_screen.dart';
 import 'package:illimited_app/screens/questions_task.dart';
 import 'package:illimited_app/screens/quote_screen.dart';
 import 'package:illimited_app/screens/reading_screen.dart';
@@ -12,6 +16,7 @@ import 'package:illimited_app/widget/PictureTask/photo_task.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:illimited_app/widget/primary_textfield.dart';
 import 'package:page_flip/page_flip.dart';
+import 'package:provider/provider.dart';
 
 class TaskDetails extends StatefulWidget {
   final Tasks taskType;
@@ -75,35 +80,11 @@ class _TaskDetailsState extends State<TaskDetails> {
         );
         break;
       case Tasks.generatedVideo:
-        content = Scaffold(
-          appBar: AppBar(
-            foregroundColor: Colors.white,
-            toolbarHeight: 80,
-            backgroundColor: primaryColor,
-            centerTitle: true,
-            title: InkWell(
-              child: Text(
-                "Generated Video",
-                style: GoogleFonts.roboto()
-                    .copyWith(fontSize: 27, letterSpacing: 1.5),
-              ),
-            ),
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: PrimaryButton(
-            // icon: btnIcon,
-            enabled: false,
-            borderRadius: 0,
-            text: "Done",
-            onPressed: () async {},
-          ),
-          body: Center(
-            child: Text(
-              "The Video is Not Yet Generated",
-              style: GoogleFonts.roboto(color: Colors.black),
-            ),
-          ),
+        content = VideoGenerationTask(
+          weekRef: context.read<UserProgressProvider>().currentWeekRef!,
+          taskData: widget.taskData,
+          isLastTask: widget.isLastTask,
+          isLastDay: widget.isLastDay,
         );
       default:
     }
