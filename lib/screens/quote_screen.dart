@@ -30,7 +30,7 @@ class QuoteTask extends StatefulWidget {
 class _QuoteTaskState extends State<QuoteTask> with TickerProviderStateMixin {
   late AnimationController _controller;
   final _soundPlayer = AudioPlayer();
-  bool isCompleted = false;
+  bool isTaskCompleted = false;
   bool isBtnEnabled = false;
   String btnText = "Done";
   Widget? btnIcon;
@@ -142,7 +142,7 @@ class _QuoteTaskState extends State<QuoteTask> with TickerProviderStateMixin {
           await _completeTask();
 
           setState(() {
-            isCompleted = true;
+            isTaskCompleted = true;
           });
           context.pop();
           await Future.delayed(
@@ -234,7 +234,7 @@ class _QuoteTaskState extends State<QuoteTask> with TickerProviderStateMixin {
             },
           ),
           Visibility(
-            visible: isCompleted,
+            visible: isTaskCompleted,
             child: Positioned.fill(
               child: Container(
                 color: Colors.black.withOpacity(0.5),

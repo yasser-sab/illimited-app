@@ -41,7 +41,7 @@ class LevelButton extends StatelessWidget {
     return InkWell(
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
-      onTap: status!= Status.locked ? onPressed : (){}, 
+      onTap: onPressed, 
       child: Stack(
         alignment: Alignment.center,
         children: [

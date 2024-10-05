@@ -75,7 +75,9 @@ class EndDrawerContent extends StatelessWidget {
                   DrawerIconButton(
                     iconPath: "assets/icon/goal.png",
                     text: "Goals",
-                    onPressed: () => {},
+                    onPressed: ()  {
+                      context.pushNamed(RouteNames.goal);
+                    },
                   ),
                   DrawerIconButton(
                     iconPath: "assets/icon/forum.png",

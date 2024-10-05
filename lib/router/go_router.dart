@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:illimited_app/router/forTest.dart';
 import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/screens/contact_screen.dart';
 import 'package:illimited_app/screens/dashboard.dart';
@@ -11,6 +12,7 @@ import 'package:illimited_app/screens/day_details.dart';
 import 'package:illimited_app/screens/email_verification_message_screen.dart';
 import 'package:illimited_app/screens/forgot_password_screen.dart';
 import 'package:illimited_app/screens/getstarted_screen.dart';
+import 'package:illimited_app/screens/goal_screen.dart';
 import 'package:illimited_app/screens/intro_video_screen.dart';
 import 'package:illimited_app/screens/profile_screen.dart';
 import 'package:illimited_app/screens/question.dart';
@@ -109,13 +111,6 @@ final GoRouter _router = GoRouter(
       },
     ),
     GoRoute(
-      name: RouteNames.contact,
-      path: RouteNames.contact,
-      builder: (BuildContext context, GoRouterState state) {
-        return const HelpFormSceen();
-      },
-    ),
-    GoRoute(
       name: RouteNames.weekDetails,
       path: RouteNames.weekDetails,
       builder: (BuildContext context, GoRouterState state) {
@@ -158,6 +153,20 @@ final GoRouter _router = GoRouter(
         final taskData = args["taskData"] as Map<String, dynamic>;
         return TaskDetails(
             taskType: taskType, taskData: taskData, isLastTask: isLastTask, isLastDay: isLastDay,);
+      },
+    ),
+    GoRoute(
+      name: RouteNames.contact,
+      path: RouteNames.contact,
+      builder: (BuildContext context, GoRouterState state) {
+        return HelpFormSceen();
+      },
+    ),
+    GoRoute(
+      name: RouteNames.goal,
+      path: RouteNames.goal,
+      builder: (BuildContext context, GoRouterState state) {
+        return const GoalScreen();
       },
     ),
   ],
