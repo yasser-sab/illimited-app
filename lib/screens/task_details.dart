@@ -90,37 +90,6 @@ class _TaskDetailsState extends State<TaskDetails> {
     }
 
     log("content type is : ${content.runtimeType}");
-    // return Scaffold(
-    //   backgroundColor: Colors.white,
-    //   floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-    //   floatingActionButton: PrimaryButton(
-    //     borderRadius: 0,
-    //     text: "Done",
-    //     onPressed: _isTaskDone
-    //         ? () {
-    //             log("Pressed");
-    //           }
-    //         : () {},
-    //     color: _isTaskDone ? primaryColor : Colors.grey,
-    //   ),
-    //   endDrawer: const Drawer(
-    //     child: EndDrawerContent(),
-    //   ),
-    //   appBar: AppBar(
-    //     foregroundColor: Colors.white,
-    //     toolbarHeight: 80,
-    //     backgroundColor: primaryColor,
-    //     centerTitle: true,
-    //     title: Text(
-    //       widget.taskData['title'],
-    //       style:
-    //           GoogleFonts.roboto().copyWith(fontSize: 27, letterSpacing: 1.5),
-    //     ),
-    //   ),
-    //   body: Column(
-    //     children: [content],
-    //   ),
-    // );
     return content;
   }
 }

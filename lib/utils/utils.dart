@@ -149,7 +149,6 @@ void showUploadingContent(BuildContext context) {
     },
   );
 }
-
 Future<void> fetchAllPhotos(DocumentReference week) async {
   log("IN fetchAllPhotos");
   List<Map<String, String>> photosList = [];

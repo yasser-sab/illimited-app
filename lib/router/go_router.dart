@@ -111,6 +111,13 @@ final GoRouter _router = GoRouter(
       },
     ),
     GoRoute(
+      name: RouteNames.contact,
+      path: RouteNames.contact,
+      builder: (BuildContext context, GoRouterState state) {
+        return const HelpFormSceen();
+      },
+    ),
+    GoRoute(
       name: RouteNames.weekDetails,
       path: RouteNames.weekDetails,
       builder: (BuildContext context, GoRouterState state) {
