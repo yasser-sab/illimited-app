@@ -163,13 +163,6 @@ final GoRouter _router = GoRouter(
       },
     ),
     GoRoute(
-      name: RouteNames.contact,
-      path: RouteNames.contact,
-      builder: (BuildContext context, GoRouterState state) {
-        return HelpFormSceen();
-      },
-    ),
-    GoRoute(
       name: RouteNames.goal,
       path: RouteNames.goal,
       builder: (BuildContext context, GoRouterState state) {
