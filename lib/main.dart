@@ -22,7 +22,6 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(
@@ -49,7 +48,14 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    NotificationService().scheduleMorningNotification();
+    // Workmanager().registerPeriodicTask(
+    //   "15MinTask",
+    //   "simplePeriodicTask",
+    //   frequency: const Duration(minutes: 15),
+    // );
+
+    // NotificationService().scheduleMorningNotification();
+    // NotificationService().scheduleNightNotification();
 
     return MaterialApp.router(
       routerConfig: router,
