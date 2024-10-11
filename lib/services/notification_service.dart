@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -73,10 +75,10 @@ class NotificationService {
   //   return await flutterLocalNotificationsPlugin.pendingNotificationRequests();
   // }
 
-  Future<void> updateNotificationById(int id) async {
-    await cancelNotificationById(id);
-    scheduleDynamicPeriodicNotification();
-  }
+  // Future<void> updateNotificationById(int id) async {
+  //   await cancelNotificationById(id);
+  //   scheduleDynamicPeriodicNotification();
+  // }
 
   Future<void> cancelNotificationById(int id) async {
     await flutterLocalNotificationsPlugin.cancel(id);
@@ -115,6 +117,185 @@ class NotificationService {
     );
   }
 
+  Future<void> schedulePeriodicAfternoonNotification(
+      {bool isItNow = false}) async {
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+      'afernoon_channel_id', // Unique channel ID
+      'Afernoon Notifications', // Channel namec
+      importance: Importance.max,
+      priority: Priority.high,
+      playSound: true,
+      visibility: NotificationVisibility.public,
+      largeIcon: DrawableResourceAndroidBitmap(
+        '@mipmap/launcher_icon',
+      ),
+      icon: '@mipmap/launcher_icon',
+      fullScreenIntent: true,
+      enableVibration: true,
+    );
+
+    const NotificationDetails platformDetails =
+        NotificationDetails(android: androidDetails);
+
+    var scheduledDate;
+
+    if (isItNow) {
+      final now = tz.TZDateTime.now(tz.local);
+      scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day, 10);
+    } else {
+      final now = tz.TZDateTime.now(tz.local);
+      scheduledDate = tz.TZDateTime(
+        tz.local,
+        now.year,
+        now.month,
+        now.day + 1, // Move to the next day
+        10, // 10 AM
+      );
+    }
+
+    await flutterLocalNotificationsPlugin
+        .zonedSchedule(
+      2,
+      'Reminder!',
+      'We love having you with us! 😊 Don’t forget to complete your previous challenges.',
+      scheduledDate,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      platformDetails,
+    )
+        .then((val) {
+      flutterLocalNotificationsPlugin.periodicallyShowWithDuration(
+        2,
+        'Reminder!',
+        'We love having you with us! 😊 Don’t forget to complete your previous challenges.',
+        const Duration(days: 1),
+        platformDetails,
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        payload: 'afernoon',
+      );
+    });
+  }
+
+  Future<void> schedulePeriodiceveningNotification(
+      {bool isItNow = false}) async {
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+      'evening_channel_id', // Unique channel ID
+      'Evening Notifications', // Channel namec
+      importance: Importance.max,
+      priority: Priority.high,
+      playSound: true,
+      visibility: NotificationVisibility.public,
+      largeIcon: DrawableResourceAndroidBitmap(
+        '@mipmap/launcher_icon',
+      ),
+      icon: '@mipmap/launcher_icon',
+      fullScreenIntent: true,
+      enableVibration: true,
+    );
+
+    const NotificationDetails platformDetails =
+        NotificationDetails(android: androidDetails);
+
+    var scheduledDate;
+
+    if (isItNow) {
+      final now = tz.TZDateTime.now(tz.local);
+      scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day, 14);
+    } else {
+      final now = tz.TZDateTime.now(tz.local);
+      scheduledDate = tz.TZDateTime(
+        tz.local,
+        now.year,
+        now.month,
+        now.day + 1, // Move to the next day
+        14, // 10 AM
+      );
+    }
+
+    await flutterLocalNotificationsPlugin
+        .zonedSchedule(
+      3,
+      'Reminder!',
+      'We love having you with us! 😊 Don’t forget to complete your previous challenges.',
+      scheduledDate,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      platformDetails,
+    )
+        .then((val) {
+      flutterLocalNotificationsPlugin.periodicallyShowWithDuration(
+        3,
+        'Reminder!',
+        'We love having you with us! 😊 Don’t forget to complete your previous challenges.',
+        const Duration(days: 1),
+        platformDetails,
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        payload: 'evening',
+      );
+    });
+  }
+
+  Future<void> schedulePeriodicedustNotification({bool isItNow = false}) async {
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+      'dust_channel_id', // Unique channel ID
+      'Dust Notifications', // Channel namec
+      importance: Importance.max,
+      priority: Priority.high,
+      playSound: true,
+      visibility: NotificationVisibility.public,
+      largeIcon: DrawableResourceAndroidBitmap(
+        '@mipmap/launcher_icon',
+      ),
+      icon: '@mipmap/launcher_icon',
+      fullScreenIntent: true,
+      enableVibration: true,
+    );
+
+    const NotificationDetails platformDetails =
+        NotificationDetails(android: androidDetails);
+
+    var scheduledDate;
+
+    if (isItNow) {
+      final now = tz.TZDateTime.now(tz.local);
+      scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day, 19);
+    } else {
+      final now = tz.TZDateTime.now(tz.local);
+      scheduledDate = tz.TZDateTime(
+        tz.local,
+        now.year,
+        now.month,
+        now.day + 1, // Move to the next day
+        19, // 10 AM
+      );
+    }
+
+    await flutterLocalNotificationsPlugin
+        .zonedSchedule(
+      4,
+      'Reminder!',
+      'We love having you with us! 😊 Don’t forget to complete your previous challenges.',
+      scheduledDate,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      platformDetails,
+    )
+        .then((val) {
+      flutterLocalNotificationsPlugin.periodicallyShowWithDuration(
+        4,
+        'Reminder!',
+        'We love having you with us! 😊 Don’t forget to complete your previous challenges.',
+        const Duration(days: 1),
+        platformDetails,
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        payload: 'dust',
+      );
+    });
+  }
+
   Future<void> scheduleMorningNotification() async {
     // Android notification details with high priority
 
@@ -146,24 +327,55 @@ class NotificationService {
       0,
       'Good Morning 🌞',
       'What a beautiful morning to enjoy! 🌸 Don\'t forget your challenges, let\'s make today amazing together! 😊',
-      // scheduledDate,
-      now.add(const Duration(seconds: 10)),
+      scheduledDate,
+      // now.add(const Duration(seconds: 10)),
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       platformDetails,
     )
         .then((val) {
-      flutterLocalNotificationsPlugin.periodicallyShow(
+      flutterLocalNotificationsPlugin.periodicallyShowWithDuration(
         0,
         'Good Morning 🌞',
         'What a beautiful morning to enjoy! 🌸 Don\'t forget your challenges, let\'s make today amazing together! 😊',
-        RepeatInterval.everyMinute,
-        // const Duration(days: 1),
+        // RepeatInterval.everyMinute,
+        const Duration(days: 1),
         platformDetails,
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         payload: 'morning',
       );
     });
+  }
+
+  Future<void> instantNotification(
+      {required String title, required String description}) async {
+    // Android notification details with high priority
+
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+      'instant_channel_id', // Unique channel ID
+      'Instant Notifications', // Channel namec
+      importance: Importance.max,
+      priority: Priority.high,
+      playSound: true,
+      visibility: NotificationVisibility.public,
+      largeIcon: DrawableResourceAndroidBitmap(
+        '@mipmap/launcher_icon',
+      ),
+      icon: '@mipmap/launcher_icon',
+      fullScreenIntent: true,
+      enableVibration: true,
+    );
+
+    const NotificationDetails platformDetails =
+        NotificationDetails(android: androidDetails);
+
+    await flutterLocalNotificationsPlugin.show(
+      5,
+      title,
+      description,
+      platformDetails,
+    );
   }
 
   Future<void> scheduleNightNotification() async {

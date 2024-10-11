@@ -12,7 +12,7 @@ class UserRepository {
 
   Future<void> createUser(User? user,
       {String? firstName = "NONAME", String? lastName = "NONAME"}) async {
-        log("IN CREATE USER");
+    log("IN CREATE USER");
     DateTime serverTime = await getServerTime();
 
     // Start a Firestore batch
@@ -123,10 +123,10 @@ class UserRepository {
                 taskData = {
                   'isLocked': taskIndex > 1, // Only the first task is unlocked
                   'isCompleted': false,
-                  "introText" : tasksForDay[taskKey]["introText"],
+                  "introText": tasksForDay[taskKey]["introText"],
                   'questions': tasksForDay[taskKey]["questions"],
-                  'answers' : {},
-                  "moodAnswer" : ""
+                  'answers': {},
+                  "moodAnswer": ""
                 };
                 break;
               case Tasks.reading:
@@ -158,8 +158,7 @@ class UserRepository {
                 };
                 break;
               default:
-                taskData = {
-                };
+                taskData = {};
             }
 
             // if (tasksForDay[taskKey]["type"] == Tasks.takePhoto) {}
@@ -197,6 +196,13 @@ class UserRepository {
     } else {
       throw Exception('User document does not exist !');
     }
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> getUserData() async {
+    return await FirebaseFirestore.instance
+        .collection('users')
+        .doc(getUserUid())
+        .get();
   }
 
   Future<void> setQuestionFlag(bool flag) async {

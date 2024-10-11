@@ -9,6 +9,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/providers/progress_provider.dart';
 import 'package:illimited_app/router/router_names.dart';
+import 'package:illimited_app/services/notification_service.dart';
+import 'package:illimited_app/services/user_repository.dart';
 import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:illimited_app/widget/video_container.dart';
@@ -22,7 +24,10 @@ class VideoTask extends StatefulWidget {
   final bool isLastDay;
   final bool isLastTask;
   const VideoTask(
-      {super.key, required this.taskData, required this.isLastTask, required this.isLastDay});
+      {super.key,
+      required this.taskData,
+      required this.isLastTask,
+      required this.isLastDay});
 
   @override
   State<VideoTask> createState() => _VideoTaskState();
@@ -113,19 +118,40 @@ class _VideoTaskState extends State<VideoTask> with TickerProviderStateMixin {
     await taskRef.update({
       'isCompleted': true,
     });
-            if (widget.isLastTask) {
-              await context.read<UserProgressProvider>().currentDayRef!.update({
-                'isCompleted': true,
-              });
-              if (widget.isLastDay) {
-                await context
-                    .read<UserProgressProvider>()
-                    .currentWeekRef!
-                    .update({
-                  'isCompleted': true,
-                });
-              }
-            }
+    if (widget.isLastTask) {
+      await context.read<UserProgressProvider>().currentDayRef!.update({
+        'isCompleted': true,
+      });
+
+      NotificationService().cancelNotificationById(2);
+      NotificationService().cancelNotificationById(3);
+      NotificationService().cancelNotificationById(4);
+
+      NotificationService().schedulePeriodicAfternoonNotification();
+      NotificationService().schedulePeriodiceveningNotification();
+      NotificationService().schedulePeriodicedustNotification();
+
+      // await UserRepository().update({
+      //   "task_progress": FieldValue.arrayRemove([
+      //     '${context.read<UserProgressProvider>().currentWeekRef!.id.toString()};${context.read<UserProgressProvider>().currentDayRef!.id.toString()}'
+      //   ]),
+      // });
+
+      // await UserRepository().getUserData().then((vall) {
+      //   List<String> hasd = vall.data()!['task_progress'] as List<String>;
+
+      //   if (hasd.isEmpty) {
+      //     NotificationService().cancelNotificationById(2);
+      //   } else {
+      //     NotificationService().scheduleDynamicPeriodicNotification();
+      //   }
+      // });
+      if (widget.isLastDay) {
+        await context.read<UserProgressProvider>().currentWeekRef!.update({
+          'isCompleted': true,
+        });
+      }
+    }
     return;
   }
 

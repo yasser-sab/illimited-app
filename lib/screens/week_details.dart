@@ -9,6 +9,7 @@ import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/providers/progress_provider.dart';
 import 'package:illimited_app/router/go_router.dart';
 import 'package:illimited_app/router/router_names.dart';
+import 'package:illimited_app/services/notification_service.dart';
 import 'package:illimited_app/services/user_repository.dart';
 import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/day_card.dart';
@@ -139,6 +140,14 @@ class _WeekDetailsState extends State<WeekDetails> {
                       day: dayKey,
                       isNotified: true,
                     );
+
+                    // schadual notification
+                    // UserRepository().update({
+                    //   "task_progress": FieldValue.arrayUnion(
+                    //       ['${widget.weekkey.toString()};${i.toString()}']),
+                    // });
+
+                    // NotificationService().scheduleDynamicPeriodicNotification();
                   }
                   status = Status.inProgress;
                 } else {
@@ -156,7 +165,7 @@ class _WeekDetailsState extends State<WeekDetails> {
                         context
                             .read<UserProgressProvider>()
                             .setCurrentDayRef(dayRef);
-                            
+
                         CollectionReference tasksRef =
                             dayRef.collection('tasks');
 
@@ -164,7 +173,7 @@ class _WeekDetailsState extends State<WeekDetails> {
                             .pushNamed(RouteNames.dayDetails, extra: {
                           "tasksCollectionRef": tasksRef,
                           "dayKey": dayKey,
-                          "isLastDay" : i == 7 ? true : false, 
+                          "isLastDay": i == 7 ? true : false,
                           "weekKey": widget.weekkey
                         });
                         if (shouldRefresh != null && shouldRefresh) {
