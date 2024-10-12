@@ -5,6 +5,7 @@ import 'package:illimited_app/data/questions.dart';
 import 'package:illimited_app/providers/questions_provider.dart';
 import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/services/authentication_service.dart';
+import 'package:illimited_app/services/notification_service.dart';
 import 'package:illimited_app/services/user_repository.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:illimited_app/widget/progress_bar.dart';
@@ -44,9 +45,6 @@ class _QuestionState extends State<Question> {
   void _nextPage() {
     if (_currentPage == questions.length - 1 &&
         context.read<QuestionProvider>().answers[_currentPage] != "") {
-
-          
-
       var userData = {
         "age": context.read<QuestionProvider>().answers[2],
         "country": context.read<QuestionProvider>().answers[3],
@@ -57,6 +55,10 @@ class _QuestionState extends State<Question> {
 
       UserRepository().update(userData).then((value) {
         log("USER UPDATED!");
+        // schedule task reminder notification if not finished
+        NotificationService().scheduleMorningNotification();
+        NotificationService().scheduleNightNotification();
+        NotificationService().scheduleDynamicPeriodicNotification();
       }).catchError((onError) {
         log("error while updating user !!");
       });
