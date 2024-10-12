@@ -126,6 +126,18 @@ class _VideoGenerationTaskState extends State<VideoGenerationTask>
         await context.read<UserProgressProvider>().currentWeekRef!.update({
           'isCompleted': true,
         });
+
+        if (context.read<UserProgressProvider>().currentWeekRef!.id == "8") {
+          NotificationService().cancelNotificationById(0);
+          NotificationService().cancelNotificationById(1);
+          NotificationService().cancelNotificationById(2);
+          NotificationService().cancelNotificationById(3);
+          NotificationService().cancelNotificationById(4);
+          NotificationService().instantNotification(
+            title: "congratulation !",
+            description: "your plan is finished !",
+          );
+        }
       }
     }
     return;
