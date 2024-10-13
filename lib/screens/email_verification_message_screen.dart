@@ -4,7 +4,7 @@ import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:lottie/lottie.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class EmailVerificationMessage extends StatelessWidget {
   const EmailVerificationMessage({super.key});
 
@@ -34,14 +34,14 @@ class EmailVerificationMessage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Thanks For Signing Up!",
+                        AppLocalizations.of(context)!.thanksForSigningUp,
                         style: getFontStyle(context)
                             .copyWith(color: Colors.black, fontSize: 28),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 10,),
                       Text(
-                        "Please check your email for the verification link to complete your registration. If it's not there, it might be in your spam folder.",
+                        AppLocalizations.of(context)!.checkEmailForVerificationLink,
                         style: getFontStyle(context)
                             .copyWith(color: Colors.black.withOpacity(0.7), fontSize: 18),
                         textAlign: TextAlign.center,
@@ -60,7 +60,7 @@ class EmailVerificationMessage extends StatelessWidget {
                     left: 0,
                     right: 0,
                     child: PrimaryButton(
-                      text: "Log In",
+                      text: AppLocalizations.of(context)!.logIn,
                       onPressed: () => context.goNamed(RouteNames.signin),
                     ),
                   )

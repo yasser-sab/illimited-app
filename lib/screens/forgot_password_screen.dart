@@ -9,6 +9,7 @@ import 'package:illimited_app/widget/primary_button.dart';
 import 'package:illimited_app/widget/top_snackbar.dart';
 import 'package:lottie/lottie.dart';
 import 'package:modern_textfield/modern_textfield.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key});
@@ -60,7 +61,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                         height: 40,
                       ),
                       Text(
-                        "Password Reset",
+                        AppLocalizations.of(context)!.passwordReset,
                         style: getFontStyle(context).copyWith(
                             fontSize: 40, fontWeight: FontWeight.w800),
                       ),
@@ -77,7 +78,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                           Icons.email_rounded,
                           color: Colors.white,
                         ),
-                        hintText: "Enter Your Email",
+                        hintText: AppLocalizations.of(context)!.enterYourEmail,
                       ),
                       const SizedBox(
                         height: 20,
@@ -88,12 +89,12 @@ class _ResetPasswordState extends State<ResetPassword> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: PrimaryButton(
-                          text: "Reset",
+                          text: AppLocalizations.of(context)!.reset,
                           onPressed: () async {
                             if (!isValidEmail(_emailController.text.trim())) {
                               mySnackBar(
                                   context: context,
-                                  message: "Invalid Email",
+                                  message: AppLocalizations.of(context)!.invalidEmail,
                                   snackBarType: SnackBarType.failure);
                             } else {
                               FirebaseAuth.instance
@@ -104,7 +105,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                                   mySnackBar(
                                       context: context,
                                       message:
-                                          "We sent you a password reset email",
+                                          AppLocalizations.of(context)!.passwordResetEmailSent,
                                       snackBarType: SnackBarType.info);
                                 },
                               ).onError((error, stackTrace) {
@@ -112,7 +113,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                                 mySnackBar(
                                       context: context,
                                       message:
-                                          "Something went wrong wrong",
+                                          AppLocalizations.of(context)!.somethingWentWrong,
                                       snackBarType: SnackBarType.info);
                               },);
 

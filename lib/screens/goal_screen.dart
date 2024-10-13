@@ -8,7 +8,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:illimited_app/constant/const.dart';
 import 'package:lottie/lottie.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class GoalScreen extends StatefulWidget {
   const GoalScreen({super.key});
 
@@ -66,7 +66,7 @@ class _GoalScreenState extends State<GoalScreen> {
         backgroundColor: primaryColor,
         centerTitle: true,
         title: Text(
-          'Goals',
+          AppLocalizations.of(context)!.goals,
           style:
               GoogleFonts.roboto().copyWith(fontSize: 27, letterSpacing: 1.5),
         ),
@@ -90,7 +90,7 @@ class _GoalScreenState extends State<GoalScreen> {
                 : Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                      _goal != "" ? _goal : "No Goals Set Yet",
+                      _goal != "" ? _goal : AppLocalizations.of(context)!.noGoalsSetYet,
                       style: GoogleFonts.aBeeZee().copyWith(
                           color: Colors.black, fontSize: 20,),
                     ),

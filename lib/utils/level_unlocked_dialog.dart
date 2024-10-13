@@ -3,7 +3,7 @@ import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:lottie/lottie.dart'; // Import your AppProvider
 import 'package:just_audio/just_audio.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class LevelUnlockedDialog extends StatefulWidget {
   final int number;
   final bool isDay;
@@ -36,7 +36,7 @@ class _LevelUnlockedDialogState extends State<LevelUnlockedDialog> {
   @override
   Widget build(BuildContext context) {
     Widget okButton = PrimaryButton(
-      text: "Ok",
+      text: AppLocalizations.of(context)!.ok,
       isBold: true,
       onPressed: () {
         Navigator.of(context).pop();
@@ -53,8 +53,8 @@ class _LevelUnlockedDialogState extends State<LevelUnlockedDialog> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(widget.isDay ? "DAY ${widget.number}":
-                "WEEK ${widget.number}",
+              Text(widget.isDay ? AppLocalizations.of(context)!.dayNbDay("${widget.number}"):
+                AppLocalizations.of(context)!.weekWidgetNumber("${widget.number}"),
                 style: getFontStyle(context).copyWith(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
@@ -71,7 +71,7 @@ class _LevelUnlockedDialogState extends State<LevelUnlockedDialog> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "UNLOCKED",
+                    AppLocalizations.of(context)!.unlocked,
                     style: getFontStyle(context).copyWith(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,

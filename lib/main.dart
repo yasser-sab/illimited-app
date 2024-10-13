@@ -7,16 +7,24 @@ import 'package:illimited_app/constant/typography.dart';
 import 'package:illimited_app/firebase_options.dart';
 import 'package:illimited_app/providers/app_provider.dart';
 import 'package:illimited_app/providers/authentication_provider.dart';
+import 'package:illimited_app/providers/language_provider.dart';
 import 'package:illimited_app/providers/logbook_provider.dart';
 import 'package:illimited_app/providers/questions_provider.dart';
 import 'package:illimited_app/providers/progress_provider.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:illimited_app/router/go_router.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+String? langCode;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  langCode = prefs.getString('selectedLanguage');
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -31,6 +39,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => AppProvider()),
         ChangeNotifierProvider(create: (context) => UserProgressProvider()),
         ChangeNotifierProvider(create: (context) => LogbookProvider()),
+        ChangeNotifierProvider(create: (context) => LanguageProvider()),
       ],
       child: const MyApp(),
     ),
@@ -43,11 +52,32 @@ void main() async {
   });
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+  static void setLocale(BuildContext context, Locale newLocale) {
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state?.setLocale(newLocale);
+  }
+}
+
+class _MyAppState extends State<MyApp> {
+  Locale _locale = Locale(langCode ?? "fr");
+
+  setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      locale: _locale,
       routerConfig: router,
       title: "Illimited",
       theme: ThemeData(

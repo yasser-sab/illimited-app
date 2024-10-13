@@ -21,10 +21,14 @@ import 'package:page_flip/page_flip.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class QuestionsTask extends StatefulWidget {
   const QuestionsTask(
-      {super.key, required this.taskData, required this.isLastTask, required this.isLastDay});
+      {super.key,
+      required this.taskData,
+      required this.isLastTask,
+      required this.isLastDay});
   final Map<String, dynamic> taskData;
   final bool isLastTask;
   final bool isLastDay;
@@ -42,11 +46,14 @@ class _QuestionsTaskState extends State<QuestionsTask>
   bool _showSwipeHint = false;
   final _soundPlayer = AudioPlayer();
   int questionsLenght = 0;
-  bool isCompleted = false;
-  bool isBtnEnabled = false;
-  String btnText = "Done";
+    bool isLoading = true;
+  bool isUploaded = false;
+  bool isTaskCompleted = false;
+  bool isUploading = false;
+  String btnText = "";
   Widget? btnIcon;
   final _controller = GlobalKey<PageFlipWidgetState>();
+  String languageCode = "fr";
 
   List<Widget> questionScreens = [];
 
@@ -119,7 +126,6 @@ class _QuestionsTaskState extends State<QuestionsTask>
   }
 
   Future<Map<String, dynamic>> getAnswers() async {
-    log("IM getAnswers ");
     Map<String, dynamic>? task;
 
     try {
@@ -145,11 +151,12 @@ class _QuestionsTaskState extends State<QuestionsTask>
     }
 
     if (hasEmptyValue) {
-      log("IM HERE ");
+      isLoading = false;
       return {};
     } else {
+      isTaskCompleted = true;
       setState(() {
-        btnText = "Completed";
+        btnText = AppLocalizations.of(context)!.completed;
         btnIcon = Image.asset(
           "assets/icon/check1.png",
           color: Colors.white,
@@ -157,6 +164,7 @@ class _QuestionsTaskState extends State<QuestionsTask>
       });
       Map<String, dynamic> answers = task['answers'];
       answers.addAll({'mood': task['moodAnswer']});
+      isLoading = false;
       return answers;
     }
   }
@@ -194,18 +202,26 @@ class _QuestionsTaskState extends State<QuestionsTask>
         );
       }
     }
-    String answer = moodButtonsData[
-        int.parse(context.read<LogbookProvider>().answers.last)];
+    // String answer = moodButtonsData[Localizations.localeOf(context).languageCode]![
+    //     int.parse(context.read<LogbookProvider>().answers.last)];
 
+    String moodIndex = context.read<LogbookProvider>().answers.last;
     await taskRef.update(
       {
-        'moodAnswer': answer,
+        'moodAnswer': moodIndex,
         'isCompleted': true,
       },
     );
-    await context.read<UserProgressProvider>().currentDayRef!.update({
-      'isCompleted': true,
-    });
+    if (widget.isLastTask) {
+      await context.read<UserProgressProvider>().currentDayRef!.update({
+        'isCompleted': true,
+      });
+      if (widget.isLastDay) {
+        await context.read<UserProgressProvider>().currentWeekRef!.update({
+          'isCompleted': true,
+        });
+      }
+    }
     return;
   }
 
@@ -214,215 +230,232 @@ class _QuestionsTaskState extends State<QuestionsTask>
     _taskAnimationController = AnimationController(vsync: this);
     _taskAnimationController.duration = Duration(milliseconds: 1800);
     _taskAnimationController.forward();
-
-    return Scaffold(
-      appBar: AppBar(
-        foregroundColor: Colors.white,
-        toolbarHeight: 80,
-        backgroundColor: primaryColor,
-        centerTitle: true,
-        title: InkWell(
-          onTap: () {
-            // _saveAnswers();
-            for (var x in context.read<LogbookProvider>().answers) {
-              log(x);
-            }
-          },
-          child: Text(
+    if (btnText == "") {
+      btnText = AppLocalizations.of(context)!.done;
+    }
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (didPop) {
+          return;
+        }
+        if (context.read<LogbookProvider>().isAllAnswered && !isTaskCompleted && !isUploading && !isLoading) {
+          showConfirmationDialog(
+            context,
+            AppLocalizations.of(context)!.taskNotDoneYetDiscardAnyways,
+            true,
+          );
+        } else if (isUploading) {
+        } else {
+          context.pop();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          foregroundColor: Colors.white,
+          toolbarHeight: 80,
+          backgroundColor: primaryColor,
+          centerTitle: true,
+          title: Text(
             widget.taskData['title'],
             style: GoogleFonts.roboto().copyWith(fontSize: 22),
           ),
         ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: PrimaryButton(
-        icon: btnIcon,
-        enabled: context.watch<LogbookProvider>().isAllAnswered,
-        borderRadius: 0,
-        text: btnText,
-        onPressed: () async {
-          showUploadingContent(context);
-          await _saveAnswers();
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: PrimaryButton(
+          icon: btnIcon,
+          enabled:
+              context.watch<LogbookProvider>().isAllAnswered && !isUploading,
+          borderRadius: 0,
+          text: btnText,
+          onPressed: () async {
+            isUploading = true;
+            showUploadingContent(context);
+            await _saveAnswers();
 
-          setState(() {
-            isCompleted = true;
-          });
-          context.pop();
-          await Future.delayed(
-            const Duration(milliseconds: 800),
-          );
-          _soundPlayer.play();
-
-          await Future.delayed(
-            const Duration(milliseconds: 1400),
-          );
-          context.pop(true);
-        },
-      ),
-      body: FutureBuilder(
-        future: _futureData,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: SpinKitFoldingCube(
-                color: primaryColor,
-                size: 50.0,
-              ),
+            setState(() {
+              isUploaded = true;
+            });
+            context.pop();
+            await Future.delayed(
+              const Duration(milliseconds: 800),
             );
-          }
+            _soundPlayer.play();
 
-          if (snapshot.hasError) {
-            log("error = ${snapshot.error}");
-            return const Center(
-                child: Text(
-              "Something Wrong Happened",
-              style: TextStyle(color: Colors.black),
-            ));
-          }
-
-          if (snapshot.hasData) {
-            Map<String, dynamic> _questions = snapshot.data!;
-            String question;
-
-            List<String> choices = [];
-            String? _answer;
-            for (int i = 1; i <= questionsLenght; i++) {
-              String videoUrl = "";
-              if (widget.taskData['questions'][i.toString()].runtimeType !=
-                  String) {
-                if (widget.taskData['questions'][i.toString()]['videoTitle'] !=
-                    null) {
-                  question =
-                      widget.taskData['questions'][i.toString()]['videoTitle'];
-                  videoUrl =
-                      widget.taskData['questions'][i.toString()]['videoUrl'];
-                } else {
-                  question = widget.taskData['questions'][i.toString()]['q'];
-                  choices = widget.taskData['questions'][i.toString()]['a'];
-                }
-              } else {
-                question = widget.taskData['questions'][i.toString()];
-                choices = [];
-              }
-              _answer = _questions["$i"];
-
-              log("HERE ANSWER = $_answer");
-              log("CHOICES = $choices");
-              questionScreens.add(
-                QuestionTemplate(
-                  videoUrl: videoUrl,
-                  choices: choices,
-                  isCompleted: _answer != "" && _answer != null,
-                  pageNumber: "${i + 1}/${questionsLenght + 2}",
-                  index: i - 1,
-                  question: question,
-                  answer: _questions.isEmpty ? "" : _answer ?? "",
+            await Future.delayed(
+              const Duration(milliseconds: 1400),
+            );
+            context.pop(true);
+          },
+        ),
+        body: FutureBuilder(
+          future: _futureData,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: SpinKitFoldingCube(
+                  color: primaryColor,
+                  size: 50.0,
                 ),
               );
             }
-            questionScreens.add(
-              QuestionTemplate(
-                forMood: true,
-                choices: choices,
-                isCompleted: _questions['mood'] != null ? true : false,
-                pageNumber: "${questionsLenght + 2}/${questionsLenght + 2}",
-                index: questionsLenght,
-                question: "How You Describe your Mood ?",
-                answer: _questions['mood'] ?? "",
+
+            if (snapshot.hasError) {
+              log("error = ${snapshot.error}");
+              return Center(
+                  child: Text(
+                AppLocalizations.of(context)!.somethingWentWrong,
+                style: TextStyle(color: Colors.black),
+              ));
+            }
+
+            if (snapshot.hasData) {
+              Map<String, dynamic> _questions = snapshot.data!;
+              String question;
+
+              List<String> choices = [];
+              String? _answer;
+              for (int i = 1; i <= questionsLenght; i++) {
+                String videoUrl = "";
+                if (widget.taskData['questions'][i.toString()].runtimeType !=
+                    String) {
+                  if (widget.taskData['questions'][i.toString()]
+                          ['videoTitle'] !=
+                      null) {
+                    question = widget.taskData['questions'][i.toString()]
+                        ['videoTitle'];
+                    videoUrl =
+                        widget.taskData['questions'][i.toString()]['videoUrl'];
+                  } else {
+                    question = widget.taskData['questions'][i.toString()]['q'];
+                    choices = widget.taskData['questions'][i.toString()]['a'];
+                  }
+                } else {
+                  question = widget.taskData['questions'][i.toString()];
+                  choices = [];
+                }
+                _answer = _questions["$i"];
+                questionScreens.add(
+                  QuestionTemplate(
+                    videoUrl: videoUrl,
+                    choices: choices,
+                    isCompleted: _answer != "" && _answer != null,
+                    pageNumber: "${i + 1}/${questionsLenght + 2}",
+                    index: i - 1,
+                    question: question,
+                    answer: _questions.isEmpty ? "" : _answer ?? "",
+                  ),
+                );
+              }
+              questionScreens.add(
+                QuestionTemplate(
+                  forMood: true,
+                  choices: choices,
+                  isCompleted: _questions['mood'] != null ? true : false,
+                  pageNumber: "${questionsLenght + 2}/${questionsLenght + 2}",
+                  index: questionsLenght,
+                  question:
+                      AppLocalizations.of(context)!.howYouDescribeYourMood,
+                  answer: _questions['mood'] ?? "",
+                ),
+              );
+
+              return Stack(
+                children: [
+                  PageFlipWidget(
+                    key: _controller,
+                    backgroundColor: Colors.white,
+                    initialIndex: 0,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Stack(
+                          children: [
+                            Positioned.fill(
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      widget.taskData['introText'],
+                                      style: getFontStyle(context).copyWith(
+                                          color: Colors.black, fontSize: 18),
+                                    ),
+                                    SizedBox(height: 60,),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 50,
+                              right: 5,
+                              child: Container(
+                                color: Colors.white,
+                                child: Text(
+                                  "1/${questionsLenght + 2}",
+                                  style: getFontStyle(context).copyWith(
+                                      color: Colors.black.withOpacity(0.5),
+                                      fontSize: 23),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      ...questionScreens,
+                    ],
+                  ),
+                  Visibility(
+                    visible: isUploaded,
+                    child: Positioned(
+                      top: 0,
+                      bottom: 0,
+                      right: 0,
+                      left: 0,
+                      child: Container(
+                        color: Colors.black.withOpacity(0.5),
+                        child: Center(
+                          child: Center(
+                            child: SizedBox(
+                              width: 250,
+                              child: Lottie.asset(
+                                "assets/lottie/taskChecked.json",
+                                repeat: false,
+                                controller: _taskAnimationController,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                    visible: _showSwipeHint,
+                    child: Positioned(
+                      bottom: 100,
+                      left: 0,
+                      right: 0,
+                      child: IgnorePointer(
+                        child: SizedBox(
+                          width: 300,
+                          height: 300,
+                          child: Lottie.asset(
+                            "assets/lottie/swipe.json",
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            }
+            return Center(
+              child: Text(
+                AppLocalizations.of(context)!.somethingWentWrong,
+                style: TextStyle(color: Colors.black),
               ),
             );
-
-            log("IM HERE 2");
-
-            return Stack(
-              children: [
-                PageFlipWidget(
-                  key: _controller,
-                  backgroundColor: Colors.white,
-                  initialIndex: 0,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            bottom: 50,
-                            right: 5,
-                            child: Text(
-                              "1/${questionsLenght + 2}",
-                              style: getFontStyle(context).copyWith(
-                                  color: Colors.black.withOpacity(0.5),
-                                  fontSize: 20),
-                            ),
-                          ),
-                          Positioned.fill(
-                            child: Column(
-                              children: [
-                                Text(
-                                  "Bienvenue dans votre journal de bord du jour, durant votre cheminement, prenez le temps de rêver et de constater l'évolution de ces rêveries et trouver les moyens pour les réaliser  en complétant  les questions",
-                                  style: getFontStyle(context).copyWith(
-                                      color: Colors.black, fontSize: 18),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    ...questionScreens,
-                  ],
-                ),
-                Visibility(
-                  visible: isCompleted,
-                  child: Positioned(
-                    top: 0,
-                    bottom: 0,
-                    right: 0,
-                    left: 0,
-                    child: Container(
-                      color: Colors.black.withOpacity(0.5),
-                      child: Center(
-                        child: Center(
-                          child: SizedBox(
-                            width: 250,
-                            child: Lottie.asset(
-                              "assets/lottie/taskChecked.json",
-                              repeat: false,
-                              controller: _taskAnimationController,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Visibility(
-                  visible: _showSwipeHint,
-                  child: Positioned(
-                    bottom: 100,
-                    left: 0,
-                    right: 0,
-                    child: IgnorePointer(
-                      child: SizedBox(
-                        width: 300,
-                        height: 300,
-                        child: Lottie.asset(
-                          "assets/lottie/swipe.json",
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            );
-          }
-          return const Center(
-            child: Text(
-              "Something went wrong 2",
-              style: TextStyle(color: Colors.black),
-            ),
-          );
-        },
+          },
+        ),
       ),
     );
   }
@@ -466,12 +499,9 @@ class _QuestionTemplateState extends State<QuestionTemplate> {
 
   @override
   void initState() {
-    log("THE CHOICES ===== ${widget.choices}");
-    log("Answer = ${widget.answer}");
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _controller.addListener(
         () {
-          log("TYPED : ${_controller.text}");
           context
               .read<LogbookProvider>()
               .setAnswerAt(_controller.text, widget.index);
@@ -510,13 +540,13 @@ class _QuestionTemplateState extends State<QuestionTemplate> {
       }
     } else if (widget.forMood) {
       if (widget.answer != "") {
-        int index = moodButtonsData.indexOf(widget.answer);
+        // int index = moodButtonsData[Localizations.localeOf(context).languageCode]!.indexOf(widget.answer);
+        int index = int.parse(widget.answer);
         _moodController.selectIndex(index);
         // setState(() {});
       }
     } else if (widget.videoUrl != "") {
     } else {
-      log("CURRENT INDEX ${widget.index} || videoUrl = ${widget.videoUrl}");
       _controller.text = widget.answer;
     }
 
@@ -535,7 +565,6 @@ class _QuestionTemplateState extends State<QuestionTemplate> {
       }
     }
 
-    log("${_moodController.selectedIndex}");
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Stack(
@@ -575,7 +604,6 @@ class _QuestionTemplateState extends State<QuestionTemplate> {
                                 groupingType: GroupingType.column),
                             buttons: widget.choices,
                             onSelected: (value, index, isSelected) {
-                              log("[$index]$value SELECTED");
                               context
                                   .read<LogbookProvider>()
                                   .setAnswerAt("$index", widget.index);
@@ -598,14 +626,19 @@ class _QuestionTemplateState extends State<QuestionTemplate> {
                                     crossGroupAlignment:
                                         CrossGroupAlignment.end,
                                     mainGroupAlignment:
-                                        MainGroupAlignment.start,
+                                        MainGroupAlignment.center,
                                     groupRunAlignment: GroupRunAlignment.start,
                                     spacing: 30,
                                     runSpacing: 30,
                                     groupingType: GroupingType.wrap),
-                                buttons: moodButtonsData,
+                                buttons: moodButtonsData[
+                                    Localizations.localeOf(context)
+                                        .languageCode]!,
                                 buttonBuilder: (selected, index, context) {
-                                  log("$index ||| $selected");
+                                  int moodIndex = moodButtonsData[
+                                          Localizations.localeOf(context)
+                                              .languageCode]!
+                                      .indexOf(index);
                                   return Container(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 16.0, vertical: 8.0),
@@ -622,7 +655,7 @@ class _QuestionTemplateState extends State<QuestionTemplate> {
                                           MainAxisAlignment.center,
                                       children: [
                                         Image.asset(
-                                          "assets/icon/$index.png",
+                                          "assets/icon/mood$moodIndex.png",
                                           width: 50,
                                           height: 50,
                                         ),
@@ -639,7 +672,6 @@ class _QuestionTemplateState extends State<QuestionTemplate> {
                                   );
                                 },
                                 onSelected: (value, index, isSelected) {
-                                  log("[$index]$value SELECTED");
                                   context
                                       .read<LogbookProvider>()
                                       .setAnswerAt("$index", widget.index);
@@ -668,7 +700,8 @@ class _QuestionTemplateState extends State<QuestionTemplate> {
                                   isEnabled: !widget.isCompleted,
                                   minLines: 10,
                                   controller: _controller,
-                                  hintText: "Type your answer here",
+                                  hintText: AppLocalizations.of(context)!
+                                      .typeYourAnswerHere,
                                 ),
                 ],
               ),

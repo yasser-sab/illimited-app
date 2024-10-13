@@ -7,7 +7,7 @@ import 'package:illimited_app/providers/questions_provider.dart';
 import 'package:illimited_app/widget/single_choice_selector.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class QuestionPage extends StatefulWidget {
   final String question;
   final List<Map<String, dynamic>> answers;
@@ -45,7 +45,6 @@ class _QuestionPageState extends State<QuestionPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     if (widget.type == 1) countries = widget.loadCountries();
@@ -90,12 +89,12 @@ class _QuestionPageState extends State<QuestionPage> {
                   ),
                   decoration: InputDecoration(
                     prefixIcon: Image.asset('assets/icon/country.png'),
-                    labelText: 'Country', // Placeholder text
+                    labelText: AppLocalizations.of(context)!.country, // Placeholder text
                     labelStyle: TextStyle(
                       color: Colors.grey, // Label color
                       fontSize: 14.0, // Label text size
                     ),
-                    hintText: 'Type here...', // Hint text
+                    hintText: AppLocalizations.of(context)!.typeHere,
                     hintStyle: TextStyle(
                       color: Colors.grey[600], // Hint text color
                     ),
@@ -177,18 +176,3 @@ class _QuestionPageState extends State<QuestionPage> {
     return result;
   }
 }
-
-
-
-
-
-
-// ModernTextField(
-//                   textFieldTextStyle:
-//                       getFontStyle(context).copyWith(color: Colors.black),
-//                   textEditingController: controller,
-//                   iconBackgroundColor: Colors.transparent,
-//                   borderRadius: 20,
-//                   customTextFieldIcon: Image.asset('assets/icon/country.png'),
-//                   hintText: "Country",
-//                 ),

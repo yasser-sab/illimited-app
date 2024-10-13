@@ -12,7 +12,7 @@ import 'package:illimited_app/widget/question_page.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class Question extends StatefulWidget {
   const Question({super.key});
 
@@ -27,6 +27,7 @@ class _QuestionState extends State<Question> {
   int _currentReachedPage = 0;
   double _percentage = 0;
   bool isFinished = false;
+  int questionLenght = 0;
 
   @override
   void initState() {
@@ -42,7 +43,7 @@ class _QuestionState extends State<Question> {
   }
 
   void _nextPage() {
-    if (_currentPage == questions.length - 1 &&
+    if (_currentPage == questions["en"]!.length - 1 &&
         context.read<QuestionProvider>().answers[_currentPage] != "") {
 
           
@@ -69,7 +70,7 @@ class _QuestionState extends State<Question> {
       pushAuth();
     }
 
-    if (_currentPage < questions.length - 1) {
+    if (_currentPage < questions["en"]!.length - 1) {
       _pageController.nextPage(
         duration: Duration(milliseconds: 200),
         curve: Curves.easeIn,
@@ -100,6 +101,8 @@ class _QuestionState extends State<Question> {
 
   @override
   Widget build(BuildContext context) {
+        Locale currentLocale = Localizations.localeOf(context);
+    String languageCode = currentLocale.languageCode;
     final _questionProvider =
         Provider.of<QuestionProvider>(context, listen: true);
     return Scaffold(
@@ -148,14 +151,14 @@ class _QuestionState extends State<Question> {
                       child: PageView.builder(
                         controller: _pageController,
                         onPageChanged: _onPageChanged,
-                        itemCount: questions.length,
+                        itemCount: questions["en"]!.length,
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
                           return QuestionPage(
                             questionIndex: index,
-                            question: questions[index]["question"],
-                            answers: questions[index]["answers"],
-                            type: questions[index]["type"],
+                            question: questions["$languageCode"]![index]["question"],
+                            answers: questions["$languageCode"]![index]["answers"],
+                            type: questions["$languageCode"]![index]["type"],
                           );
                         },
                       ),
@@ -165,7 +168,7 @@ class _QuestionState extends State<Question> {
                     isBold: true,
                     enabled: _questionProvider.answers[_currentPage] != "",
                     text:
-                        _currentPage == questions.length - 1 ? "Done" : "Next",
+                        _currentPage == questions["en"]!.length - 1 ? AppLocalizations.of(context)!.done : AppLocalizations.of(context)!.next,
                     onPressed: _nextPage,
                   ),
                   const SizedBox(
@@ -199,7 +202,7 @@ class _QuestionState extends State<Question> {
         .answers
         .where((answer) => answer != "")
         .length;
-    int nbQestions = questions.length;
+    int nbQestions = questions["en"]!.length;
 
     if (answeredQuestions == 0) {
       _percentage = 0;

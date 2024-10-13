@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/providers/app_provider.dart';
 import 'package:illimited_app/router/router_names.dart';
+import 'package:illimited_app/services/authentication_service.dart';
 import 'package:illimited_app/services/user_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,6 +36,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
+    context.read<AppProvider>().setScreenWidth(context);
+    context.read<AppProvider>().setScreenHeight(context);
+    
     super.initState();
     log("in init");
     checkFirstLaunch().then(
@@ -47,8 +51,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<AppProvider>().setScreenWidth(context);
-    context.read<AppProvider>().setScreenHeight(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -104,14 +106,13 @@ class _SplashScreenState extends State<SplashScreen> {
     if (FirebaseAuth.instance.currentUser != null) {
       log("IS EMAIL VERIF : ${FirebaseAuth.instance.currentUser!.emailVerified}");
     }
-    
 
     log(isFirstLaunch.toString());
     if (isFirstLaunch == true) {
-      context.goNamed(RouteNames.getStarted);
+      context.goNamed(RouteNames.introLanguage);
+      // context.goNamed(RouteNames.getStarted);
     } else if (!loggedIn) {
       context.goNamed(RouteNames.signin);
-
     } else if (!FirebaseAuth.instance.currentUser!.emailVerified) {
       context.goNamed(RouteNames.signin);
     } else {

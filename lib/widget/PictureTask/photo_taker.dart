@@ -7,9 +7,9 @@ import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class PhotoTaker extends StatefulWidget {
-  final Function(bool,File?) isPhotoTaken;
+  final Function(bool, File?) isPhotoTaken;
   const PhotoTaker({super.key, required this.isPhotoTaken});
 
   @override
@@ -34,7 +34,7 @@ class _PhotoTakerState extends State<PhotoTaker> {
     setState(() {
       _selectedImage = null;
     });
-     widget.isPhotoTaken(false, null);
+    widget.isPhotoTaken(false, null);
   }
 
   @override
@@ -115,7 +115,7 @@ class _PhotoTakerState extends State<PhotoTaker> {
                             height: 10,
                           ),
                           Text(
-                            'Take a photo to preview',
+                            AppLocalizations.of(context)!.takePhotoToPreview,
                             style: getFontStyle(context).copyWith(
                                 color: const Color.fromARGB(125, 0, 0, 0),
                                 fontSize: 16),
@@ -129,7 +129,21 @@ class _PhotoTakerState extends State<PhotoTaker> {
                             height: 40,
                             fontSize: 16.5,
                             onPressed: _takeSelfie,
-                            text: "Take",
+                            text: AppLocalizations.of(context)!.take,
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          Icon(Icons.warning_rounded, color: Colors.orange.withOpacity(0.6),),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: Text(
+                                AppLocalizations.of(context)!.pleaseTakePortraitPhotos,
+                              textAlign: TextAlign.center,
+                              style: getFontStyle(context).copyWith(
+                                  color: const Color.fromARGB(225, 255, 153, 0).withOpacity(0.6),
+                                  fontSize: 16),
+                            ),
                           ),
                         ],
                       ),

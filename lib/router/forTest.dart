@@ -1,25 +1,38 @@
 // import 'dart:convert';
 // import 'dart:developer';
 // import 'dart:typed_data';
+// import 'package:animate_do/animate_do.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/material.dart';
 // import 'package:firebase_storage/firebase_storage.dart';
-// import 'package:flutter/widgets.dart';
 // import 'package:flutter_spinkit/flutter_spinkit.dart';
+// import 'package:go_router/go_router.dart';
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:http/http.dart' as http;
 // import 'package:illimited_app/constant/const.dart';
+// import 'package:illimited_app/providers/progress_provider.dart';
+// import 'package:illimited_app/utils/utils.dart';
 // import 'package:illimited_app/widget/primary_button.dart';
+// import 'package:just_audio/just_audio.dart';
 // import 'package:lottie/lottie.dart';
+// import 'package:provider/provider.dart';
 // import 'package:video_player/video_player.dart';
+// import 'package:percent_indicator/percent_indicator.dart';
 
-// class VideoGenerationScreen extends StatefulWidget {
+// class VideoGenerationTask extends StatefulWidget {
 //   final DocumentReference weekRef;
-
-//   VideoGenerationScreen({required this.weekRef});
+//   final Map<String, dynamic> taskData;
+//   final bool isLastDay;
+//   final bool isLastTask;
+//   VideoGenerationTask(
+//       {required this.weekRef,
+//       required this.taskData,
+//       required this.isLastDay,
+//       required this.isLastTask});
 
 //   @override
-//   _VideoGenerationScreenState createState() => _VideoGenerationScreenState();
+//   _VideoGenerationTaskState createState() => _VideoGenerationTaskState();
 // }
 
 // enum GeneratingStatus {
@@ -31,8 +44,16 @@
 //   completed
 // }
 
-// class _VideoGenerationScreenState extends State<VideoGenerationScreen>
-//     with SingleTickerProviderStateMixin {
+// class _VideoGenerationTaskState extends State<VideoGenerationTask>
+//     with TickerProviderStateMixin {
+//   late DocumentReference<Map<String, dynamic>> taskRef;
+//   late AnimationController _controller;
+//   final _soundPlayer = AudioPlayer();
+//   bool isTaskCompleted = false;
+//   bool isBtnEnabled = false;
+//   String btnText = "Done";
+//   Widget? btnIcon;
+//   //---------//
 //   late AnimationController _animationController;
 //   GeneratingStatus status = GeneratingStatus.idle;
 //   bool _loading = true;
@@ -43,25 +64,80 @@
 //   String progressText = "";
 //   bool isCompleted = false;
 
-//   // Video player controller
-//   VideoPlayerController? _controller;
+//   VideoPlayerController? _videoController;
+//   bool isVideoWatched = false;
 
 //   @override
 //   void initState() {
 //     super.initState();
+//     taskRef = FirebaseFirestore.instance
+//         .collection('users')
+//         .doc(FirebaseAuth.instance.currentUser!.uid)
+//         .collection('weeks')
+//         .doc(widget.taskData['weekKey'])
+//         .collection("days")
+//         .doc(widget.taskData['dayKey'])
+//         .collection('tasks')
+//         .doc(widget.taskData['taskNumber']);
+
 //     _animationController = AnimationController(vsync: this);
 //     _animationController.value = 0.15;
 //     _animationController.duration = const Duration(milliseconds: 1500);
+//     _soundPlayer.setAsset('assets/sounds/taskCompleted.mp3');
 //     _checkGeneratedVideoUrl();
 //   }
 
+//   Future<void> _completeTask() async {
+//     await taskRef.update({
+//       'isCompleted': true,
+//     });
+//     if (widget.isLastTask) {
+//       await context.read<UserProgressProvider>().currentDayRef!.update({
+//         'isCompleted': true,
+//       });
+//       if (widget.isLastDay) {
+//         await context.read<UserProgressProvider>().currentWeekRef!.update({
+//           'isCompleted': true,
+//         });
+//       }
+//     }
+//     return;
+//   }
+
 //   Future<void> _checkGeneratedVideoUrl() async {
+//     Map<String, dynamic>? task;
+//     try {
+//       var taskSnapshot = await taskRef.get();
+
+//       task = taskSnapshot.data();
+//     } catch (e) {
+//       log(e.toString());
+//     }
+//     if (task != null) {
+//       if (task['isCompleted']) {
+//         setState(() {
+//           btnText = "Completed";
+//           btnIcon = Image.asset(
+//             "assets/icon/check1.png",
+//             color: Colors.white,
+//           );
+//         });
+//       }
+//     }
+//     //----------//
 //     DocumentSnapshot doc = await widget.weekRef.get();
 
 //     if (doc.exists &&
 //         doc['generatedVideoUrl'] != null &&
 //         doc['generatedVideoUrl'].isNotEmpty) {
 //       setState(() {
+//         //------//
+//         // btnText = "Completed";
+//         // btnIcon = Image.asset(
+//         //   "assets/icon/check1.png",
+//         //   color: Colors.white,
+//         // );
+//         //------//
 //         generatedVideoUrl = doc['generatedVideoUrl'];
 //       });
 //       _initializeVideoPlayer(generatedVideoUrl!);
@@ -73,13 +149,21 @@
 //   }
 
 //   Future<void> _initializeVideoPlayer(String url) async {
-//     _controller = VideoPlayerController.network(url)
+//     _videoController = VideoPlayerController.network(url)
 //       ..initialize().then((_) {
 //         setState(() {
 //           isGenerating = false;
 //           _loading = false;
 //         }); // Ensure the video player UI updates
 //       });
+//     _videoController?.addListener(() {
+//       if (_videoController!.value.position ==
+//           _videoController!.value.duration) {
+//         setState(() {
+//           isVideoWatched = true;
+//         });
+//       }
+//     });
 //   }
 
 //   void _startVideoGeneration() async {
@@ -189,7 +273,11 @@
 //           {"clips": clips}
 //         ]
 //       },
-//       "output": {"format": "mp4", "resolution": "sd"}
+//       "output": {
+//         "format": "mp4",
+//         // "resolution": "mobile",
+//         "size": {"width": 720, "height": 1280}
+//       }
 //     };
 
 //     final response = await http.post(
@@ -249,6 +337,9 @@
 //       }
 //       setState(() {
 //         i = i + 4;
+//         if (i > 30) {
+//           i = 30;
+//         }
 //         progress = i / 30;
 //         percentage = "${(progress! * 100).truncate()}";
 //       });
@@ -303,7 +394,11 @@
 //     uploadTask.snapshotEvents.listen((snapshot) {
 //       setState(() {
 //         progress = snapshot.bytesTransferred / snapshot.totalBytes;
-//         percentage = "${(progress! * 100).truncate() > 100 ? 100 : (progress! * 100).truncate()}";
+//         if (progress! > 100) {
+//           percentage = "100";
+//         } else {
+//           percentage = "${(progress! * 100).truncate()}";
+//         }
 
 //         progressText = "Saving Your Video...";
 //       });
@@ -328,129 +423,230 @@
 
 //   @override
 //   Widget build(BuildContext context) {
+//     _controller = AnimationController(vsync: this);
+//     _controller.duration = Duration(milliseconds: 1800);
+//     _controller.forward();
 
 //     return Scaffold(
 //       backgroundColor: Colors.white,
 //       appBar: AppBar(
-//         title: Text("Video Generation"),
+//         foregroundColor: Colors.white,
+//         toolbarHeight: 80,
+//         backgroundColor: primaryColor,
+//         centerTitle: true,
+//         title: InkWell(
+//           child: Text(
+//             "BestOf Video",
+//             style:
+//                 GoogleFonts.roboto().copyWith(fontSize: 27, letterSpacing: 1.5),
+//           ),
+//         ),
 //       ),
-      
-//       body: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: _loading
-//             ? const Center(
-//                 child: SpinKitFoldingCube(
-//                   color: primaryColor,
-//                   size: 50.0,
-//                 ),
-//               )
-//             : Column(
-//                 crossAxisAlignment: CrossAxisAlignment.center,
-//                 children: [
-//                   if (generatedVideoUrl != null &&
-//                       _controller?.value.isInitialized == true)
-//                     Column(
-//                       children: [
-//                         AspectRatio(
-//                           aspectRatio: _controller!.value.aspectRatio,
-//                           child: VideoPlayer(_controller!),
-//                         ),
-//                         SizedBox(height: 10),
-//                         ElevatedButton(
-//                           onPressed: () {
-//                             setState(() {
-//                               _controller!.value.isPlaying
-//                                   ? _controller!.pause()
-//                                   : _controller!.play();
-//                             });
-//                           },
-//                           child: Icon(
-//                             _controller!.value.isPlaying
-//                                 ? Icons.pause
-//                                 : Icons.play_arrow,
-//                           ),
-//                         ),
-//                       ],
-//                     )
-//                   else if (!isGenerating &&
-//                       (_controller?.value.isInitialized == false ||
-//                           _controller?.value.isInitialized == null))
-//                     Column(
-//                       children: [
+//       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+//       floatingActionButton: PrimaryButton(
+//         icon: btnIcon,
+//         enabled: isVideoWatched && btnText != "Completed",
+//         borderRadius: 0,
+//         text: btnText,
+//         onPressed: () async {
+//           showUploadingContent(context);
+//           await _completeTask();
+
+//           setState(() {
+//             isTaskCompleted = true;
+//           });
+//           context.pop();
+//           await Future.delayed(
+//             const Duration(milliseconds: 800),
+//           );
+//           _soundPlayer.play();
+
+//           await Future.delayed(
+//             const Duration(milliseconds: 1400),
+//           );
+//           context.pop(true);
+//         },
+//       ),
+//       body: Stack(
+//         children: [
+//           _loading
+//               ? const Center(
+//                   child: SpinKitFoldingCube(
+//                     color: primaryColor,
+//                     size: 50.0,
+//                   ),
+//                 )
+//               : SingleChildScrollView(
+//                   child: Column(
+//                     crossAxisAlignment: CrossAxisAlignment.center,
+//                     children: [
+//                       if (generatedVideoUrl != null &&
+//                           _videoController?.value.isInitialized == true)
+//                         Stack(
+//                           children: [
+//                             Column(
+//                               children: [
+//                                 AspectRatio(
+//                                   aspectRatio:
+//                                       _videoController!.value.aspectRatio,
+//                                   child: VideoPlayer(_videoController!),
+//                                 ),
+//                               ],
+//                             ),
+//                             Positioned(
+//                               bottom: 50,
+//                               left: getScreenWidth(context) * 0.4,
+//                               right: getScreenWidth(context) * 0.4,
+//                               child: ElevatedButton(
+//                                 style: ElevatedButton.styleFrom(backgroundColor: primaryColor, foregroundColor: Colors.white),
+//                                 onPressed: () {
+//                                   setState(() {
+//                                     _videoController!.value.isPlaying
+//                                         ? _videoController!.pause()
+//                                         : _videoController!.play();
+//                                   });
+//                                 },
+//                                 child: Icon(
+//                                   _videoController!.value.isPlaying
+//                                       ? Icons.pause
+//                                       : Icons.play_arrow,
+//                                 ),
+//                               ),
+//                             ),
+//                           ],
+//                         )
+//                       else if (!isGenerating &&
+//                           (_videoController?.value.isInitialized == false ||
+//                               _videoController?.value.isInitialized == null))
 //                         Padding(
-//                           padding: const EdgeInsets.all(8.0),
-//                           child: Lottie.asset(
-//                             "assets/lottie/Gen_${status.name}.json",
-//                             repeat: false,
-//                             controller: _animationController..forward(),
+//                           padding: const EdgeInsets.all(16),
+//                           child: Column(
+//                             children: [
+//                               ZoomIn(
+//                                 child: Padding(
+//                                   padding: const EdgeInsets.all(8.0),
+//                                   child: Lottie.asset(
+//                                     "assets/lottie/Gen_${status.name}.json",
+//                                     repeat: false,
+//                                     controller: _animationController..forward(),
+//                                   ),
+//                                 ),
+//                               ),
+//                               Center(
+//                                 child: PrimaryButton(
+//                                     text: "Generate Video",
+//                                     onPressed: _startVideoGeneration),
+//                               ),
+//                             ],
 //                           ),
-//                         ),
-//                         Center(
-//                           child: PrimaryButton(
-//                               text: "Generate Video",
-//                               onPressed: _startVideoGeneration),
-//                         ),
-//                       ],
-//                     )
-//                   else
-//                     Column(
-//                       children: [
-//                         SizedBox(
-//                           height: 400,
-//                           child: Padding(
-//                             padding: EdgeInsets.all(
-//                                 status == GeneratingStatus.processing
-//                                     ? 40
-//                                     : status == GeneratingStatus.saving
-//                                         ? 90
-//                                         : 0),
-//                             child: Lottie.asset(
-//                               "assets/lottie/Gen_${status.name}.json",
-//                             ),
-//                           ),
-//                         ),
+//                         )
+//                       else
+//                         Padding(
+//                           padding: const EdgeInsets.all(16),
+//                           child: Column(
+//                             children: [
+//                               Text(
+//                                 progressText,
+//                                 style: GoogleFonts.roboto(
+//                                     color: Colors.black.withOpacity(0.75),
+//                                     fontSize: 25),
+//                               ),
+//                               ZoomIn(
+//                                 child: SizedBox(
+//                                   height: 400,
+//                                   child: Padding(
+//                                     padding: EdgeInsets.all(
+//                                         status == GeneratingStatus.processing
+//                                             ? 40
+//                                             : status == GeneratingStatus.saving
+//                                                 ? 90
+//                                                 : 0),
+//                                     child: Lottie.asset(
+//                                       "assets/lottie/Gen_${status.name}.json",
+//                                     ),
+//                                   ),
+//                                 ),
+//                               ),
 
-//                         // const SizedBox(height: 25),
+//                               // const SizedBox(height: 25),
 
-//                         Align(
-//                           alignment: Alignment.bottomRight,
-//                           child: Text(
-//                             "$percentage%",
-//                             style: const TextStyle(
-//                               color: Colors.cyan,
-//                             ),
+//                               Padding(
+//                                 padding:
+//                                     const EdgeInsets.symmetric(horizontal: 12),
+//                                 child: Align(
+//                                   alignment: Alignment.bottomRight,
+//                                   child: Text(
+//                                     "$percentage%",
+//                                     style: const TextStyle(
+//                                       color: Colors.cyan,
+//                                     ),
+//                                   ),
+//                                 ),
+//                               ),
+//                               Padding(
+//                                 padding:
+//                                     const EdgeInsets.symmetric(horizontal: 12),
+//                                 child: LinearProgressIndicator(
+//                                   value: progress,
+//                                   color: Colors.cyan,
+//                                   minHeight: 30,
+//                                   borderRadius: BorderRadius.circular(20),
+//                                 ),
+//                               ),
+
+//                               isCompleted
+//                                   ? const SizedBox(
+//                                       width: 40,
+//                                       height: 40,
+//                                       child: CircularProgressIndicator(),
+//                                     )
+//                                   : Container(),
+//                               SizedBox(
+//                                 height: 30,
+//                               ),
+//                               Text(
+//                                 "Please Do NOT Exit the Application",
+//                                 textAlign: TextAlign.center,
+//                                 style: GoogleFonts.roboto(
+//                                     color: errorColor.withOpacity(0.5),
+//                                     fontSize: 20),
+//                               ),
+//                             ],
 //                           ),
 //                         ),
-//                         LinearProgressIndicator(
-//                           value: progress,
-//                           color: Colors.cyan,
-//                           minHeight: 20,
-//                           borderRadius: BorderRadius.circular(20),
-//                         ),
-//                         Text(
-//                           progressText,
-//                           style: GoogleFonts.roboto(
-//                               color: Colors.black.withOpacity(0.75),
-//                               fontSize: 21),
-//                         ),
-//                         isCompleted
-//                             ? const SizedBox(
-//                                 width: 40,
-//                                 height: 40,
-//                                 child: CircularProgressIndicator(),
-//                               )
-//                             : Container()
-//                       ],
+//                     ],
+//                   ),
+//                 ),
+//           Visibility(
+//             visible: isTaskCompleted,
+//             child: Positioned.fill(
+//               child: Container(
+//                 color: Colors.black.withOpacity(0.5),
+//                 child: Center(
+//                   child: Center(
+//                     child: SizedBox(
+//                       width: 250,
+//                       child: Lottie.asset(
+//                         "assets/lottie/taskChecked.json",
+//                         repeat: false,
+//                         controller: _controller,
+//                       ),
 //                     ),
-//                 ],
+//                   ),
+//                 ),
 //               ),
+//             ),
+//           ),
+//         ],
 //       ),
 //     );
 //   }
 
 //   @override
 //   void dispose() {
-//     _controller?.dispose();
+//     _videoController?.dispose();
+//     _soundPlayer.dispose();
+//     _controller.dispose();
 //     super.dispose();
 //   }
 // }

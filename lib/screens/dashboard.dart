@@ -11,6 +11,7 @@ import 'package:illimited_app/models/number_sequence.dart';
 import 'package:illimited_app/providers/app_provider.dart';
 import 'package:illimited_app/providers/progress_provider.dart';
 import 'package:illimited_app/router/router_names.dart';
+import 'package:illimited_app/screens/video_generation_screen.dart';
 import 'package:illimited_app/services/user_repository.dart';
 import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/end_drawer.dart';
@@ -19,6 +20,7 @@ import 'package:illimited_app/widget/progress_bar.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -82,6 +84,7 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
+    log("SCREEN WIDTH = $screenWidth");
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 222, 253, 221),
       endDrawer: const Drawer(child: EndDrawerContent()),
@@ -91,11 +94,9 @@ class _DashboardState extends State<Dashboard> {
         backgroundColor: primaryColor,
         centerTitle: true,
         title: InkWell(
-          onTap: () {
-            
-          },
+          onTap: () {},
           child: Text(
-            'Weeks',
+            AppLocalizations.of(context)!.weeks,
             style:
                 GoogleFonts.roboto().copyWith(fontSize: 27, letterSpacing: 1.5),
           ),
@@ -117,11 +118,11 @@ class _DashboardState extends State<Dashboard> {
             }
 
             if (!snapshot.hasData) {
-              return const Center(
+              return Center(
                 child: SizedBox(
                   height: 150,
                   width: 150,
-                  child: Text("Error loading data"),
+                  child: Text(AppLocalizations.of(context)!.errorLoadingData),
                 ),
               );
             }
@@ -146,13 +147,8 @@ class _DashboardState extends State<Dashboard> {
                   (week['unlockedTime'] as Timestamp).toDate();
               bool isCompleted = week['isCompleted'];
               Status status;
-              log("WEEK $i isCompleted = $isCompleted");
               if (isCompleted) {
-                log("In iCompleted");
-                log("nbCompletedWeeks = $nbCompletedWeeks");
                 nbCompletedWeeks++;
-                log("AFTER ++ ITS : nbCompletedWeeks = $nbCompletedWeeks");
-
                 status = Status.completed;
               } else if (serverTime.isAfter(unlockTime)) {
                 bool isNotified = week['isNotified'];
@@ -214,13 +210,11 @@ class _DashboardState extends State<Dashboard> {
               delay = delay + 100;
             }
 
-            log("COMPLETED WEEKS $nbCompletedWeeks");
-            log("lastWeekUnlocked WEEKS $lastWeekUnlocked");
             if (lastWeekUnlocked != 0) {
-              log("in NOTIFIYING ABOUT WEEK : $lastWeekUnlocked");
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 showLevelUnlocked(context: context, nb: lastWeekUnlocked);
                 lastWeekUnlocked = 0;
+                _refreshData();
               });
             }
 
@@ -241,15 +235,87 @@ class _DashboardState extends State<Dashboard> {
                                   child: ProgressBar(
                                     height: 35,
                                     margin: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 10),
+                                        horizontal: 10, vertical: 10),
                                     percent: getPercentage(nbCompletedWeeks),
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 15, bottom: 7),
-                                  child: Image.asset("assets/icon/trophy.png",
-                                      width: 40),
+                                InkWell(
+                                  onTap: () {
+                                    Locale currentLocale =
+                                        Localizations.localeOf(context);
+                                    String languageCode =
+                                        currentLocale.languageCode;
+                                    log("$languageCode");
+                                    // assignPhotoUrlsToTasks().then(
+                                    //   (value) {
+                                    //     showDialog(
+                                    //       context: context,
+                                    //       builder: (BuildContext context) {
+                                    //         return AlertDialog(
+                                    //           content: Column(
+                                    //             mainAxisSize: MainAxisSize.min,
+                                    //             children: [
+                                    //               Container(
+                                    //                 color: Colors.white,
+                                    //                 // height: 700,
+                                    //                 // width: 700,
+                                    //                 child: Center(
+                                    //                   child: Text(
+                                    //                     "DONE",
+                                    //                     style: getFontStyle(
+                                    //                             context)
+                                    //                         .copyWith(
+                                    //                             color: Colors
+                                    //                                 .black),
+                                    //                   ),
+                                    //                 ),
+                                    //               ),
+                                    //             ],
+                                    //           ),
+                                    //         );
+                                    //       },
+                                    //     );
+                                    //   },
+                                    // ).onError(
+                                    //   (error, stackTrace) {
+                                    //     showDialog(
+                                    //       context: context,
+                                    //       builder: (BuildContext context) {
+                                    //         return AlertDialog(
+                                    //           content: Column(
+                                    //             mainAxisSize: MainAxisSize.min,
+                                    //             children: [
+                                    //               Container(
+                                    //                 color: Colors.white,
+                                    //                 // height: 700,
+                                    //                 // width: 700,
+                                    //                 child: Center(
+                                    //                   child: Text(
+                                    //                     "DONE",
+                                    //                     style: getFontStyle(
+                                    //                             context)
+                                    //                         .copyWith(
+                                    //                             color: Colors
+                                    //                                 .black),
+                                    //                   ),
+                                    //                 ),
+                                    //               ),
+                                    //             ],
+                                    //           ),
+                                    //         );
+                                    //       },
+                                    //     );
+                                    //   },
+                                    // );
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 5,
+                                      vertical: 7,
+                                    ),
+                                    child: Image.asset("assets/icon/trophy.png",
+                                        width: 40),
+                                  ),
                                 ),
                               ],
                             ),
@@ -311,9 +377,7 @@ class _DashboardState extends State<Dashboard> {
   }
 
   double getPercentage(int nbWeeks) {
-    log("IN GET_PERCENTAGE : ");
     if (nbWeeks == 0) {
-      log("returning 0");
       return 0;
     } else {
       double percentage = (nbWeeks / 8) * 100;
