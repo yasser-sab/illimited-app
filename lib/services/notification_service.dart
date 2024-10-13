@@ -1,4 +1,3 @@
-
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -91,7 +90,7 @@ class NotificationService {
       largeIcon: DrawableResourceAndroidBitmap(
         '@mipmap/launcher_icon',
       ),
-      
+
       fullScreenIntent: true,
       enableVibration: true,
     );
@@ -123,7 +122,7 @@ class NotificationService {
       largeIcon: DrawableResourceAndroidBitmap(
         '@mipmap/launcher_icon',
       ),
-      
+
       fullScreenIntent: true,
       enableVibration: true,
     );
@@ -132,19 +131,22 @@ class NotificationService {
         NotificationDetails(android: androidDetails);
 
     var scheduledDate;
+    final now = tz.TZDateTime.now(tz.local);
 
     if (isItNow) {
-      final now = tz.TZDateTime.now(tz.local);
-      scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day, 10);
+      scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day, 9);
     } else {
-      final now = tz.TZDateTime.now(tz.local);
       scheduledDate = tz.TZDateTime(
         tz.local,
         now.year,
         now.month,
         now.day + 1, // Move to the next day
-        10, // 10 AM
+        9, // 10 AM
       );
+    }
+
+    if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
 
     await flutterLocalNotificationsPlugin
@@ -183,7 +185,7 @@ class NotificationService {
       largeIcon: DrawableResourceAndroidBitmap(
         '@mipmap/launcher_icon',
       ),
-      
+
       fullScreenIntent: true,
       enableVibration: true,
     );
@@ -192,19 +194,22 @@ class NotificationService {
         NotificationDetails(android: androidDetails);
 
     var scheduledDate;
+    final now = tz.TZDateTime.now(tz.local);
 
     if (isItNow) {
-      final now = tz.TZDateTime.now(tz.local);
-      scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day, 14);
+      scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day, 13);
     } else {
-      final now = tz.TZDateTime.now(tz.local);
       scheduledDate = tz.TZDateTime(
         tz.local,
         now.year,
         now.month,
         now.day + 1, // Move to the next day
-        14, // 10 AM
+        13, // 10 AM
       );
+    }
+
+    if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
 
     await flutterLocalNotificationsPlugin
@@ -242,7 +247,7 @@ class NotificationService {
       largeIcon: DrawableResourceAndroidBitmap(
         '@mipmap/launcher_icon',
       ),
-      
+
       fullScreenIntent: true,
       enableVibration: true,
     );
@@ -251,19 +256,21 @@ class NotificationService {
         NotificationDetails(android: androidDetails);
 
     var scheduledDate;
-
+    final now = tz.TZDateTime.now(tz.local);
     if (isItNow) {
-      final now = tz.TZDateTime.now(tz.local);
-      scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day, 19);
+      scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day, 18);
     } else {
-      final now = tz.TZDateTime.now(tz.local);
       scheduledDate = tz.TZDateTime(
         tz.local,
         now.year,
         now.month,
         now.day + 1, // Move to the next day
-        19, // 10 AM
+        18, // 10 AM
       );
+    }
+
+    if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
 
     await flutterLocalNotificationsPlugin
@@ -303,7 +310,7 @@ class NotificationService {
       largeIcon: DrawableResourceAndroidBitmap(
         '@mipmap/launcher_icon',
       ),
-      
+
       fullScreenIntent: true,
       enableVibration: true,
     );
@@ -313,7 +320,11 @@ class NotificationService {
 
     final now = tz.TZDateTime.now(tz.local);
     var scheduledDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, 8);
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, 7);
+
+    if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }
 
     await flutterLocalNotificationsPlugin
         .zonedSchedule(
@@ -420,7 +431,7 @@ class NotificationService {
       largeIcon: DrawableResourceAndroidBitmap(
         '@mipmap/launcher_icon',
       ),
-      
+
       fullScreenIntent: true,
       enableVibration: true,
     );
@@ -430,7 +441,11 @@ class NotificationService {
 
     final now = tz.TZDateTime.now(tz.local);
     var scheduledDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, 21);
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, 20);
+
+    if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }
 
     await flutterLocalNotificationsPlugin
         .zonedSchedule(

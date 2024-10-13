@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
 
     // NotificationService()
     //     .instantNotification(title: "adsuhjk", description: "dasjlkas");
-    NotificationService().schedulTest();
+    // NotificationService().schedulTest();
 
     return MaterialApp.router(
       routerConfig: router,
