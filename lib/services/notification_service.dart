@@ -46,11 +46,11 @@ class NotificationService {
 
   Future<void> init() async {
     tz.initializeTimeZones();
-    tz.setLocalLocation(tz.getLocation('America/Toronto'));
+    // tz.setLocalLocation(tz.getLocation('America/Toronto'));
     // await Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
 
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/launcher_icon');
+        AndroidInitializationSettings('@mipmap/ic_launcher');
 
     const InitializationSettings initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);
