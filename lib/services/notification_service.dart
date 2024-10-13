@@ -1,14 +1,7 @@
-import 'dart:ffi';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:illimited_app/router/router_names.dart';
-import 'package:illimited_app/screens/dashboard.dart';
-import 'package:illimited_app/widget/PictureTask/photo_task.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/timezone.dart';
 
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
@@ -50,7 +43,7 @@ class NotificationService {
     // await Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
 
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+        AndroidInitializationSettings('@mipmap/ic_notification');
 
     const InitializationSettings initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);
@@ -98,7 +91,7 @@ class NotificationService {
       largeIcon: DrawableResourceAndroidBitmap(
         '@mipmap/launcher_icon',
       ),
-      icon: '@mipmap/launcher_icon',
+      
       fullScreenIntent: true,
       enableVibration: true,
     );
@@ -130,7 +123,7 @@ class NotificationService {
       largeIcon: DrawableResourceAndroidBitmap(
         '@mipmap/launcher_icon',
       ),
-      icon: '@mipmap/launcher_icon',
+      
       fullScreenIntent: true,
       enableVibration: true,
     );
@@ -190,7 +183,7 @@ class NotificationService {
       largeIcon: DrawableResourceAndroidBitmap(
         '@mipmap/launcher_icon',
       ),
-      icon: '@mipmap/launcher_icon',
+      
       fullScreenIntent: true,
       enableVibration: true,
     );
@@ -249,7 +242,7 @@ class NotificationService {
       largeIcon: DrawableResourceAndroidBitmap(
         '@mipmap/launcher_icon',
       ),
-      icon: '@mipmap/launcher_icon',
+      
       fullScreenIntent: true,
       enableVibration: true,
     );
@@ -310,7 +303,7 @@ class NotificationService {
       largeIcon: DrawableResourceAndroidBitmap(
         '@mipmap/launcher_icon',
       ),
-      icon: '@mipmap/launcher_icon',
+      
       fullScreenIntent: true,
       enableVibration: true,
     );
@@ -362,7 +355,7 @@ class NotificationService {
       largeIcon: DrawableResourceAndroidBitmap(
         '@mipmap/launcher_icon',
       ),
-      icon: '@mipmap/launcher_icon',
+      // icon: '@mipmap/ic_notification',
       fullScreenIntent: true,
       enableVibration: true,
     );
@@ -427,7 +420,7 @@ class NotificationService {
       largeIcon: DrawableResourceAndroidBitmap(
         '@mipmap/launcher_icon',
       ),
-      icon: '@mipmap/launcher_icon',
+      
       fullScreenIntent: true,
       enableVibration: true,
     );

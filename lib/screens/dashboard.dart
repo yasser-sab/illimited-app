@@ -17,6 +17,7 @@ import 'package:illimited_app/widget/end_drawer.dart';
 import 'package:illimited_app/widget/levelsButton.dart';
 import 'package:illimited_app/widget/progress_bar.dart';
 import 'package:lottie/lottie.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -32,10 +33,32 @@ class _DashboardState extends State<Dashboard> {
   late double screenWidth;
   @override
   void initState() {
+    requestPermission();
     screenWidth = context.read<AppProvider>().screenWidth;
     super.initState();
     _futureData =
         getUserWeeksWithServerTime(FirebaseAuth.instance.currentUser!.uid);
+  }
+
+  void requestPermission() async {
+    var status = await Permission.notification.status;
+    if (status.isDenied) {
+      log("DENIED, Requesting...");
+      Permission.notification.request().then(
+        (value) {
+          log(value.name);
+        },
+      );
+    }
+    if (status.isRestricted) {
+      log("REESTRICTED");
+    }
+    if (status.isGranted) {
+      log("GRANTED");
+    }
+    if (status.isPermanentlyDenied) {
+      log("PermanentlyDenied");
+    }
   }
 
   Future<Map<String, dynamic>> getUserWeeksWithServerTime(String userId) async {
@@ -91,9 +114,7 @@ class _DashboardState extends State<Dashboard> {
         backgroundColor: primaryColor,
         centerTitle: true,
         title: InkWell(
-          onTap: () {
-            
-          },
+          onTap: () {},
           child: Text(
             'Weeks',
             style:
