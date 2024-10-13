@@ -378,6 +378,41 @@ class NotificationService {
     );
   }
 
+  Future<void> schedulTest() async {
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+      'night_channel_id', // Unique channel ID
+      'Night Notifications', // Channel namec
+      importance: Importance.max,
+      priority: Priority.high,
+      playSound: true,
+      visibility: NotificationVisibility.public,
+      largeIcon: DrawableResourceAndroidBitmap(
+        '@mipmap/launcher_icon',
+      ),
+      icon: '@mipmap/launcher_icon',
+      fullScreenIntent: true,
+      enableVibration: true,
+    );
+
+    final now = tz.TZDateTime.now(tz.local);
+    var scheduledDate =
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, 10, 15);
+
+    const NotificationDetails platformDetails =
+        NotificationDetails(android: androidDetails);
+
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      1,
+      'Good Evening 🌙',
+      'The night is calm and full of possibilities! 🌟 How about wrapping up your day with a little progress on your challenges? Let’s finish strong! 💪😊',
+      scheduledDate,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      platformDetails,
+    );
+  }
+
   Future<void> scheduleNightNotification() async {
     // Android notification details with high priority
 
