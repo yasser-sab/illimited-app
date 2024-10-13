@@ -57,13 +57,7 @@ class _QuestionState extends State<Question> {
       UserRepository().update(userData).then((value) {
         log("USER UPDATED!");
         // schedule task reminder notification if not finished
-        NotificationService().scheduleMorningNotification();
-        NotificationService().scheduleNightNotification();
-        NotificationService()
-            .schedulePeriodicAfternoonNotification(isItNow: true);
-        NotificationService()
-            .schedulePeriodiceveningNotification(isItNow: true);
-        NotificationService().schedulePeriodicedustNotification(isItNow: true);
+
       }).catchError((onError) {
         log("error while updating user !!");
       });

@@ -3,6 +3,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,6 +12,7 @@ import 'package:illimited_app/models/number_sequence.dart';
 import 'package:illimited_app/providers/app_provider.dart';
 import 'package:illimited_app/providers/progress_provider.dart';
 import 'package:illimited_app/router/router_names.dart';
+import 'package:illimited_app/services/notification_service.dart';
 import 'package:illimited_app/services/user_repository.dart';
 import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/end_drawer.dart';
@@ -20,6 +22,7 @@ import 'package:lottie/lottie.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -38,6 +41,38 @@ class _DashboardState extends State<Dashboard> {
     super.initState();
     _futureData =
         getUserWeeksWithServerTime(FirebaseAuth.instance.currentUser!.uid);
+    checkNotificationScheduling().then(
+      (idSheduled) {
+        if (!idSheduled!) {
+          log("NOT SCHEDULED, SCHEDULING...");
+          NotificationService().scheduleMorningNotification();
+          NotificationService().scheduleNightNotification();
+          NotificationService()
+              .schedulePeriodicAfternoonNotification(isItNow: true);
+          NotificationService()
+              .schedulePeriodiceveningNotification(isItNow: true);
+          NotificationService()
+              .schedulePeriodicedustNotification(isItNow: true);
+          setNotificationScheduled().then(
+            (value) {
+              log("SCHEDULED!!");
+            },
+          );
+        } else {
+          log("SCHEDULED");
+        }
+      },
+    );
+  }
+
+  Future<void> setNotificationScheduled() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool("isScheduled", true);
+  }
+
+  Future<bool?> checkNotificationScheduling() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool("isScheduled") ?? false;
   }
 
   void requestPermission() async {
@@ -266,11 +301,21 @@ class _DashboardState extends State<Dashboard> {
                                     percent: getPercentage(nbCompletedWeeks),
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 15, bottom: 7),
-                                  child: Image.asset("assets/icon/trophy.png",
-                                      width: 40),
+                                InkWell(
+                                  onTap: () async {
+                                    // FlutterLocalNotificationsPlugin
+                                    //     flutterLocalNotificationsPlugin =
+                                    //     NotificationService()
+                                    //         .flutterLocalNotificationsPlugin;
+                                    // await flutterLocalNotificationsPlugin
+                                    //     .cancelAll();
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 15, bottom: 7),
+                                    child: Image.asset("assets/icon/trophy.png",
+                                        width: 40),
+                                  ),
                                 ),
                               ],
                             ),
@@ -290,7 +335,8 @@ class _DashboardState extends State<Dashboard> {
                               child: SizedBox(
                                 height: 220,
                                 width: 220,
-                                child: Lottie.asset("assets/lottie/bird.json"),
+                                child:
+                                    Lottie.asset("assets/lottie/bird.json"),
                               ),
                             ),
                           ),
@@ -300,7 +346,8 @@ class _DashboardState extends State<Dashboard> {
                             child: SizedBox(
                               height: 280,
                               width: 280,
-                              child: Lottie.asset("assets/lottie/birds9.json"),
+                              child:
+                                  Lottie.asset("assets/lottie/birds9.json"),
                             ),
                           ),
                           Positioned(
@@ -311,8 +358,8 @@ class _DashboardState extends State<Dashboard> {
                               child: SizedBox(
                                 height: 350,
                                 width: 350,
-                                child:
-                                    Lottie.asset("assets/lottie/birds10.json"),
+                                child: Lottie.asset(
+                                    "assets/lottie/birds10.json"),
                               ),
                             ),
                           ),
