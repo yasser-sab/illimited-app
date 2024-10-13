@@ -8,7 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/providers/app_provider.dart';
 import 'package:illimited_app/router/router_names.dart';
-import 'package:illimited_app/services/authentication_service.dart';
+import 'package:illimited_app/services/notification_service.dart';
 import 'package:illimited_app/services/user_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';

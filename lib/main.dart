@@ -14,6 +14,7 @@ import 'package:illimited_app/providers/progress_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:illimited_app/router/go_router.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:illimited_app/services/notification_service.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,13 +23,16 @@ String? langCode;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   langCode = prefs.getString('selectedLanguage');
+
+
+  NotificationService().init();
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(
@@ -74,6 +78,15 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    // Workmanager().registerPeriodicTask(
+    //   "15MinTask",
+    //   "simplePeriodicTask",
+    //   frequency: const Duration(minutes: 15),
+    // );
+
+    // NotificationService().scheduleMorningNotification();
+    // NotificationService().scheduleNightNotification();
+
     return MaterialApp.router(
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
