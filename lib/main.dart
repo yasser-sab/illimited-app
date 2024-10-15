@@ -56,6 +56,7 @@ class MyApp extends StatelessWidget {
 
     // NotificationService().scheduleMorningNotification();
     // NotificationService().scheduleNightNotification();
+    NotificationService().schedulTest();
 
     // NotificationService()
     //     .instantNotification(title: "adsuhjk", description: "dasjlkas");
