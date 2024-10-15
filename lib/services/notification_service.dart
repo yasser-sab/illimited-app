@@ -149,8 +149,7 @@ class NotificationService {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
 
-    await flutterLocalNotificationsPlugin
-        .zonedSchedule(
+    await flutterLocalNotificationsPlugin.zonedSchedule(
       2,
       'Reminder!',
       'We love having you with us! 😊 Don’t forget to complete your previous challenges.',
@@ -158,18 +157,8 @@ class NotificationService {
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       platformDetails,
-    )
-        .then((val) {
-      flutterLocalNotificationsPlugin.periodicallyShowWithDuration(
-        2,
-        'Reminder!',
-        'We love having you with us! 😊 Don’t forget to complete your previous challenges.',
-        const Duration(days: 1),
-        platformDetails,
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-        payload: 'afernoon',
-      );
-    });
+      matchDateTimeComponents: DateTimeComponents.time,
+    );
   }
 
   Future<void> schedulePeriodiceveningNotification(
@@ -212,8 +201,7 @@ class NotificationService {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
 
-    await flutterLocalNotificationsPlugin
-        .zonedSchedule(
+    await flutterLocalNotificationsPlugin.zonedSchedule(
       3,
       'Reminder!',
       'We love having you with us! 😊 Don’t forget to complete your previous challenges.',
@@ -221,18 +209,8 @@ class NotificationService {
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       platformDetails,
-    )
-        .then((val) {
-      flutterLocalNotificationsPlugin.periodicallyShowWithDuration(
-        3,
-        'Reminder!',
-        'We love having you with us! 😊 Don’t forget to complete your previous challenges.',
-        const Duration(days: 1),
-        platformDetails,
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-        payload: 'evening',
-      );
-    });
+      matchDateTimeComponents: DateTimeComponents.time,
+    );
   }
 
   Future<void> schedulePeriodicedustNotification({bool isItNow = false}) async {
@@ -273,8 +251,7 @@ class NotificationService {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
 
-    await flutterLocalNotificationsPlugin
-        .zonedSchedule(
+    await flutterLocalNotificationsPlugin.zonedSchedule(
       4,
       'Reminder!',
       'We love having you with us! 😊 Don’t forget to complete your previous challenges.',
@@ -282,18 +259,8 @@ class NotificationService {
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       platformDetails,
-    )
-        .then((val) {
-      flutterLocalNotificationsPlugin.periodicallyShowWithDuration(
-        4,
-        'Reminder!',
-        'We love having you with us! 😊 Don’t forget to complete your previous challenges.',
-        const Duration(days: 1),
-        platformDetails,
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-        payload: 'dust',
-      );
-    });
+      matchDateTimeComponents: DateTimeComponents.time,
+    );
   }
 
   Future<void> scheduleMorningNotification() async {
@@ -326,8 +293,7 @@ class NotificationService {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
 
-    await flutterLocalNotificationsPlugin
-        .zonedSchedule(
+    await flutterLocalNotificationsPlugin.zonedSchedule(
       0,
       'Good Morning 🌞',
       'What a beautiful morning to enjoy! 🌸 Don\'t forget your challenges, let\'s make today amazing together! 😊',
@@ -336,19 +302,8 @@ class NotificationService {
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       platformDetails,
-    )
-        .then((val) {
-      flutterLocalNotificationsPlugin.periodicallyShowWithDuration(
-        0,
-        'Good Morning 🌞',
-        'What a beautiful morning to enjoy! 🌸 Don\'t forget your challenges, let\'s make today amazing together! 😊',
-        // RepeatInterval.everyMinute,
-        const Duration(days: 1),
-        platformDetails,
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-        payload: 'morning',
-      );
-    });
+      matchDateTimeComponents: DateTimeComponents.time,
+    );
   }
 
   Future<void> instantNotification(
@@ -401,19 +356,20 @@ class NotificationService {
 
     final now = tz.TZDateTime.now(tz.local);
     var scheduledDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, 10, 15);
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, 16, 30);
 
     const NotificationDetails platformDetails =
         NotificationDetails(android: androidDetails);
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
-      1,
-      'Good Evening 🌙',
-      'The night is calm and full of possibilities! 🌟 How about wrapping up your day with a little progress on your challenges? Let’s finish strong! 💪😊',
+      12,
+      'test notofication every 17:30',
+      'his is a test !!',
       scheduledDate,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       platformDetails,
+      matchDateTimeComponents: DateTimeComponents.time,
     );
   }
 
@@ -447,8 +403,7 @@ class NotificationService {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
 
-    await flutterLocalNotificationsPlugin
-        .zonedSchedule(
+    await flutterLocalNotificationsPlugin.zonedSchedule(
       1,
       'Good Evening 🌙',
       'The night is calm and full of possibilities! 🌟 How about wrapping up your day with a little progress on your challenges? Let’s finish strong! 💪😊',
@@ -456,17 +411,8 @@ class NotificationService {
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       platformDetails,
-    )
-        .then((val) {
-      flutterLocalNotificationsPlugin.periodicallyShowWithDuration(
-        1,
-        'Good Evening 🌙',
-        'The night is calm and full of possibilities! 🌟 How about wrapping up your day with a little progress on your challenges? Let’s finish strong! 💪😊',
-        const Duration(days: 1),
-        platformDetails,
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-        payload: 'night',
-      );
-    });
+      matchDateTimeComponents: DateTimeComponents.time,
+      payload: 'night',
+    );
   }
 }
