@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,6 +8,7 @@ import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/main.dart';
 import 'package:illimited_app/models/language.dart';
 import 'package:illimited_app/providers/language_provider.dart';
+import 'package:illimited_app/services/notification_service.dart';
 import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/language_button.dart';
 import 'package:illimited_app/widget/primary_button.dart';
@@ -25,9 +27,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
   @override
   void initState() {
     super.initState();
-     log(_currentLanguageCode);
-
-
+    log(_currentLanguageCode);
   }
 
   @override
@@ -51,8 +51,10 @@ class _LanguageScreenState extends State<LanguageScreen> {
         ),
         title: Text(
           AppLocalizations.of(context)!.changeLanguage,
-          style:
-              GoogleFonts.roboto().copyWith(fontSize: 27, letterSpacing: 1.5, ),
+          style: GoogleFonts.roboto().copyWith(
+            fontSize: 27,
+            letterSpacing: 1.5,
+          ),
         ),
       ),
       body: Padding(
@@ -66,10 +68,20 @@ class _LanguageScreenState extends State<LanguageScreen> {
                     return LanguageButton(
                       lang: lang,
                       onTap: () {
-                        setState(() {
+                        setState(() async {
                           languageProvider
                               .setSelectedLanguage(lang.languageCode);
                           MyApp.setLocale(context, Locale(lang.languageCode));
+                          if (FirebaseAuth.instance.currentUser != null) {
+                            await NotificationService()
+                                .cancelAllNotifications();
+                            await NotificationService()
+                                .scheduleMorningNotification(context);
+                            await NotificationService()
+                                .scheduleNightNotification(context);
+                            await NotificationService()
+                                .scheduleRemainders(context);
+                          }
                         });
                       },
                     );
@@ -82,7 +94,9 @@ class _LanguageScreenState extends State<LanguageScreen> {
               text: AppLocalizations.of(context)!.save,
               onPressed: () {
                 saveLanguage(context);
-                mySnackBar(context: context, message: AppLocalizations.of(context)!.languageSaved);
+                mySnackBar(
+                    context: context,
+                    message: AppLocalizations.of(context)!.languageSaved);
                 context.pop();
               },
             )

@@ -175,15 +175,10 @@ class _VideoTaskState extends State<VideoTask> with TickerProviderStateMixin {
           toolbarHeight: 80,
           backgroundColor: primaryColor,
           centerTitle: true,
-          title: InkWell(
-            onTap: () {
-              context.go(RouteNames.profile);
-            },
-            child: Text(
-              widget.taskData['title'],
-              style: GoogleFonts.roboto()
-                  .copyWith(fontSize: 27, letterSpacing: 1.5),
-            ),
+          title: Text(
+            widget.taskData['title'],
+            style: GoogleFonts.roboto()
+                .copyWith(fontSize: 27, letterSpacing: 1.5),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

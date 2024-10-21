@@ -13,6 +13,7 @@ import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/day_card.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class WeekDetails extends StatefulWidget {
   final CollectionReference<Map<String, dynamic>> weekDays;
   final int weekkey;
@@ -71,6 +72,9 @@ class _WeekDetailsState extends State<WeekDetails> {
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
+        if (didPop) {
+          return;
+        }
         context.read<UserProgressProvider>().setCurrentWeekRef(null);
         context.pop();
       },

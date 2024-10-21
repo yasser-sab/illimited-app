@@ -115,10 +115,7 @@ class _VideoGenerationTaskState extends State<VideoGenerationTask>
 
         if (context.read<UserProgressProvider>().currentWeekRef!.id == "8") {
           NotificationService().cancelAllNotifications();
-          NotificationService().instantNotification(
-            title: "Congratulation !",
-            description: "your plan is finished !",
-          );
+          NotificationService().instantNotification(context);
         }
       }
     }
