@@ -246,15 +246,10 @@ class PhotoTaskState extends State<PhotoTask> with TickerProviderStateMixin {
           toolbarHeight: 80,
           backgroundColor: primaryColor,
           centerTitle: true,
-          title: InkWell(
-            onTap: () async {
-              log("message");
-            },
-            child: Text(
-              widget.taskData['title'],
-              style: GoogleFonts.roboto()
-                  .copyWith(fontSize: 27, letterSpacing: 1.5),
-            ),
+          title: Text(
+            widget.taskData['title'],
+            style: GoogleFonts.roboto()
+                .copyWith(fontSize: 27, letterSpacing: 1.5),
           ),
         ),
         body: Stack(
@@ -414,21 +409,6 @@ class PhotoTaskState extends State<PhotoTask> with TickerProviderStateMixin {
                 ),
               ),
             ),
-            // Visibility(
-            //   visible: isCompleted,
-            //   child: Center(
-            //     child: Center(
-            //       child: SizedBox(
-            //         width: 250,
-            //         child: Lottie.asset(
-            //           "assets/lottie/taskChecked.json",
-            //           repeat: false,
-            //           controller: _controller,
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // )
           ],
         ),
       ),

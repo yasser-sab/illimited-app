@@ -267,26 +267,26 @@ class _QuoteTaskState extends State<QuoteTask> with TickerProviderStateMixin {
                 );
               },
             ),
-            // Visibility(
-            //   visible: isUploaded,
-            //   child: Positioned.fill(
-            //     child: Container(
-            //       color: Colors.black.withOpacity(0.5),
-            //       child: Center(
-            //         child: Center(
-            //           child: SizedBox(
-            //             width: 250,
-            //             child: Lottie.asset(
-            //               "assets/lottie/taskChecked.json",
-            //               repeat: false,
-            //               controller: _controller,
-            //             ),
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
+            Visibility(
+              visible: isUploaded,
+              child: Positioned.fill(
+                child: Container(
+                  color: Colors.black.withOpacity(0.5),
+                  child: Center(
+                    child: Center(
+                      child: SizedBox(
+                        width: 250,
+                        child: Lottie.asset(
+                          "assets/lottie/taskChecked.json",
+                          repeat: false,
+                          controller: _controller,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

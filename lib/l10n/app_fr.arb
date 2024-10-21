@@ -170,5 +170,13 @@
   "english": "Anglais",
   "french": "Français",
   "arabic": "Arabe",
-  "spanish": "Espagnol"
+  "spanish": "Espagnol",
+  "notifMorningTitle" : "Bonjour ☀",
+  "notifMorningDescription" : "Quelle belle matinée ! 🌸 N'oubliez pas vos défis pour rendre aujourd'hui incroyable ! 😊",
+  "notifRemainderTitle" : "Rappel !",
+  "notifRemainderDescription" : "Nous adorons vous avoir avec nous ! 😊 N'oubliez pas de terminer vos défis précédents.",
+  "notifEveningTitle" : "Bonsoir 🌙",
+  "notifEveningDescription" : "La nuit est paisible et pleine de promesses. 🌙 Peut-être peux-tu compléter tes tâches ? 😊",
+  "notifFinalTitle" : "Félicitations ! 🎉",
+  "notifFinalDescription" : "Vous l'avez fait tout seul, prouvant votre incroyable capacité. Nous sommes si fiers ! 😊"
 }

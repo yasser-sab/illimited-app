@@ -78,20 +78,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    // Workmanager().registerPeriodicTask(
-    //   "15MinTask",
-    //   "simplePeriodicTask",
-    //   frequency: const Duration(minutes: 15),
-    // );
-
-    // NotificationService().scheduleMorningNotification();
-    // NotificationService().scheduleNightNotification();
-    NotificationService().schedulTest();
-
-    // NotificationService()
-    //     .instantNotification(title: "adsuhjk", description: "dasjlkas");
-    // NotificationService().schedulTest();
-
     return MaterialApp.router(
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: AppLocalizations.localizationsDelegates,

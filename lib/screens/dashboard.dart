@@ -48,16 +48,9 @@ class _DashboardState extends State<Dashboard> {
         if (!idSheduled!) {
           log("NOT SCHEDULED, SCHEDULING...");
           await NotificationService().cancelAllNotifications();
-          await NotificationService().scheduleMorningNotification();
-          await NotificationService().scheduleNightNotification();
-          await NotificationService().scheduleRemainders();
-
-          // NotificationService()
-          //     .schedulePeriodicAfternoonNotification(isItNow: true);
-          // NotificationService()
-          //     .schedulePeriodiceveningNotification(isItNow: true);
-          // NotificationService()
-          //     .schedulePeriodicedustNotification(isItNow: true);
+          await NotificationService().scheduleMorningNotification(context);
+          await NotificationService().scheduleNightNotification(context);
+          await NotificationService().scheduleRemainders(context);
           setNotificationScheduled(true).then(
             (value) {
               log("SCHEDULED!!");
@@ -155,7 +148,47 @@ class _DashboardState extends State<Dashboard> {
         backgroundColor: primaryColor,
         centerTitle: true,
         title: InkWell(
-          onTap: () {},
+          onTap: () async {
+            FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+                NotificationService().flutterLocalNotificationsPlugin;
+
+            List<PendingNotificationRequest> lst =
+                await flutterLocalNotificationsPlugin
+                    .pendingNotificationRequests();
+
+            List<Widget> titles = [];
+            log("======================================");
+            for (var x in lst) {
+              log("Title = ${x.title}");
+              titles.add(
+                Text(
+                  x.title!,
+                  style: getFontStyle(context).copyWith(color: Colors.black),
+                ),
+              );
+            }
+            log("======================================");
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Pending Notifications'),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: titles,
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Close'),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
           child: Text(
             AppLocalizations.of(context)!.weeks,
             style:
@@ -300,21 +333,11 @@ class _DashboardState extends State<Dashboard> {
                                     percent: getPercentage(nbCompletedWeeks),
                                   ),
                                 ),
-                                InkWell(
-                                  onTap: () async {
-                                    // FlutterLocalNotificationsPlugin
-                                    //     flutterLocalNotificationsPlugin =
-                                    //     NotificationService()
-                                    //         .flutterLocalNotificationsPlugin;
-                                    // await flutterLocalNotificationsPlugin
-                                    //     .cancelAll();
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 15, bottom: 7),
-                                    child: Image.asset("assets/icon/trophy.png",
-                                        width: 40),
-                                  ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 15, bottom: 7),
+                                  child: Image.asset("assets/icon/trophy.png",
+                                      width: 40),
                                 ),
                               ],
                             ),
@@ -334,8 +357,7 @@ class _DashboardState extends State<Dashboard> {
                               child: SizedBox(
                                 height: 220,
                                 width: 220,
-                                child:
-                                    Lottie.asset("assets/lottie/bird.json"),
+                                child: Lottie.asset("assets/lottie/bird.json"),
                               ),
                             ),
                           ),
@@ -345,8 +367,7 @@ class _DashboardState extends State<Dashboard> {
                             child: SizedBox(
                               height: 280,
                               width: 280,
-                              child:
-                                  Lottie.asset("assets/lottie/birds9.json"),
+                              child: Lottie.asset("assets/lottie/birds9.json"),
                             ),
                           ),
                           Positioned(
@@ -357,8 +378,8 @@ class _DashboardState extends State<Dashboard> {
                               child: SizedBox(
                                 height: 350,
                                 width: 350,
-                                child: Lottie.asset(
-                                    "assets/lottie/birds10.json"),
+                                child:
+                                    Lottie.asset("assets/lottie/birds10.json"),
                               ),
                             ),
                           ),

@@ -82,8 +82,10 @@ class _DayDetailsState extends State<DayDetails> {
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
+        if (didPop) {
+          return;
+        }
         context.read<UserProgressProvider>().setCurrentDayRef(null);
-
         context.pop(true);
       },
       child: Scaffold(
@@ -94,8 +96,8 @@ class _DayDetailsState extends State<DayDetails> {
           centerTitle: true,
           title: Text(
             AppLocalizations.of(context)!.tasks,
-            style: GoogleFonts.roboto()
-                .copyWith(fontSize: 27, letterSpacing: 1.5),
+            style:
+                GoogleFonts.roboto().copyWith(fontSize: 27, letterSpacing: 1.5),
           ),
         ),
         body: RefreshIndicator(
@@ -159,7 +161,7 @@ class _DayDetailsState extends State<DayDetails> {
                     (tasksOf["week${widget.weekkey}"]!["day${widget.daykey}"]
                             ['tasks']["task${i + 1}"]["$languageCode"])
                         .cast<String, dynamic>();
-                    
+
                 localTaskData.addAll({
                   "weekKey": widget.weekkey.toString(),
                   "dayKey": widget.daykey.toString(),
