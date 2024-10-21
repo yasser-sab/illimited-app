@@ -3,7 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:illimited_app/models/sign_in_result.dart';
+import 'package:illimited_app/providers/logbook_provider.dart';
+import 'package:illimited_app/providers/progress_provider.dart';
+import 'package:illimited_app/providers/questions_provider.dart';
+import 'package:illimited_app/services/notification_service.dart';
 import 'package:illimited_app/widget/top_snackbar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -41,9 +46,18 @@ class AuthService {
       return null;
     }
   }
-
+  Future<void> setNotificationScheduled(bool val) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool("isScheduled", val);
+  }
   void signOut() async {
     try {
+      setNotificationScheduled(false);
+      NotificationService().cancelAllNotifications();
+      LogbookProvider().resetProvider();
+      UserProgressProvider().resetProvider();
+      QuestionProvider().resetProvider();
+
       await _auth.signOut();
       log("USER SIGNED OUT");
       googleSignIn.isSignedIn().then(

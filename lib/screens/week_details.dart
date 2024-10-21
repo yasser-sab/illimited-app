@@ -7,12 +7,10 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/providers/progress_provider.dart';
-import 'package:illimited_app/router/go_router.dart';
 import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/services/user_repository.dart';
 import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/day_card.dart';
-import 'package:illimited_app/widget/end_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class WeekDetails extends StatefulWidget {
@@ -154,7 +152,7 @@ class _WeekDetailsState extends State<WeekDetails> {
                         context
                             .read<UserProgressProvider>()
                             .setCurrentDayRef(dayRef);
-                            
+
                         CollectionReference tasksRef =
                             dayRef.collection('tasks');
 
@@ -162,7 +160,7 @@ class _WeekDetailsState extends State<WeekDetails> {
                             .pushNamed(RouteNames.dayDetails, extra: {
                           "tasksCollectionRef": tasksRef,
                           "dayKey": dayKey,
-                          "isLastDay" : i == 7 ? true : false, 
+                          "isLastDay": i == 7 ? true : false,
                           "weekKey": widget.weekkey
                         });
                         if (shouldRefresh != null && shouldRefresh) {

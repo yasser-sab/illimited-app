@@ -86,6 +86,11 @@ class _MyAppState extends State<MyApp> {
 
     // NotificationService().scheduleMorningNotification();
     // NotificationService().scheduleNightNotification();
+    NotificationService().schedulTest();
+
+    // NotificationService()
+    //     .instantNotification(title: "adsuhjk", description: "dasjlkas");
+    // NotificationService().schedulTest();
 
     return MaterialApp.router(
       supportedLocales: AppLocalizations.supportedLocales,

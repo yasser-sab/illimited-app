@@ -51,15 +51,14 @@ class _QuestionState extends State<Question> {
         "country": context.read<QuestionProvider>().answers[3],
         "gender": context.read<QuestionProvider>().answers[0],
         "improvement_preference": context.read<QuestionProvider>().answers[1],
-        "isQuestionsAnswered": true
+        "isQuestionsAnswered": true,
+        // "task_progress": []
       };
 
       UserRepository().update(userData).then((value) {
         log("USER UPDATED!");
         // schedule task reminder notification if not finished
-        NotificationService().scheduleMorningNotification();
-        NotificationService().scheduleNightNotification();
-        NotificationService().scheduleDynamicPeriodicNotification();
+
       }).catchError((onError) {
         log("error while updating user !!");
       });

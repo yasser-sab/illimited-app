@@ -3,6 +3,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,6 +12,7 @@ import 'package:illimited_app/models/number_sequence.dart';
 import 'package:illimited_app/providers/app_provider.dart';
 import 'package:illimited_app/providers/progress_provider.dart';
 import 'package:illimited_app/router/router_names.dart';
+import 'package:illimited_app/services/notification_service.dart';
 import 'package:illimited_app/screens/video_generation_screen.dart';
 import 'package:illimited_app/services/user_repository.dart';
 import 'package:illimited_app/utils/utils.dart';
@@ -18,8 +20,10 @@ import 'package:illimited_app/widget/end_drawer.dart';
 import 'package:illimited_app/widget/levelsButton.dart';
 import 'package:illimited_app/widget/progress_bar.dart';
 import 'package:lottie/lottie.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Dashboard extends StatefulWidget {
@@ -34,10 +38,67 @@ class _DashboardState extends State<Dashboard> {
   late double screenWidth;
   @override
   void initState() {
+    requestPermission();
     screenWidth = context.read<AppProvider>().screenWidth;
     super.initState();
     _futureData =
         getUserWeeksWithServerTime(FirebaseAuth.instance.currentUser!.uid);
+    checkNotificationScheduling().then(
+      (idSheduled) async {
+        if (!idSheduled!) {
+          log("NOT SCHEDULED, SCHEDULING...");
+          await NotificationService().cancelAllNotifications();
+          await NotificationService().scheduleMorningNotification();
+          await NotificationService().scheduleNightNotification();
+          await NotificationService().scheduleRemainders();
+
+          // NotificationService()
+          //     .schedulePeriodicAfternoonNotification(isItNow: true);
+          // NotificationService()
+          //     .schedulePeriodiceveningNotification(isItNow: true);
+          // NotificationService()
+          //     .schedulePeriodicedustNotification(isItNow: true);
+          setNotificationScheduled(true).then(
+            (value) {
+              log("SCHEDULED!!");
+            },
+          );
+        } else {
+          log("ALREADY SCHEDULED");
+        }
+      },
+    );
+  }
+
+  Future<void> setNotificationScheduled(bool val) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool("isScheduled", val);
+  }
+
+  Future<bool?> checkNotificationScheduling() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool("isScheduled") ?? false;
+  }
+
+  void requestPermission() async {
+    var status = await Permission.notification.status;
+    if (status.isDenied) {
+      log("DENIED, Requesting...");
+      Permission.notification.request().then(
+        (value) {
+          log(value.name);
+        },
+      );
+    }
+    if (status.isRestricted) {
+      log("REESTRICTED");
+    }
+    if (status.isGranted) {
+      log("GRANTED");
+    }
+    if (status.isPermanentlyDenied) {
+      log("PermanentlyDenied");
+    }
   }
 
   Future<Map<String, dynamic>> getUserWeeksWithServerTime(String userId) async {
@@ -240,79 +301,17 @@ class _DashboardState extends State<Dashboard> {
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: () {
-                                    Locale currentLocale =
-                                        Localizations.localeOf(context);
-                                    String languageCode =
-                                        currentLocale.languageCode;
-                                    log("$languageCode");
-                                    // assignPhotoUrlsToTasks().then(
-                                    //   (value) {
-                                    //     showDialog(
-                                    //       context: context,
-                                    //       builder: (BuildContext context) {
-                                    //         return AlertDialog(
-                                    //           content: Column(
-                                    //             mainAxisSize: MainAxisSize.min,
-                                    //             children: [
-                                    //               Container(
-                                    //                 color: Colors.white,
-                                    //                 // height: 700,
-                                    //                 // width: 700,
-                                    //                 child: Center(
-                                    //                   child: Text(
-                                    //                     "DONE",
-                                    //                     style: getFontStyle(
-                                    //                             context)
-                                    //                         .copyWith(
-                                    //                             color: Colors
-                                    //                                 .black),
-                                    //                   ),
-                                    //                 ),
-                                    //               ),
-                                    //             ],
-                                    //           ),
-                                    //         );
-                                    //       },
-                                    //     );
-                                    //   },
-                                    // ).onError(
-                                    //   (error, stackTrace) {
-                                    //     showDialog(
-                                    //       context: context,
-                                    //       builder: (BuildContext context) {
-                                    //         return AlertDialog(
-                                    //           content: Column(
-                                    //             mainAxisSize: MainAxisSize.min,
-                                    //             children: [
-                                    //               Container(
-                                    //                 color: Colors.white,
-                                    //                 // height: 700,
-                                    //                 // width: 700,
-                                    //                 child: Center(
-                                    //                   child: Text(
-                                    //                     "DONE",
-                                    //                     style: getFontStyle(
-                                    //                             context)
-                                    //                         .copyWith(
-                                    //                             color: Colors
-                                    //                                 .black),
-                                    //                   ),
-                                    //                 ),
-                                    //               ),
-                                    //             ],
-                                    //           ),
-                                    //         );
-                                    //       },
-                                    //     );
-                                    //   },
-                                    // );
+                                  onTap: () async {
+                                    // FlutterLocalNotificationsPlugin
+                                    //     flutterLocalNotificationsPlugin =
+                                    //     NotificationService()
+                                    //         .flutterLocalNotificationsPlugin;
+                                    // await flutterLocalNotificationsPlugin
+                                    //     .cancelAll();
                                   },
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 5,
-                                      vertical: 7,
-                                    ),
+                                    padding: const EdgeInsets.only(
+                                        right: 15, bottom: 7),
                                     child: Image.asset("assets/icon/trophy.png",
                                         width: 40),
                                   ),
@@ -335,7 +334,8 @@ class _DashboardState extends State<Dashboard> {
                               child: SizedBox(
                                 height: 220,
                                 width: 220,
-                                child: Lottie.asset("assets/lottie/bird.json"),
+                                child:
+                                    Lottie.asset("assets/lottie/bird.json"),
                               ),
                             ),
                           ),
@@ -345,7 +345,8 @@ class _DashboardState extends State<Dashboard> {
                             child: SizedBox(
                               height: 280,
                               width: 280,
-                              child: Lottie.asset("assets/lottie/birds9.json"),
+                              child:
+                                  Lottie.asset("assets/lottie/birds9.json"),
                             ),
                           ),
                           Positioned(
@@ -356,8 +357,8 @@ class _DashboardState extends State<Dashboard> {
                               child: SizedBox(
                                 height: 350,
                                 width: 350,
-                                child:
-                                    Lottie.asset("assets/lottie/birds10.json"),
+                                child: Lottie.asset(
+                                    "assets/lottie/birds10.json"),
                               ),
                             ),
                           ),

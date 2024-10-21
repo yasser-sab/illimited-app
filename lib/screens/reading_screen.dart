@@ -111,10 +111,12 @@ class _ReadingScreenState extends State<ReadingScreen>
     await taskRef.update({
       'isCompleted': true,
     });
+
     if (widget.isLastTask) {
       await context.read<UserProgressProvider>().currentDayRef!.update({
         'isCompleted': true,
       });
+
       if (widget.isLastDay) {
         await context.read<UserProgressProvider>().currentWeekRef!.update({
           'isCompleted': true,

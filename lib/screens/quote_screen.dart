@@ -11,6 +11,8 @@ import 'package:illimited_app/main.dart';
 import 'package:illimited_app/providers/logbook_provider.dart';
 import 'package:illimited_app/providers/progress_provider.dart';
 import 'package:illimited_app/router/router_names.dart';
+import 'package:illimited_app/services/notification_service.dart';
+import 'package:illimited_app/services/user_repository.dart';
 import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:just_audio/just_audio.dart';

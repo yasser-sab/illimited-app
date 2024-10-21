@@ -12,6 +12,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/providers/progress_provider.dart';
+import 'package:illimited_app/services/notification_service.dart';
+import 'package:illimited_app/services/user_repository.dart';
 import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:just_audio/just_audio.dart';
@@ -101,6 +103,7 @@ class _VideoGenerationTaskState extends State<VideoGenerationTask>
     await taskRef.update({
       'isCompleted': true,
     });
+
     if (widget.isLastTask) {
       await context.read<UserProgressProvider>().currentDayRef!.update({
         'isCompleted': true,
@@ -109,6 +112,14 @@ class _VideoGenerationTaskState extends State<VideoGenerationTask>
         await context.read<UserProgressProvider>().currentWeekRef!.update({
           'isCompleted': true,
         });
+
+        if (context.read<UserProgressProvider>().currentWeekRef!.id == "8") {
+          NotificationService().cancelAllNotifications();
+          NotificationService().instantNotification(
+            title: "Congratulation !",
+            description: "your plan is finished !",
+          );
+        }
       }
     }
     return;

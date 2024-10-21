@@ -214,6 +214,13 @@ class UserRepository {
     }
   }
 
+  Future<DocumentSnapshot<Map<String, dynamic>>> getUserData() async {
+    return await FirebaseFirestore.instance
+        .collection('users')
+        .doc(getUserUid())
+        .get();
+  }
+
   Future<void> setQuestionFlag(bool flag) async {
     final DocumentSnapshot<Map<String, dynamic>> userDoc =
         await FirebaseFirestore.instance

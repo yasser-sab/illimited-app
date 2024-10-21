@@ -70,6 +70,8 @@ dependencies:
   flutter_localization:
   flutter_local_notifications: ^17.2.3
   timezone: ^0.9.4
+  permission_handler: ^11.3.1
+  flutter_timezone: ^3.0.1
 
 
 

@@ -1,37 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'dart:developer';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:illimited_app/router/router_names.dart';
-import 'package:illimited_app/screens/dashboard.dart';
-import 'package:illimited_app/widget/PictureTask/photo_task.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/timezone.dart';
 
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
-  // static void callbackDispatcher(
-  //     FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) {
-  //   Workmanager().executeTask((task, inputData) async {
-  //     // Initialize notification
-  //     var androidDetails = const AndroidNotificationDetails(
-  //       'channelId',
-  //       'channelName',
-  //       importance: Importance.max,
-  //     );
-
-  //     var notificationDetails = NotificationDetails(android: androidDetails);
-
-  //     // Show notification
-  //     await flutterLocalNotificationsPlugin.show(
-  //       0,
-  //       'Hello!',
-  //       'This is your 15-minute notification',
-  //       notificationDetails,
-  //     );
-  //     return Future.value(true);
-  //   });
-  // }
 
   factory NotificationService() {
     return _instance;
@@ -44,51 +19,42 @@ class NotificationService {
 
   Future<void> init() async {
     tz.initializeTimeZones();
-    tz.setLocalLocation(tz.getLocation('America/Toronto'));
-    // await Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
+    final String currentTimeZone = await FlutterTimezone.getLocalTimezone();
+    tz.setLocalLocation(tz.getLocation(currentTimeZone));
 
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/launcher_icon');
+        AndroidInitializationSettings('@mipmap/ic_notification');
 
     const InitializationSettings initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);
 
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onDidReceiveNotificationResponse: _onDidReceiveNotificationResponse);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-  Future<void> _onDidReceiveNotificationResponse(
-      NotificationResponse response) async {
-    // if (_context != null) {
-    //   Navigator.of(_context!).push(
-    //     MaterialPageRoute(
-    //       builder: (context) => const Dashboard(),
-    //     ),
-    //   );
-    // }
-  }
-
-  // Future<List<PendingNotificationRequest>>
-  //     retrievePendingNotofications() async {
-  //   return await flutterLocalNotificationsPlugin.pendingNotificationRequests();
+  // Map<int, String> notifTimes = {};
+  // Map<int, String> getNotifsTimes() {
+  //   return notifTimes;
   // }
-
-  Future<void> updateNotificationById(int id) async {
-    await cancelNotificationById(id);
-    scheduleDynamicPeriodicNotification();
-  }
 
   Future<void> cancelNotificationById(int id) async {
     await flutterLocalNotificationsPlugin.cancel(id);
+    // notifTimes.remove(id);
   }
 
-  Future<void> scheduleDynamicPeriodicNotification() async {
-    // Android notification details with high priority
+  Future<void> cancelAllNotifications() async {
+    await flutterLocalNotificationsPlugin.cancelAll();
+    // notifTimes.clear();
+  }
 
+
+  Future<void> scheduleRemainders(
+
+      {bool isItNow = false}) async {
+    const times = [11,17];
     const AndroidNotificationDetails androidDetails =
         AndroidNotificationDetails(
-      'reminder_channel_id', // Unique channel ID
-      'Reminder Notifications', // Channel namec
+      'remainder_channel_id', // Unique channel ID
+      'Remainders Notifications', // Channel namec
       importance: Importance.max,
       priority: Priority.high,
       playSound: true,
@@ -96,23 +62,54 @@ class NotificationService {
       largeIcon: DrawableResourceAndroidBitmap(
         '@mipmap/launcher_icon',
       ),
-      icon: '@mipmap/launcher_icon',
-      fullScreenIntent: true,
       enableVibration: true,
     );
-
     const NotificationDetails platformDetails =
         NotificationDetails(android: androidDetails);
 
-    await flutterLocalNotificationsPlugin.periodicallyShowWithDuration(
-      2,
-      'Reminder!',
-      'We love having you with us! 😊 Don’t forget to complete your previous challenges.',
-      const Duration(hours: 5),
-      platformDetails,
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      payload: 'reminder',
-    );
+    for (var hour in times) {
+      tz.TZDateTime scheduledDate;
+
+      // if (isItNow) {
+      //   scheduledDate =
+      //       tz.TZDateTime(tz.local, now.year, now.month, now.day, hour);
+
+      //   if (scheduledDate.isBefore(now)) {
+      //     scheduledDate = scheduledDate.add(Duration(days: 1));
+      //   }
+      // } else {
+      //   scheduledDate = tz.TZDateTime(
+      //       tz.local, startDate!.year, startDate.month, startDate.day, hour);
+
+      //   tz.TZDateTime tzStartDate = tz.TZDateTime.from(startDate, tz.local);
+      //   if (scheduledDate.isBefore(tzStartDate)) {
+      //     scheduledDate = scheduledDate.add(Duration(days: 1));
+      //   }
+      // }
+
+              scheduledDate = tz.TZDateTime(
+            tz.local, 2090, 11, 15, hour, 35);
+
+      // if (scheduledDate.isBefore(now)) {
+      //   scheduledDate = scheduledDate.add(Duration(days: 1));
+      // }
+      int id = 100 + hour;
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        id,
+        'Reminder',
+        'We love having you with us! 😊 Don’t forget to complete your previous challenges.',
+        scheduledDate,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        platformDetails,
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        matchDateTimeComponents: DateTimeComponents.time,
+      );
+
+      // notifTimes[id] =
+      //     "$id = ${scheduledDate.day}/${scheduledDate.month} - ${scheduledDate.hour}:${scheduledDate.minute}";
+      log("REMAINDER SCHEDULED IN: ${scheduledDate.day}/${scheduledDate.month} - ${scheduledDate.hour}:${scheduledDate.minute}");
+    }
   }
 
   Future<void> scheduleMorningNotification() async {
@@ -129,8 +126,8 @@ class NotificationService {
       largeIcon: DrawableResourceAndroidBitmap(
         '@mipmap/launcher_icon',
       ),
-      icon: '@mipmap/launcher_icon',
-      fullScreenIntent: true,
+
+      // fullScreenIntent: true,
       enableVibration: true,
     );
 
@@ -139,31 +136,93 @@ class NotificationService {
 
     final now = tz.TZDateTime.now(tz.local);
     var scheduledDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, 8);
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, 7);
 
-    await flutterLocalNotificationsPlugin
-        .zonedSchedule(
+    if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }
+
+    await flutterLocalNotificationsPlugin.zonedSchedule(
       0,
       'Good Morning 🌞',
       'What a beautiful morning to enjoy! 🌸 Don\'t forget your challenges, let\'s make today amazing together! 😊',
-      // scheduledDate,
-      now.add(const Duration(seconds: 10)),
+      scheduledDate,
+      // now.add(const Duration(seconds: 10)),
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       platformDetails,
-    )
-        .then((val) {
-      flutterLocalNotificationsPlugin.periodicallyShow(
-        0,
-        'Good Morning 🌞',
-        'What a beautiful morning to enjoy! 🌸 Don\'t forget your challenges, let\'s make today amazing together! 😊',
-        RepeatInterval.everyMinute,
-        // const Duration(days: 1),
+      matchDateTimeComponents: DateTimeComponents.time,
+    );
+    // notifTimes[0] =
+    //     "0 = ${scheduledDate.day}/${scheduledDate.month} - ${scheduledDate.hour}:${scheduledDate.minute}";
+  }
+
+  Future<void> instantNotification(
+      {required String title, required String description}) async {
+    // Android notification details with high priority
+
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+      'instant_channel_id', // Unique channel ID
+      'Instant Notifications', // Channel namec
+      importance: Importance.max,
+      priority: Priority.high,
+      playSound: true,
+      visibility: NotificationVisibility.public,
+      largeIcon: DrawableResourceAndroidBitmap(
+        '@mipmap/launcher_icon',
+      ),
+      // icon: '@mipmap/ic_notification',
+      // fullScreenIntent: true,
+      enableVibration: true,
+    );
+
+    const NotificationDetails platformDetails =
+        NotificationDetails(android: androidDetails);
+
+    await flutterLocalNotificationsPlugin.show(
+      5,
+      title,
+      description,
+      platformDetails,
+    );
+  }
+
+  Future<void> schedulTest() async {
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+      'night_channel_id', // Unique channel ID
+      'Night Notifications', // Channel namec
+      importance: Importance.max,
+      priority: Priority.high,
+      playSound: true,
+      visibility: NotificationVisibility.public,
+      largeIcon: DrawableResourceAndroidBitmap(
+        '@mipmap/launcher_icon',
+      ),
+      icon: '@mipmap/launcher_icon',
+      // fullScreenIntent: true,
+      enableVibration: true,
+    );
+
+    final now = tz.TZDateTime.now(tz.local);
+    var scheduledDate =
+        tz.TZDateTime(tz.local, now.year, now.month, 24, 22, 38);
+
+    const NotificationDetails platformDetails =
+        NotificationDetails(android: androidDetails);
+
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      12,
+      'test notification',
+      'just a test !!',
+        scheduledDate,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.wallClockTime,
         platformDetails,
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-        payload: 'morning',
-      );
-    });
+        matchDateTimeComponents: DateTimeComponents.time,
+    );
   }
 
   Future<void> scheduleNightNotification() async {
@@ -180,8 +239,8 @@ class NotificationService {
       largeIcon: DrawableResourceAndroidBitmap(
         '@mipmap/launcher_icon',
       ),
-      icon: '@mipmap/launcher_icon',
-      fullScreenIntent: true,
+
+      // fullScreenIntent: true,
       enableVibration: true,
     );
 
@@ -190,10 +249,13 @@ class NotificationService {
 
     final now = tz.TZDateTime.now(tz.local);
     var scheduledDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, 21);
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, 20);
 
-    await flutterLocalNotificationsPlugin
-        .zonedSchedule(
+    if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }
+
+    await flutterLocalNotificationsPlugin.zonedSchedule(
       1,
       'Good Evening 🌙',
       'The night is calm and full of possibilities! 🌟 How about wrapping up your day with a little progress on your challenges? Let’s finish strong! 💪😊',
@@ -201,17 +263,10 @@ class NotificationService {
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       platformDetails,
-    )
-        .then((val) {
-      flutterLocalNotificationsPlugin.periodicallyShowWithDuration(
-        1,
-        'Good Evening 🌙',
-        'The night is calm and full of possibilities! 🌟 How about wrapping up your day with a little progress on your challenges? Let’s finish strong! 💪😊',
-        const Duration(days: 1),
-        platformDetails,
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-        payload: 'night',
-      );
-    });
+      matchDateTimeComponents: DateTimeComponents.time,
+      payload: 'night',
+    );
+    // notifTimes[1] =
+    //     "1 = ${scheduledDate.day}/${scheduledDate.month} - ${scheduledDate.hour}:${scheduledDate.minute}";
   }
 }

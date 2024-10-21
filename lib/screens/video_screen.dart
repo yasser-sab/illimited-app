@@ -133,6 +133,7 @@ class _VideoTaskState extends State<VideoTask> with TickerProviderStateMixin {
       await context.read<UserProgressProvider>().currentDayRef!.update({
         'isCompleted': true,
       });
+
       if (widget.isLastDay) {
         await context.read<UserProgressProvider>().currentWeekRef!.update({
           'isCompleted': true,

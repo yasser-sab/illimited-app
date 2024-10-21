@@ -94,7 +94,6 @@ class EndDrawerContent extends StatelessWidget {
                     color: Colors.red,
                     onPressed: () {
                       AuthService().signOut();
-                      context.read<QuestionProvider>().resetProvider();
                     },
                   ),
                 ],
