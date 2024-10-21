@@ -90,6 +90,8 @@ class NotificationService {
       largeIcon: DrawableResourceAndroidBitmap(
         '@mipmap/launcher_icon',
       ),
+
+      fullScreenIntent: true,
       enableVibration: true,
     );
 
@@ -121,6 +123,7 @@ class NotificationService {
         '@mipmap/launcher_icon',
       ),
 
+      fullScreenIntent: true,
       enableVibration: true,
     );
 
@@ -171,6 +174,8 @@ class NotificationService {
       largeIcon: DrawableResourceAndroidBitmap(
         '@mipmap/launcher_icon',
       ),
+
+      fullScreenIntent: true,
       enableVibration: true,
     );
 
@@ -221,6 +226,7 @@ class NotificationService {
         '@mipmap/launcher_icon',
       ),
 
+      fullScreenIntent: true,
       enableVibration: true,
     );
 
@@ -272,6 +278,7 @@ class NotificationService {
         '@mipmap/launcher_icon',
       ),
 
+      fullScreenIntent: true,
       enableVibration: true,
     );
 
@@ -315,6 +322,7 @@ class NotificationService {
         '@mipmap/launcher_icon',
       ),
       // icon: '@mipmap/ic_notification',
+      fullScreenIntent: true,
       enableVibration: true,
     );
 
@@ -342,6 +350,7 @@ class NotificationService {
         '@mipmap/launcher_icon',
       ),
       icon: '@mipmap/launcher_icon',
+      fullScreenIntent: true,
       enableVibration: true,
     );
 
@@ -379,6 +388,7 @@ class NotificationService {
         '@mipmap/launcher_icon',
       ),
 
+      fullScreenIntent: true,
       enableVibration: true,
     );
 
