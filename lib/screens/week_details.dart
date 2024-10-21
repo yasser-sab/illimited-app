@@ -7,13 +7,10 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/providers/progress_provider.dart';
-import 'package:illimited_app/router/go_router.dart';
 import 'package:illimited_app/router/router_names.dart';
-import 'package:illimited_app/services/notification_service.dart';
 import 'package:illimited_app/services/user_repository.dart';
 import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/day_card.dart';
-import 'package:illimited_app/widget/end_drawer.dart';
 import 'package:provider/provider.dart';
 
 class WeekDetails extends StatefulWidget {
@@ -140,14 +137,6 @@ class _WeekDetailsState extends State<WeekDetails> {
                       day: dayKey,
                       isNotified: true,
                     );
-
-                    // schadual notification
-                    // UserRepository().update({
-                    //   "task_progress": FieldValue.arrayUnion(
-                    //       ['${widget.weekkey.toString()};${i.toString()}']),
-                    // });
-
-                    // NotificationService().scheduleDynamicPeriodicNotification();
                   }
                   status = Status.inProgress;
                 } else {

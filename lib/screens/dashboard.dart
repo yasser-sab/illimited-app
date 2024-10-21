@@ -42,32 +42,35 @@ class _DashboardState extends State<Dashboard> {
     _futureData =
         getUserWeeksWithServerTime(FirebaseAuth.instance.currentUser!.uid);
     checkNotificationScheduling().then(
-      (idSheduled) {
+      (idSheduled) async {
         if (!idSheduled!) {
           log("NOT SCHEDULED, SCHEDULING...");
-          NotificationService().scheduleMorningNotification();
-          NotificationService().scheduleNightNotification();
-          NotificationService()
-              .schedulePeriodicAfternoonNotification(isItNow: true);
-          NotificationService()
-              .schedulePeriodiceveningNotification(isItNow: true);
-          NotificationService()
-              .schedulePeriodicedustNotification(isItNow: true);
-          setNotificationScheduled().then(
+          await NotificationService().cancelAllNotifications();
+          await NotificationService().scheduleMorningNotification();
+          await NotificationService().scheduleNightNotification();
+          await NotificationService().scheduleRemainders();
+
+          // NotificationService()
+          //     .schedulePeriodicAfternoonNotification(isItNow: true);
+          // NotificationService()
+          //     .schedulePeriodiceveningNotification(isItNow: true);
+          // NotificationService()
+          //     .schedulePeriodicedustNotification(isItNow: true);
+          setNotificationScheduled(true).then(
             (value) {
               log("SCHEDULED!!");
             },
           );
         } else {
-          log("SCHEDULED");
+          log("ALREADY SCHEDULED");
         }
       },
     );
   }
 
-  Future<void> setNotificationScheduled() async {
+  Future<void> setNotificationScheduled(bool val) async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setBool("isScheduled", true);
+    prefs.setBool("isScheduled", val);
   }
 
   Future<bool?> checkNotificationScheduling() async {

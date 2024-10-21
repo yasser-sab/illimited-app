@@ -97,44 +97,15 @@ class _VideoGenerationTaskState extends State<VideoGenerationTask>
       await context.read<UserProgressProvider>().currentDayRef!.update({
         'isCompleted': true,
       });
-
-      NotificationService().cancelNotificationById(2);
-      NotificationService().cancelNotificationById(3);
-      NotificationService().cancelNotificationById(4);
-
-      NotificationService().schedulePeriodicAfternoonNotification();
-      NotificationService().schedulePeriodiceveningNotification();
-      NotificationService().schedulePeriodicedustNotification();
-
-      // await UserRepository().update({
-      //   "task_progress": FieldValue.arrayRemove([
-      //     '${context.read<UserProgressProvider>().currentWeekRef!.id.toString()};${context.read<UserProgressProvider>().currentDayRef!.id.toString()}'
-      //   ]),
-      // });
-
-      // await UserRepository().getUserData().then((vall) {
-      //   List<String> hasd = vall.data()!['task_progress'] as List<String>;
-
-      //   if (hasd.isEmpty) {
-      //     NotificationService().cancelNotificationById(2);
-      //   } else {
-      //     NotificationService().scheduleDynamicPeriodicNotification();
-      //   }
-      // });
-
       if (widget.isLastDay) {
         await context.read<UserProgressProvider>().currentWeekRef!.update({
           'isCompleted': true,
         });
 
         if (context.read<UserProgressProvider>().currentWeekRef!.id == "8") {
-          NotificationService().cancelNotificationById(0);
-          NotificationService().cancelNotificationById(1);
-          NotificationService().cancelNotificationById(2);
-          NotificationService().cancelNotificationById(3);
-          NotificationService().cancelNotificationById(4);
+          NotificationService().cancelAllNotifications();
           NotificationService().instantNotification(
-            title: "congratulation !",
+            title: "Congratulation !",
             description: "your plan is finished !",
           );
         }
