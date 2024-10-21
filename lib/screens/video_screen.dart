@@ -16,6 +16,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class VideoTask extends StatefulWidget {
   final Map<String, dynamic> taskData;
@@ -32,15 +33,19 @@ class VideoTask extends StatefulWidget {
 }
 
 class _VideoTaskState extends State<VideoTask> with TickerProviderStateMixin {
+  bool _isVideoLoading = true;
   bool _isLoading = true;
   late VideoPlayerController? _videoController;
   double videoBorderRadius = 25;
   late AnimationController _controller;
   final _soundPlayer = AudioPlayer();
+
   bool isCompleted = false;
+  bool isUploading = false;
+  bool isUploaded = false;
+  bool isTaskCompleted = false;
   bool hasVideoFinished = false;
-  bool shouldShowCompleted = false;
-  String btnText = "Done";
+  String btnText = "";
   Widget? btnIcon;
 
   late DocumentReference<Map<String, dynamic>> taskRef;
@@ -84,20 +89,28 @@ class _VideoTaskState extends State<VideoTask> with TickerProviderStateMixin {
       log(e.toString());
     }
     if (task != null) {
+      isTaskCompleted = true;
       if (task['isCompleted']) {
         setState(() {
-          btnText = "Completed";
+          btnText = AppLocalizations.of(context)!.completed;
           btnIcon = Image.asset(
             "assets/icon/check1.png",
             color: Colors.white,
           );
+          _isLoading = false;
+        });
+      } else {
+        setState(() {
+          btnText = AppLocalizations.of(context)!.done;
+          _isLoading = false;
         });
       }
+
       _videoController =
           VideoPlayerController.network(widget.taskData['videoUrl'])
             ..initialize().then((_) {
               setState(() {
-                _isLoading = false;
+                _isVideoLoading = false;
               });
               // _videoController?.play();
               _videoController?.addListener(() {
@@ -132,91 +145,113 @@ class _VideoTaskState extends State<VideoTask> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    if (btnText == "") {
+      btnText = AppLocalizations.of(context)!.done;
+    }
     _controller = AnimationController(vsync: this);
     _controller.duration = Duration(milliseconds: 1800);
     _controller.forward();
 
-    return Scaffold(
-      appBar: AppBar(
-        foregroundColor: Colors.white,
-        toolbarHeight: 80,
-        backgroundColor: primaryColor,
-        centerTitle: true,
-        title: InkWell(
-          onTap: () {
-            context.go(RouteNames.profile);
-          },
-          child: Text(
-            widget.taskData['title'],
-            style:
-                GoogleFonts.roboto().copyWith(fontSize: 27, letterSpacing: 1.5),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (didPop) {
+          return;
+        }
+        if (!isTaskCompleted && !isUploading && !_isLoading) {
+          showConfirmationDialog(
+            context,
+            AppLocalizations.of(context)!.taskNotDoneYetDiscardAnyways,
+            true,
+          );
+        } else if (isUploading) {
+        } else {
+          context.pop();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          foregroundColor: Colors.white,
+          toolbarHeight: 80,
+          backgroundColor: primaryColor,
+          centerTitle: true,
+          title: InkWell(
+            onTap: () {
+              context.go(RouteNames.profile);
+            },
+            child: Text(
+              widget.taskData['title'],
+              style: GoogleFonts.roboto()
+                  .copyWith(fontSize: 27, letterSpacing: 1.5),
+            ),
           ),
         ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: PrimaryButton(
-        icon: btnIcon,
-        enabled: hasVideoFinished,
-        borderRadius: 0,
-        text: btnText,
-        onPressed: () async {
-          showUploadingContent(context);
-          await _completeTask();
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: PrimaryButton(
+          icon: btnIcon,
+          enabled: hasVideoFinished && !isUploading,
+          borderRadius: 0,
+          text: btnText,
+          onPressed: () async {
+            isUploading = true;
+            showUploadingContent(context);
+            await _completeTask();
 
-          setState(() {
-            // isCompleted = true;
-            shouldShowCompleted = true;
-          });
-          context.pop();
-          await Future.delayed(
-            const Duration(milliseconds: 800),
-          );
-          _soundPlayer.play();
+            setState(() {
+              // isCompleted = true;
+              isUploaded = true;
+            });
+            context.pop();
+            await Future.delayed(
+              const Duration(milliseconds: 800),
+            );
+            _soundPlayer.play();
 
-          await Future.delayed(
-            const Duration(milliseconds: 1400),
-          );
-          context.pop(true);
-        },
-      ),
-      body: Stack(
-        children: [
-          Center(
-            child: _isLoading
-                ? const SpinKitFoldingCube(
-                    color: primaryColor,
-                    size: 50.0,
-                  )
-                : VideoContainer(
-                    videoController: _videoController,
-                    onPlayed: () => log("VIDEO PLAYED"),
-                  ),
-          ),
-          Visibility(
-            visible: shouldShowCompleted,
-            child: Positioned(
-              top: 0,
-              bottom: 0,
-              right: 0,
-              left: 0,
-              child: Container(
-                color: Colors.black.withOpacity(0.5),
-                child: Center(
+            await Future.delayed(
+              const Duration(milliseconds: 1400),
+            );
+            context.pop(true);
+          },
+        ),
+        body: Stack(
+          children: [
+            Center(
+              child: _isVideoLoading
+                  ? const SpinKitFoldingCube(
+                      color: primaryColor,
+                      size: 50.0,
+                    )
+                  : VideoContainer(
+                      videoController: _videoController,
+                      onPlayed: () => log("VIDEO PLAYED"),
+                    ),
+            ),
+            Visibility(
+              visible: isUploaded,
+              child: Positioned(
+                top: 0,
+                bottom: 0,
+                right: 0,
+                left: 0,
+                child: Container(
+                  color: Colors.black.withOpacity(0.5),
                   child: Center(
-                    child: SizedBox(
-                      width: 250,
-                      child: Lottie.asset(
-                        "assets/lottie/taskChecked.json",
-                        repeat: false,
-                        controller: _controller,
+                    child: Center(
+                      child: SizedBox(
+                        width: 250,
+                        child: Lottie.asset(
+                          "assets/lottie/taskChecked.json",
+                          repeat: false,
+                          controller: _controller,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

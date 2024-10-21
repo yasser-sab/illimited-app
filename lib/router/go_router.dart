@@ -13,7 +13,9 @@ import 'package:illimited_app/screens/email_verification_message_screen.dart';
 import 'package:illimited_app/screens/forgot_password_screen.dart';
 import 'package:illimited_app/screens/getstarted_screen.dart';
 import 'package:illimited_app/screens/goal_screen.dart';
+import 'package:illimited_app/screens/intro_language.dart';
 import 'package:illimited_app/screens/intro_video_screen.dart';
+import 'package:illimited_app/screens/language_screen.dart';
 import 'package:illimited_app/screens/profile_screen.dart';
 import 'package:illimited_app/screens/question.dart';
 import 'package:illimited_app/screens/sign_up_screen.dart';
@@ -167,6 +169,20 @@ final GoRouter _router = GoRouter(
       path: RouteNames.goal,
       builder: (BuildContext context, GoRouterState state) {
         return const GoalScreen();
+      },
+    ),
+        GoRoute(
+      name: RouteNames.language,
+      path: RouteNames.language,
+      builder: (BuildContext context, GoRouterState state) {
+        return const LanguageScreen();
+      },
+    ),
+            GoRoute(
+      name: RouteNames.introLanguage,
+      path: RouteNames.introLanguage,
+      builder: (BuildContext context, GoRouterState state) {
+        return const IntroLanguage();
       },
     ),
   ],

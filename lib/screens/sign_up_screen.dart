@@ -18,7 +18,7 @@ import 'package:lottie/lottie.dart';
 import 'package:modern_textfield/modern_textfield.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
@@ -105,7 +105,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         // _showUnpoppableDialog(context);
                       },
                       child: Text(
-                        "Sign Up",
+                        AppLocalizations.of(context)!.signUp,
                         style: getFontStyle(context).copyWith(
                             fontSize: 40, fontWeight: FontWeight.w800),
                       ),
@@ -123,7 +123,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Icons.person_rounded,
                         color: Colors.white,
                       ),
-                      hintText: "First Name",
+                      hintText: AppLocalizations.of(context)!.firstName,
                     ),
                     const SizedBox(
                       height: 20,
@@ -138,7 +138,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Icons.person_rounded,
                         color: Colors.white,
                       ),
-                      hintText: "Last Name",
+                      hintText:  AppLocalizations.of(context)!.lastName,
                     ),
                     const SizedBox(
                       height: 20,
@@ -153,7 +153,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Icons.email_rounded,
                         color: Colors.white,
                       ),
-                      hintText: "Enter Your Email",
+                      hintText:  AppLocalizations.of(context)!.enterYourEmail,
                     ),
                     const SizedBox(
                       height: 20,
@@ -169,7 +169,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Icons.lock_rounded,
                         color: Colors.white,
                       ),
-                      hintText: "Enter Your Password",
+                      hintText:  AppLocalizations.of(context)!.enterYourPassword,
                     ),
                     const SizedBox(
                       height: 20,
@@ -185,7 +185,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Icons.lock_rounded,
                         color: Colors.white,
                       ),
-                      hintText: "Confirme Password",
+                      hintText: AppLocalizations.of(context)!.confirmPassword,
                     ),
                     const SizedBox(
                       height: 20,
@@ -193,34 +193,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: PrimaryButton(
-                        text: "Sign Up",
+                        text: AppLocalizations.of(context)!.signUp,
                         isBold: true,
                         onPressed: () async {
                           if (!isValidFirstName(_fNameController.text.trim())) {
                             mySnackBar(
                                 context: context,
                                 message:
-                                    "First Name Must be at least 6 character",
+                                    AppLocalizations.of(context)!.nameMustBeAtLeast6Chars,
                                 snackBarType: SnackBarType.failure);
                           } else if (!isValidFirstName(
                               _lNameController.text.trim())) {
                             mySnackBar(
                                 context: context,
                                 message:
-                                    "Last Name Must be at least 6 character",
+                                    AppLocalizations.of(context)!.nameMustBeAtLeast6Chars,
                                 snackBarType: SnackBarType.failure);
                           } else if (!isValidEmail(
                               _emailController.text.trim())) {
                             mySnackBar(
                                 context: context,
-                                message: "Invalid Email",
+                                message: AppLocalizations.of(context)!.invalidEmail,
                                 snackBarType: SnackBarType.failure);
                           } else if (!isValidPassword(
                               _passwordController.text)) {
                             mySnackBar(
                                 context: context,
                                 message:
-                                    "Password Must be at least 6 character",
+                                    AppLocalizations.of(context)!.nameMustBeAtLeast6Chars,
                                 snackBarType: SnackBarType.failure);
                           } else {
                             if (_confirmePasswordController.text ==
@@ -262,7 +262,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     mySnackBar(
                                         context: context,
                                         message:
-                                            "Something Went Wrong While Creating User Profile, Please Try Again",
+                                            AppLocalizations.of(context)!.somethingWentWrongTryAgainLater,
                                         snackBarType: SnackBarType.failure);
                                     userCreds.user!.delete();
                                   },
@@ -271,7 +271,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             } else {
                               mySnackBar(
                                   context: context,
-                                  message: "Password Confirmation is not match",
+                                  message: AppLocalizations.of(context)!.passwordConfirmationNotMatch,
                                   snackBarType: SnackBarType.failure);
                             }
                           }
@@ -292,7 +292,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           width: 5,
                         ),
                         Text(
-                          "Or",
+                          AppLocalizations.of(context)!.or,
                           style: Theme.of(context).textTheme.labelSmall,
                         ),
                         const SizedBox(
@@ -346,7 +346,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   mySnackBar(
                                       context: context,
                                       message:
-                                          "Something Went Wrong While Creating User Profile, Please Try Again",
+                                          AppLocalizations.of(context)!.somethingWentWrongCreatingUserProfile,
                                       snackBarType: SnackBarType.failure);
                                   res.user!.delete();
                                 },
@@ -368,7 +368,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 .setIsAuthenticating(false);
                             mySnackBar(
                                 context: context,
-                                message: "Authentication Failed",
+                                message: AppLocalizations.of(context)!.authenticationFailed,
                                 snackBarType: SnackBarType.failure);
                             // loadingProvider.hide();
                           }
@@ -379,7 +379,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       height: 20,
                     ),
                     Text(
-                      "Already have an account ?",
+                      AppLocalizations.of(context)!.alreadyHaveAnAccount,
                       style: Theme.of(context).textTheme.labelSmall,
                     ),
                     const SizedBox(
@@ -394,7 +394,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         );
                       },
                       child: Text(
-                        "Sign In",
+                        AppLocalizations.of(context)!.signIn,
                         style: getFontStyle(context).copyWith(
                             fontSize: 20,
                             color: Colors.cyan,

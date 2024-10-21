@@ -5,7 +5,7 @@ import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:lottie/lottie.dart';
 import 'package:video_player/video_player.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class IntroVideoScreen extends StatefulWidget {
   const IntroVideoScreen({super.key});
 
@@ -90,7 +90,7 @@ class _IntroVideoScreenState extends State<IntroVideoScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: PrimaryButton(
                       enabled: isButtonEnabled,
-                      text: "Skip",
+                      text: AppLocalizations.of(context)!.skip,
                       onPressed: () {
                         context.goNamed(RouteNames.dashboard);
                       },

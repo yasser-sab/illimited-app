@@ -10,7 +10,7 @@ import 'package:illimited_app/services/authentication_service.dart';
 import 'package:illimited_app/widget/drawer_button.dart';
 import 'package:illimited_app/widget/profile_frame.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class EndDrawerContent extends StatelessWidget {
   const EndDrawerContent({super.key});
 
@@ -55,40 +55,42 @@ class EndDrawerContent extends StatelessWidget {
                   ),
                   DrawerIconButton(
                     iconPath: "assets/icon/profile.png",
-                    text: "Profile",
+                    text: AppLocalizations.of(context)!.profile,
                     onPressed: () {
                       context.pushNamed(RouteNames.profile);
                     },
                   ),
                   DrawerIconButton(
                     iconPath: "assets/icon/customer.png",
-                    text: "Contact",
+                    text: AppLocalizations.of(context)!.contact,
                     onPressed: () {
                       context.pushNamed(RouteNames.contact);
                     },
                   ),
                   DrawerIconButton(
                     iconPath: "assets/icon/language.png",
-                    text: "Languages",
-                    onPressed: () => {},
+                    text: AppLocalizations.of(context)!.languages,
+                    onPressed: () {
+                      context.pushNamed(RouteNames.language);
+                    },
                   ),
                   DrawerIconButton(
                     iconPath: "assets/icon/goal.png",
-                    text: "Goals",
+                    text: AppLocalizations.of(context)!.goals,
                     onPressed: ()  {
                       context.pushNamed(RouteNames.goal);
                     },
                   ),
                   DrawerIconButton(
                     iconPath: "assets/icon/forum.png",
-                    text: "Forum",
+                    text: AppLocalizations.of(context)!.forum,
                     onPressed: () => {},
                   ),
                   const Spacer(),
                   const Divider(),
                   DrawerIconButton(
                     iconPath: "assets/icon/shutdown.png",
-                    text: "Log out",
+                    text: AppLocalizations.of(context)!.logOut,
                     color: Colors.red,
                     onPressed: () {
                       AuthService().signOut();

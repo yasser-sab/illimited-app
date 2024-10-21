@@ -18,7 +18,7 @@ import 'package:lottie/lottie.dart';
 import 'package:modern_textfield/modern_textfield.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_cropper/image_cropper.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -80,12 +80,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         isUploading = false;
       });
       mySnackBar(
-          context: context, message: "Profile picture updated successfully!");
+          context: context, message: AppLocalizations.of(context)!.profilePicUpdatedSuccessfully);
     } catch (e) {
       log("Failed To Update Picture : $e");
       mySnackBar(
           context: context,
-          message: "Profile picture updated successfully!",
+          message: AppLocalizations.of(context)!.somethingWentWrong,
           snackBarType: SnackBarType.failure);
     }
   }
@@ -118,7 +118,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 onTap: () {
                   if (isEditing) {
                     _showConfirmationDialog(context,
-                        "Are you sure you want to discard changes ?", true);
+                        AppLocalizations.of(context)!.discardChangesConfirmation, true);
                   } else {
                     context.pop();
                   }
@@ -204,7 +204,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Icons.person_rounded,
                           color: Colors.white,
                         ),
-                        hintText: "First Name",
+                        hintText: AppLocalizations.of(context)!.firstName,
                       ),
                     ),
                     const SizedBox(
@@ -227,7 +227,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Icons.person_rounded,
                           color: Colors.white,
                         ),
-                        hintText: "Last Name",
+                        hintText: AppLocalizations.of(context)!.lastName,
                       ),
                     ),
                     const SizedBox(
@@ -249,7 +249,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Icons.email,
                             color: Colors.white,
                           ),
-                          hintText: "Email",
+                          hintText: AppLocalizations.of(context)!.email,
                         ),
                       ),
                     ),
@@ -272,11 +272,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         flex: 2,
                         child: PrimaryButton(
                           color: errorColor,
-                          text: "Cancel",
+                          text: AppLocalizations.of(context)!.cancel,
                           onPressed: () {
                             _showConfirmationDialog(
                                 context,
-                                "Are you sure you want to discard changes ?",
+                                AppLocalizations.of(context)!.discardChangesConfirmation,
                                 false);
                           },
                         ),
@@ -287,7 +287,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Expanded(
                         flex: 3,
                         child: PrimaryButton(
-                          text: "Save",
+                          text: AppLocalizations.of(context)!.save,
                           onPressed: () {
                             FocusScope.of(context).unfocus();
                             String firstName = _fNameController.text.trim();
@@ -295,7 +295,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             if (firstName.length < 2 || lastName.length < 2) {
                               mySnackBar(
                                   context: context,
-                                  message: "Name must be at least 2 character",
+                                  message: AppLocalizations.of(context)!.nameMustBeAtLeast2Chars,
                                   snackBarType: SnackBarType.info);
                             } else {
                               setState(() {
@@ -308,7 +308,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 (value) {
                                   mySnackBar(
                                       context: context,
-                                      message: "Profile Updated Successfully!");
+                                      message: AppLocalizations.of(context)!.profileUpdatedSuccessfully);
 
                                   _fNameController.text = firstName;
                                   _lNameController.text = lastName;
@@ -325,7 +325,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 (error, stackTrace) {
                                   mySnackBar(
                                       context: context,
-                                      message: "Profile Updated Successfully!",
+                                      message: AppLocalizations.of(context)!.profileUpdatedSuccessfully,
                                       snackBarType: SnackBarType.failure);
                                   log("ERROR UPDATING PROFILE : $error");
                                 },
@@ -354,7 +354,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _showConfirmationDialog(
       BuildContext context, String message, bool isPoping) {
     Widget yesButton = PrimaryButton(
-      text: "Discard",
+      text: AppLocalizations.of(context)!.discard,
       onPressed: () {
         setState(() {
           isEditing = false;
@@ -369,7 +369,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
 
     Widget noButton = PrimaryButton(
-      text: "No",
+      text: AppLocalizations.of(context)!.no,
       color: Colors.grey,
       onPressed: () {
         context.pop();
@@ -425,8 +425,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 // Image.network(photoURL, fit: BoxFit.contain,)
                 : Container(
                     padding: EdgeInsets.all(20),
-                    child: const Text(
-                      'No Profile Picture Available',
+                    child: Text(
+                      AppLocalizations.of(context)!.noProfilePicAvailable,
                       style: TextStyle(color: Colors.white, fontSize: 18),
                       textAlign: TextAlign.center,
                     ),
@@ -455,7 +455,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(height: 20),
               Text(
                 textAlign: TextAlign.center,
-                'Confirm your new profile picture ?',
+                AppLocalizations.of(context)!.confirmNewProfilePicture,
                 style: getFontStyle(context)
                     .copyWith(color: Colors.black, fontSize: 17),
               ),
@@ -469,7 +469,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Navigator.of(context)
                     .pop(); // Close the dialog without uploading
               },
-              text: "Cancel",
+              text: AppLocalizations.of(context)!.cancel,
               color: Colors.grey,
             ),
             PrimaryButton(
@@ -479,7 +479,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Navigator.of(context).pop(); // Close the dialog
                 await _uploadImageToFirebase(); // Proceed to upload
               },
-              text: "Confirm",
+              text: AppLocalizations.of(context)!.confirm,
             ),
           ],
         );
@@ -492,7 +492,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       sourcePath: imageFile.path,
       uiSettings: [
         AndroidUiSettings(
-          toolbarTitle: 'Adjust Your Image',
+          toolbarTitle: AppLocalizations.of(context)!.adjustYourImage,
           toolbarColor: primaryColor,
           toolbarWidgetColor: Colors.white,
           activeControlsWidgetColor: primaryColor,
@@ -504,7 +504,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           initAspectRatio: CropAspectRatioPreset.square,
         ),
         IOSUiSettings(
-          title: 'Adjust Your Image',
+          title: AppLocalizations.of(context)!.adjustYourImage,
           aspectRatioPresets: [
             CropAspectRatioPreset.original,
             CropAspectRatioPreset.square,

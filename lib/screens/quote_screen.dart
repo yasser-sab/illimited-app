@@ -7,6 +7,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:illimited_app/constant/const.dart';
+import 'package:illimited_app/main.dart';
+import 'package:illimited_app/providers/logbook_provider.dart';
 import 'package:illimited_app/providers/progress_provider.dart';
 import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/services/notification_service.dart';
@@ -16,6 +18,7 @@ import 'package:illimited_app/widget/primary_button.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class QuoteTask extends StatefulWidget {
   final Map<String, dynamic> taskData;
@@ -36,8 +39,11 @@ class _QuoteTaskState extends State<QuoteTask> with TickerProviderStateMixin {
   late AnimationController _controller;
   final _soundPlayer = AudioPlayer();
   bool isTaskCompleted = false;
+  bool isLoading = true;
+  bool isUploading = false;
+  bool isUploaded = false;
   bool isBtnEnabled = false;
-  String btnText = "Done";
+  String btnText = "";
   Widget? btnIcon;
 
   late Future<String?> _futureData;
@@ -67,7 +73,7 @@ class _QuoteTaskState extends State<QuoteTask> with TickerProviderStateMixin {
   @override
   void dispose() {
     _soundPlayer.dispose();
-    _controller.dispose();
+    // _controller.dispose();
     super.dispose();
   }
 
@@ -82,12 +88,19 @@ class _QuoteTaskState extends State<QuoteTask> with TickerProviderStateMixin {
     }
     if (task != null) {
       if (task['isCompleted']) {
+        isTaskCompleted = true;
         setState(() {
-          btnText = "Completed";
+          btnText = AppLocalizations.of(context)!.completed;
           btnIcon = Image.asset(
             "assets/icon/check1.png",
             color: Colors.white,
           );
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          btnText = AppLocalizations.of(context)!.done;
+          isLoading = false;
         });
       }
       return task['text'];
@@ -104,11 +117,10 @@ class _QuoteTaskState extends State<QuoteTask> with TickerProviderStateMixin {
       await context.read<UserProgressProvider>().currentDayRef!.update({
         'isCompleted': true,
       });
-
       if (widget.isLastDay) {
         await context.read<UserProgressProvider>().currentWeekRef!.update({
           'isCompleted': true,
-        }).then((val) {});
+        });
       }
     }
     return;
@@ -116,147 +128,167 @@ class _QuoteTaskState extends State<QuoteTask> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    _controller = AnimationController(vsync: this);
-    _controller.duration = Duration(milliseconds: 1800);
-    _controller.forward();
+    if (btnText == "") {
+      btnText = AppLocalizations.of(context)!.done;
+    }
+    // _controller = AnimationController(vsync: this);
+    // _controller.duration = Duration(milliseconds: 1800);
+    // _controller.forward();
 
-    return Scaffold(
-      appBar: AppBar(
-        foregroundColor: Colors.white,
-        toolbarHeight: 80,
-        backgroundColor: primaryColor,
-        centerTitle: true,
-        title: InkWell(
-          child: Text(
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (didPop) {
+          return;
+        }
+        if (!isTaskCompleted && !isUploading && !isLoading) {
+          showConfirmationDialog(
+            context,
+            AppLocalizations.of(context)!.taskNotDoneYetDiscardAnyways,
+            true,
+          );
+        } else if (isUploading) {
+        } else {
+          context.pop();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          foregroundColor: Colors.white,
+          toolbarHeight: 80,
+          backgroundColor: primaryColor,
+          centerTitle: true,
+          title: Text(
             widget.taskData['title'],
             style:
                 GoogleFonts.roboto().copyWith(fontSize: 27, letterSpacing: 1.5),
           ),
         ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: PrimaryButton(
-        icon: btnIcon,
-        enabled: btnText != "Completed",
-        borderRadius: 0,
-        text: btnText,
-        onPressed: () async {
-          showUploadingContent(context);
-          await _completeTask();
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: PrimaryButton(
+          icon: btnIcon,
+          enabled: !isTaskCompleted && !isUploading && !isLoading,
+          borderRadius: 0,
+          text: btnText,
+          onPressed: () async {
+            isUploading = true;
+            showUploadingContent(context);
+            await _completeTask();
 
-          setState(() {
-            isTaskCompleted = true;
-          });
-          context.pop();
-          await Future.delayed(
-            const Duration(milliseconds: 800),
-          );
-          _soundPlayer.play();
+            setState(() {
+              isUploaded = true;
+            });
+            context.pop();
+            await Future.delayed(
+              const Duration(milliseconds: 800),
+            );
+            _soundPlayer.play();
 
-          await Future.delayed(
-            const Duration(milliseconds: 1400),
-          );
-          context.pop(true);
-        },
-      ),
-      body: Stack(
-        children: [
-          FutureBuilder(
-            future: _futureData,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: SpinKitFoldingCube(
-                    color: primaryColor,
-                    size: 50.0,
-                  ),
-                );
-              }
-
-              if (snapshot.hasError) {
-                log("error = ${snapshot.error}");
-                return const Center(
-                    child: Text(
-                  "Something Wrong Happened",
-                  style: TextStyle(color: Colors.black),
-                ));
-              }
-
-              if (snapshot.hasData) {
-                String? _quote = snapshot.data;
-                if (_quote != null) {
-                  return Padding(
-                    padding:
-                        const EdgeInsets.only(bottom: 0, left: 8, right: 8),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Container(
-                                    child: Lottie.asset(
-                                        "assets/lottie/book.json")),
-                                Center(
-                                  child: Text(
-                                    "❝ $_quote ❞",
-                                    textAlign: TextAlign.center,
-                                    style: GoogleFonts.roboto(
-                                        color: Colors.black, fontSize: 20),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 80,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                } else {
-                  return Center(
-                    child: Text(
-                      "Can't get Quote",
-                      style: getFontStyle(context)
-                          .copyWith(color: Colors.black, fontSize: 22),
+            await Future.delayed(
+              const Duration(milliseconds: 1400),
+            );
+            context.pop(true);
+          },
+        ),
+        body: Stack(
+          children: [
+            FutureBuilder(
+              future: _futureData,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: SpinKitFoldingCube(
+                      color: primaryColor,
+                      size: 50.0,
                     ),
                   );
                 }
-              }
-              return Center(
-                child: Text(
-                  "Something Went Wrong, 2",
-                  style: getFontStyle(context)
-                      .copyWith(color: Colors.black, fontSize: 22),
-                ),
-              );
-            },
-          ),
-          Visibility(
-            visible: isTaskCompleted,
-            child: Positioned.fill(
-              child: Container(
-                color: Colors.black.withOpacity(0.5),
-                child: Center(
-                  child: Center(
-                    child: SizedBox(
-                      width: 250,
-                      child: Lottie.asset(
-                        "assets/lottie/taskChecked.json",
-                        repeat: false,
-                        controller: _controller,
+
+                if (snapshot.hasError) {
+                  log("error = ${snapshot.error}");
+                  return Center(
+                      child: Text(
+                    AppLocalizations.of(context)!.somethingWentWrong,
+                    style: TextStyle(color: Colors.black),
+                  ));
+                }
+
+                if (snapshot.hasData) {
+                  String? _quote = snapshot.data;
+                  if (_quote != null) {
+                    return Padding(
+                      padding:
+                          const EdgeInsets.only(bottom: 0, left: 8, right: 8),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Container(
+                                      child: Lottie.asset(
+                                          "assets/lottie/book.json")),
+                                  Center(
+                                    child: Text(
+                                      "❝ ${widget.taskData["text"]} ❞",
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.roboto(
+                                          color: Colors.black, fontSize: 20),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 80,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
+                    );
+                  } else {
+                    return Center(
+                      child: Text(
+                        AppLocalizations.of(context)!.cantGetQuote,
+                        style: getFontStyle(context)
+                            .copyWith(color: Colors.black, fontSize: 22),
+                      ),
+                    );
+                  }
+                }
+                return Center(
+                  child: Text(
+                    AppLocalizations.of(context)!.somethingWentWrong,
+                    style: getFontStyle(context)
+                        .copyWith(color: Colors.black, fontSize: 22),
                   ),
-                ),
-              ),
+                );
+              },
             ),
-          ),
-        ],
+            // Visibility(
+            //   visible: isUploaded,
+            //   child: Positioned.fill(
+            //     child: Container(
+            //       color: Colors.black.withOpacity(0.5),
+            //       child: Center(
+            //         child: Center(
+            //           child: SizedBox(
+            //             width: 250,
+            //             child: Lottie.asset(
+            //               "assets/lottie/taskChecked.json",
+            //               repeat: false,
+            //               controller: _controller,
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+          ],
+        ),
       ),
     );
   }

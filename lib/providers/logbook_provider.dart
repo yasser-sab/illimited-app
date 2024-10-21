@@ -32,7 +32,7 @@ class LogbookProvider extends ChangeNotifier {
   }
 
   void resetProvider() {
-    _answers = List.filled(questions.length, "");
+    _answers = [];
     _isAllAnswered = false;
   }
 }

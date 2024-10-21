@@ -12,7 +12,7 @@ import 'package:illimited_app/services/user_repository.dart';
 import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/day_card.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class WeekDetails extends StatefulWidget {
   final CollectionReference<Map<String, dynamic>> weekDays;
   final int weekkey;
@@ -64,7 +64,6 @@ class _WeekDetailsState extends State<WeekDetails> {
     int animationDelay = -100;
     log("in week details build");
     int getDelay() {
-      log("IN DELAY");
       animationDelay = animationDelay + 100;
       return animationDelay;
     }
@@ -82,7 +81,7 @@ class _WeekDetailsState extends State<WeekDetails> {
           backgroundColor: primaryColor,
           centerTitle: true,
           title: Text(
-            'Days',
+            AppLocalizations.of(context)!.days,
             style:
                 GoogleFonts.roboto().copyWith(fontSize: 27, letterSpacing: 1.5),
           ),
@@ -103,11 +102,11 @@ class _WeekDetailsState extends State<WeekDetails> {
               }
 
               if (!snapshot.hasData) {
-                return const Center(
+                return Center(
                   child: SizedBox(
                     height: 150,
                     width: 150,
-                    child: Text("Error loading data"),
+                    child: Text(AppLocalizations.of(context)!.errorLoadingData),
                   ),
                 );
               }
@@ -142,7 +141,6 @@ class _WeekDetailsState extends State<WeekDetails> {
                 } else {
                   status = Status.locked;
                 }
-                log(animationDelay.toString());
                 levelCards.add(
                   ZoomIn(
                     delay: Duration(milliseconds: getDelay()),

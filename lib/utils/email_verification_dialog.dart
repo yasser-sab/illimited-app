@@ -4,7 +4,7 @@ import 'package:illimited_app/providers/app_provider.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart'; // Import your AppProvider
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class EmailVerificationDialog extends StatelessWidget {
   final String message;
   final String subtitle;
@@ -22,7 +22,7 @@ class EmailVerificationDialog extends StatelessWidget {
     bool isButtonEnabled = cooldown == 0;
 
     Widget okButton = PrimaryButton(
-      text: "Ok",
+      text: AppLocalizations.of(context)!.ok,
       onPressed: () {
         Navigator.of(context).pop();
       },
@@ -67,8 +67,8 @@ class EmailVerificationDialog extends StatelessWidget {
                 : null,
             child: Text(
               isButtonEnabled
-                  ? "Re-send"
-                  : "Re-send (${cooldown.toString()} secs)",
+                  ? AppLocalizations.of(context)!.resend
+                  : "Re-send $cooldown secs",
               style: getFontStyle(context).copyWith(
                     color: isButtonEnabled ? Colors.blue : Colors.grey,
                   ),

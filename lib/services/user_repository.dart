@@ -63,12 +63,26 @@ class UserRepository {
       DateTime weekUnlockTime = (weekNum == 1)
           ? serverTime
           : serverTime.add(Duration(days: (weekNum - 1) * 7));
-
-      Map<String, dynamic> weekData = {
-        'unlockedTime': Timestamp.fromDate(weekUnlockTime),
-        'isNotified': false,
-        'isCompleted': false,
-      };
+          
+      Map<String, dynamic> weekData;
+      if (weekNum == 8) {
+        weekData = {
+          'unlockedTime': Timestamp.fromDate(weekUnlockTime),
+          'isNotified': false,
+          'isCompleted': false,
+          'day4GeneratedVideoUrl': "",
+          'day5GeneratedVideoUrl': "",
+          'day6GeneratedVideoUrl': "",
+          'day7GeneratedVideoUrl': ""
+        };
+      } else {
+        weekData = {
+          'unlockedTime': Timestamp.fromDate(weekUnlockTime),
+          'isNotified': false,
+          'isCompleted': false,
+          'generatedVideoUrl': ""
+        };
+      }
 
       // Add the week data to the batch
       batch.set(weekDoc, weekData);
@@ -111,7 +125,9 @@ class UserRepository {
           Map<String, dynamic> taskData;
           // Loop through tasks and create them in Firestore
           tasksForDay.forEach((taskKey, task) {
-            switch (tasksForDay[taskKey]["type"] as Tasks) {
+            log("ITER $taskKey");
+            log("task type = ${tasksForDay[taskKey]["en"]["type"]}");
+            switch (tasksForDay[taskKey]["en"]["type"] as Tasks) {
               case Tasks.takePhoto:
                 taskData = {
                   'isLocked': taskIndex > 1, // Only the first task is unlocked
@@ -123,8 +139,8 @@ class UserRepository {
                 taskData = {
                   'isLocked': taskIndex > 1, // Only the first task is unlocked
                   'isCompleted': false,
-                  "introText": tasksForDay[taskKey]["introText"],
-                  'questions': tasksForDay[taskKey]["questions"],
+                  "introText": tasksForDay[taskKey]["en"]["introText"],
+                  'questions': tasksForDay[taskKey]["en"]["questions"],
                   'answers': {},
                   "moodAnswer": ""
                 };
@@ -133,28 +149,28 @@ class UserRepository {
                 taskData = {
                   'isLocked': taskIndex > 1, // Only the first task is unlocked
                   'isCompleted': false,
-                  "goal": tasksForDay[taskKey]["goal"],
-                  "materials": tasksForDay[taskKey]["materials"],
-                  "text": tasksForDay[taskKey]["text"]
+                  "goal": tasksForDay[taskKey]["en"]["goal"],
+                  "materials": tasksForDay[taskKey]["en"]["materials"],
+                  "text": tasksForDay[taskKey]["en"]["text"]
                 };
                 break;
               case Tasks.quote:
                 taskData = {
                   'isLocked': taskIndex > 1, // Only the first task is unlocked
                   'isCompleted': false,
-                  "text": tasksForDay[taskKey]["text"]
+                  "text": tasksForDay[taskKey]["en"]["text"]
                 };
               case Tasks.video:
                 taskData = {
                   'isLocked': taskIndex > 1, // Only the first task is unlocked
                   'isCompleted': false,
-                  "videoUrl": tasksForDay[taskKey]["videoUrl"]
+                  "videoUrl": tasksForDay[taskKey]["en"]["videoUrl"]
                 };
               case Tasks.generatedVideo:
                 taskData = {
                   'isLocked': taskIndex > 1, // Only the first task is unlocked
                   'isCompleted': false,
-                  "videoUrl": tasksForDay[taskKey]["videoUrl"]
+                  "videoUrl": tasksForDay[taskKey]["en"]["videoUrl"]
                 };
                 break;
               default:
@@ -213,7 +229,7 @@ class UserRepository {
             .get();
 
     if (userDoc.exists) {
-      userDoc.data()!['isQuestionsAnswered'] = true;
+      userDoc.data()!['isQuestionsAnswered'] = true; 
     } else {
       throw Exception('User document does not exist !');
     }

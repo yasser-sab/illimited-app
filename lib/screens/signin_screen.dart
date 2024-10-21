@@ -18,7 +18,7 @@ import 'package:lottie/lottie.dart';
 import 'package:modern_textfield/modern_textfield.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
 
@@ -80,10 +80,15 @@ class _SignInScreenState extends State<SignInScreen> {
                       const SizedBox(
                         height: 40,
                       ),
-                      Text(
-                        "Sign In",
-                        style: getFontStyle(context).copyWith(
-                            fontSize: 40, fontWeight: FontWeight.w800),
+                      InkWell(
+                                    onTap: () {
+              AuthService().signOut();
+            },
+                        child: Text(
+                          AppLocalizations.of(context)!.signIn,
+                          style: getFontStyle(context).copyWith(
+                              fontSize: 40, fontWeight: FontWeight.w800),
+                        ),
                       ),
                       SizedBox(
                         height: getScreenHeight(context) * 0.05,
@@ -98,7 +103,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           Icons.email_rounded,
                           color: Colors.white,
                         ),
-                        hintText: "Enter Your Email",
+                        hintText: AppLocalizations.of(context)!.enterYourEmail,
                       ),
                       const SizedBox(
                         height: 20,
@@ -114,7 +119,8 @@ class _SignInScreenState extends State<SignInScreen> {
                           Icons.lock_rounded,
                           color: Colors.white,
                         ),
-                        hintText: "Enter Your Password",
+                        
+                        hintText: AppLocalizations.of(context)!.enterYourPassword,
                       ),
                       const SizedBox(
                         height: 20,
@@ -122,7 +128,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: PrimaryButton(
-                          text: "Sign In",
+                          text: AppLocalizations.of(context)!.signIn,
                           isBold: true,
                           onPressed: () async {
                             UserCredential? userCrendential =
@@ -135,7 +141,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   .instance.currentUser!.emailVerified) {
                                 mySnackBar(
                                     context: context,
-                                    message: "Succefully Signed In");
+                                    message: AppLocalizations.of(context)!.successfullySignedIn);
 
                                 UserRepository().getQuestionFlag().then(
                                   (isAnsweredQuestions) {
@@ -150,9 +156,9 @@ class _SignInScreenState extends State<SignInScreen> {
                                 showEmailVerificationDialog(
                                   context: context,
                                   message:
-                                      "Your Email Has a Pending Verification",
+                                      AppLocalizations.of(context)!.emailHasPendingVerification,
                                   subtitle:
-                                      "Didn't receive a verification email ? \n please check your Spam folder or Re-send",
+                                      AppLocalizations.of(context)!.didntReceiveVerificationEmail,
                                   verifyButtonCallBack: () {
                                     userCrendential.user!
                                         .sendEmailVerification()
@@ -160,7 +166,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                       (value) {
                                         mySnackBar(
                                             context: context,
-                                            message: "Email Verification Sent",
+                                            message: AppLocalizations.of(context)!.emailVerificationSent,
                                             snackBarType: SnackBarType.info);
                                         // context.goNamed(RouteNames.signin);
                                       },
@@ -170,7 +176,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                         mySnackBar(
                                             context: context,
                                             message:
-                                                "Something Went Wrong, Please Try Again Later",
+                                                AppLocalizations.of(context)!.somethingWentWrongTryAgainLater,
                                             snackBarType: SnackBarType.info);
                                       },
                                     );
@@ -189,9 +195,9 @@ class _SignInScreenState extends State<SignInScreen> {
                         text: TextSpan(
                           style: Theme.of(context).textTheme.labelSmall,
                           children: [
-                            const TextSpan(text: "Forgot your Passwordw ? "),
+                            TextSpan(text: AppLocalizations.of(context)!.forgotYourPassword),
                             TextSpan(
-                              text: "Click to reset",
+                              text: AppLocalizations.of(context)!.tapToReset,
                               style: Theme.of(context)
                                   .textTheme
                                   .labelSmall!
@@ -221,7 +227,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             width: 5,
                           ),
                           Text(
-                            "Or",
+                            AppLocalizations.of(context)!.or,
                             style: Theme.of(context).textTheme.labelSmall,
                           ),
                           SizedBox(
@@ -247,12 +253,13 @@ class _SignInScreenState extends State<SignInScreen> {
                             SignInResult? res =
                                 await AuthService().signInWithGoogle();
                             if (res != null) {
+                              showCreatingProfileDialog(context);
                               context
                                   .read<AuthenticationProvider>()
                                   .setIsAuthenticating(false);
                               mySnackBar(
                                   context: context,
-                                  message: "Successully Signed In");
+                                  message: AppLocalizations.of(context)!.successfullySignedIn);
                               await Future.delayed(
                                 const Duration(milliseconds: 1200),
                               );
@@ -275,7 +282,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                         debugPrintStack(stackTrace: stackTrace);
                                         mySnackBar(
                                             context: context,
-                                            message: "Failed  to create user");
+                                            message: AppLocalizations.of(context)!.somethingWentWrong);
                                       },
                                     );
                               } else {
@@ -296,7 +303,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
                               mySnackBar(
                                   context: context,
-                                  message: "Authentication Failed",
+                                  message: AppLocalizations.of(context)!.authenticationFailed,
                                   snackBarType: SnackBarType.failure);
                               // loadingProvider.hide();
                             }
@@ -307,7 +314,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         height: 20,
                       ),
                       Text(
-                        "Don't have an account ?",
+                        AppLocalizations.of(context)!.dontHaveAnAccount,
                         style: Theme.of(context).textTheme.labelSmall,
                       ),
                       SizedBox(
@@ -322,7 +329,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           );
                         },
                         child: Text(
-                          "Sign Up",
+                          AppLocalizations.of(context)!.signUp,
                           style: getFontStyle(context).copyWith(
                               fontSize: 20,
                               color: Colors.cyan,
