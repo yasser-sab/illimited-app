@@ -6,6 +6,7 @@ import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GetStarted extends StatefulWidget {
   
@@ -16,14 +17,9 @@ class GetStarted extends StatefulWidget {
 }
 
 class _GetStartedState extends State<GetStarted> {
-  Future<void> setFalseFirstLaunch() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool("isFirstLaunch", false);
-  }
   @override
   void initState() {
     super.initState();
-    setFalseFirstLaunch();
   }
   @override
   Widget build(BuildContext context) {
@@ -46,7 +42,7 @@ class _GetStartedState extends State<GetStarted> {
                 duration: Duration(seconds: 2),
                 child: FadeIn(
                   duration: Duration(seconds: 2),
-                  child: Text("Welcome to Illimite",
+                  child: Text(AppLocalizations.of(context)!.welcomeToApp(appName),
                       style: Theme.of(context).textTheme.displayLarge),
                 ),
               ),
@@ -56,7 +52,7 @@ class _GetStartedState extends State<GetStarted> {
               FadeIn(
                 duration: Duration(seconds: 4),
                 delay: Duration(seconds: 1),
-                child: Text("The goal is to help you",
+                child: Text(AppLocalizations.of(context)!.goalIsToHelpYou,
                     style: Theme.of(context).textTheme.titleLarge),
               ),
             ],
@@ -70,7 +66,7 @@ class _GetStartedState extends State<GetStarted> {
             children: [
               PrimaryButton(
                 isBold: true,
-                text: "Get started",
+                text: AppLocalizations.of(context)!.getStarted,
                 onPressed: () => context.goNamed(RouteNames.signup),
               ),
               const SizedBox(
@@ -78,7 +74,7 @@ class _GetStartedState extends State<GetStarted> {
               ),
               PrimaryButton(
                 isBold: true,
-                text: "Sign in",
+                text: AppLocalizations.of(context)!.signIn,
                 onPressed: () => context.goNamed(RouteNames.signin),
                 color: primaryColor.withOpacity(0.1),
                 borderWith: 1.0,

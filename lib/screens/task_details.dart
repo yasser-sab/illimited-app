@@ -82,6 +82,7 @@ class _TaskDetailsState extends State<TaskDetails> {
       case Tasks.generatedVideo:
         content = VideoGenerationTask(
           weekRef: context.read<UserProgressProvider>().currentWeekRef!,
+          dayRef: context.read<UserProgressProvider>().currentDayRef!,
           taskData: widget.taskData,
           isLastTask: widget.isLastTask,
           isLastDay: widget.isLastDay,
@@ -89,7 +90,6 @@ class _TaskDetailsState extends State<TaskDetails> {
       default:
     }
 
-    log("content type is : ${content.runtimeType}");
     return content;
   }
 }

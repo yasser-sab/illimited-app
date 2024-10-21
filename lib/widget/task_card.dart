@@ -3,10 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:illimited_app/constant/const.dart';
+import 'package:illimited_app/main.dart';
 import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/screens/task_details.dart';
 import 'package:illimited_app/utils/utils.dart';
 import 'package:simple_ripple_animation/simple_ripple_animation.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TaskCard extends StatelessWidget {
   const TaskCard(
@@ -23,6 +25,24 @@ class TaskCard extends StatelessWidget {
   final bool isLastDay;
   @override
   Widget build(BuildContext context) {
+    double borderRadius = 10;
+    double cardHeight = 150;
+    double topRight_Radius = 0;
+    double topLeft_Radius = 0;
+    double bottomRight_Radius = 0;
+    double bottomLeft_Radius = 0;
+
+    Locale currentLocale = Localizations.localeOf(context);
+    String languageCode = currentLocale.languageCode;
+
+    if (languageCode == "ar") {
+      topRight_Radius = borderRadius;
+      bottomRight_Radius = borderRadius;
+    } else {
+      topLeft_Radius = borderRadius;
+      bottomLeft_Radius = borderRadius;
+    }
+
     Color sidePanel;
     String statusImagePath;
 
@@ -39,8 +59,7 @@ class TaskCard extends StatelessWidget {
         sidePanel = Colors.grey;
         statusImagePath = "assets/icon/padlock.png";
     }
-    double borderRadius = 10;
-    double cardHeight = 150;
+
     return GestureDetector(
       onTap: () async {
         log((taskData["type"] as Tasks).name);
@@ -73,8 +92,10 @@ class TaskCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: sidePanel,
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(borderRadius),
-                    bottomLeft: Radius.circular(borderRadius),
+                    topLeft: Radius.circular(topLeft_Radius),
+                    bottomLeft: Radius.circular(bottomLeft_Radius),
+                    topRight: Radius.circular(topRight_Radius),
+                    bottomRight: Radius.circular(bottomRight_Radius),
                   ),
                 ),
                 child: Column(
@@ -82,7 +103,7 @@ class TaskCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      "Task",
+                      AppLocalizations.of(context)!.task,
                       style: TextStyle(fontSize: 13),
                     ),
                     Text(taskData['taskNumber'])
@@ -94,8 +115,10 @@ class TaskCard extends StatelessWidget {
                   height: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(borderRadius),
-                      bottomRight: Radius.circular(borderRadius),
+                      topRight: Radius.circular(topLeft_Radius),
+                      bottomRight: Radius.circular(bottomLeft_Radius),
+                      topLeft: Radius.circular(topRight_Radius),
+                      bottomLeft: Radius.circular(bottomRight_Radius),
                     ),
                     color: Colors.white,
                     boxShadow: const [

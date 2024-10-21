@@ -9,11 +9,13 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/data/tasks.dart';
+import 'package:illimited_app/main.dart';
 import 'package:illimited_app/providers/progress_provider.dart';
 import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/end_drawer.dart';
 import 'package:illimited_app/widget/task_card.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DayDetails extends StatefulWidget {
   final CollectionReference<Map<String, dynamic>> tasksRef;
@@ -24,7 +26,8 @@ class DayDetails extends StatefulWidget {
       {super.key,
       required this.tasksRef,
       required this.daykey,
-      required this.weekkey, required this.isLastDay});
+      required this.weekkey,
+      required this.isLastDay});
 
   @override
   State<DayDetails> createState() => _DayDetailsState();
@@ -66,18 +69,21 @@ class _DayDetailsState extends State<DayDetails> {
 
   @override
   Widget build(BuildContext context) {
+    Locale currentLocale = Localizations.localeOf(context);
+    String languageCode = currentLocale.languageCode;
+    log("languageCode = $languageCode");
+
     int animationDelay = -100;
     int getDelay() {
       animationDelay = animationDelay + 100;
       return animationDelay;
     }
 
-    log("in day details build");
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
         context.read<UserProgressProvider>().setCurrentDayRef(null);
-        
+
         context.pop(true);
       },
       child: Scaffold(
@@ -87,9 +93,9 @@ class _DayDetailsState extends State<DayDetails> {
           backgroundColor: primaryColor,
           centerTitle: true,
           title: Text(
-            'Tasks',
-            style:
-                GoogleFonts.roboto().copyWith(fontSize: 27, letterSpacing: 1.5),
+            AppLocalizations.of(context)!.tasks,
+            style: GoogleFonts.roboto()
+                .copyWith(fontSize: 27, letterSpacing: 1.5),
           ),
         ),
         body: RefreshIndicator(
@@ -148,12 +154,12 @@ class _DayDetailsState extends State<DayDetails> {
                 }
                 // log("weekKey = ${widget.weekkey}");
                 // log("dayKey = ${widget.daykey}");
+                // log("taskKey = task${i + 1}");
                 Map<String, dynamic> localTaskData =
                     (tasksOf["week${widget.weekkey}"]!["day${widget.daykey}"]
-                            ['tasks']["task${i + 1}"])
+                            ['tasks']["task${i + 1}"]["$languageCode"])
                         .cast<String, dynamic>();
-
-                // log(localTaskData.runtimeType.toString());
+                    
                 localTaskData.addAll({
                   "weekKey": widget.weekkey.toString(),
                   "dayKey": widget.daykey.toString(),

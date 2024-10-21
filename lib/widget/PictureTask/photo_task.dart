@@ -23,6 +23,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:lottie/lottie.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PhotoTask extends StatefulWidget {
   const PhotoTask(
@@ -43,10 +44,12 @@ class PhotoTaskState extends State<PhotoTask> with TickerProviderStateMixin {
   final _soundPlayer = AudioPlayer();
   late Future<Map<String, dynamic>> _futurePhotos;
   late DocumentReference<Map<String, dynamic>> taskRef;
-  bool isCompleted = false;
-  bool isBtnEnabled = false;
-  String btnText = "Done";
+  bool isUploaded = false;
+  bool isLoading = true;
+  bool isTaskCompleted = false;
+  String btnText = "";
   Widget? btnIcon;
+  bool isUploading = false;
 
   @override
   initState() {
@@ -87,19 +90,21 @@ class PhotoTaskState extends State<PhotoTask> with TickerProviderStateMixin {
       log(e.toString());
     }
 
-    if (task!['photos']['p1'] != "" || task['photos']['p2'] != "") {
+    if (task!['photos']['p1'] != "" && task['photos']['p2'] != "") {
       log("photo is available");
 
       setState(() {
-        btnText = "Completed";
+        btnText = AppLocalizations.of(context)!.completed;
+        isTaskCompleted = true;
         btnIcon = Image.asset(
           "assets/icon/check1.png",
           color: Colors.white,
         );
       });
-
+      isLoading = false;
       return task['photos'];
     } else {
+      isLoading = false;
       return {};
     }
   }
@@ -180,226 +185,252 @@ class PhotoTaskState extends State<PhotoTask> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    if (btnText == "") {
+      btnText = AppLocalizations.of(context)!.done;
+    }
     _controller = AnimationController(vsync: this);
     _controller.duration = Duration(milliseconds: 1800);
     _controller.forward();
     double borderRadius = 12;
-    return Scaffold(
-      backgroundColor: Colors.white,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: PrimaryButton(
-        icon: btnIcon,
-        enabled: (_isFirstPhotoTaken && _isSecondPhotoTaken) ? true : false,
-        borderRadius: 0,
-        text: btnText,
-        onPressed: () async {
-          showUploadingContent(context);
-          await _uploadImages();
-          setState(() {
-            isCompleted = true;
-          });
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (didPop) {
+          return;
+        }
+        if ((_isFirstPhotoTaken || _isSecondPhotoTaken) &&
+            !isTaskCompleted &&
+            !isUploading &&
+            !isLoading) {
+          showConfirmationDialog(
+            context,
+            AppLocalizations.of(context)!.taskNotDoneYetDiscardAnyways,
+            true,
+          );
+        } else if (isUploading) {
+        } else {
           context.pop();
-          await Future.delayed(
-            const Duration(milliseconds: 800),
-          );
-          _soundPlayer.play();
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: PrimaryButton(
+          icon: btnIcon,
+          enabled: (!isUploading && _isFirstPhotoTaken && _isSecondPhotoTaken)
+              ? true
+              : false,
+          borderRadius: 0,
+          text: btnText,
+          onPressed: () async {
+            isUploading = true;
+            showUploadingContent(context);
+            await _uploadImages();
+            setState(() {
+              isUploaded = true;
+            });
+            context.pop();
+            await Future.delayed(
+              const Duration(milliseconds: 800),
+            );
+            _soundPlayer.play();
 
-          await Future.delayed(
-            const Duration(milliseconds: 1400),
-          );
-          context.pop(true);
-        },
-      ),
-      appBar: AppBar(
-        foregroundColor: Colors.white,
-        toolbarHeight: 80,
-        backgroundColor: primaryColor,
-        centerTitle: true,
-        title: InkWell(
-          onTap: () async {
-            // setState(() {
-            //   isCompleted = !isCompleted;
-            // });
+            await Future.delayed(
+              const Duration(milliseconds: 1400),
+            );
+            context.pop(true);
           },
-          child: Text(
-            widget.taskData['title'],
-            style:
-                GoogleFonts.roboto().copyWith(fontSize: 27, letterSpacing: 1.5),
+        ),
+        appBar: AppBar(
+          foregroundColor: Colors.white,
+          toolbarHeight: 80,
+          backgroundColor: primaryColor,
+          centerTitle: true,
+          title: InkWell(
+            onTap: () async {
+              log("message");
+            },
+            child: Text(
+              widget.taskData['title'],
+              style: GoogleFonts.roboto()
+                  .copyWith(fontSize: 27, letterSpacing: 1.5),
+            ),
           ),
         ),
-      ),
-      body: Stack(
-        children: [
-          FutureBuilder(
-            future: _futurePhotos,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: SpinKitFoldingCube(
-                    color: primaryColor,
-                    size: 50.0,
-                  ),
-                );
-              }
-
-              if (snapshot.hasError) {
-                log("error = ${snapshot.error}");
-                return const Center(
-                    child: Text(
-                  "Something Wrong Happened",
-                  style: TextStyle(color: Colors.black),
-                ));
-              }
-
-              if (snapshot.hasData) {
-                Map<String, dynamic> photos = snapshot.data!;
-                photos.forEach(
-                  (key, value) {
-                    log("$key = $value");
-                  },
-                );
-                if (photos.isEmpty) {
-                  return ListView(
-                    shrinkWrap: true,
-                    children: [
-                      PhotoTaker(
-                        isPhotoTaken: isPhoto1Taken,
-                      ),
-                      PhotoTaker(
-                        isPhotoTaken: isPhoto2Taken,
-                      ),
-                      const SizedBox(
-                        height: 100,
-                      )
-                    ],
+        body: Stack(
+          children: [
+            FutureBuilder(
+              future: _futurePhotos,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: SpinKitFoldingCube(
+                      color: primaryColor,
+                      size: 50.0,
+                    ),
                   );
-                } else {
-                  List<Widget> lst = [];
-                  for (int i = 1; i <= 2; i++) {
-                    lst.add(
-                      Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => FullScreenImageView(
-                                        imageUrl: photos['p$i'],
-                                        heroTag: 'image$i',
+                }
+
+                if (snapshot.hasError) {
+                  log("error = ${snapshot.error}");
+                  return Center(
+                      child: Text(
+                    AppLocalizations.of(context)!.somethingWentWrong,
+                    style: TextStyle(color: Colors.black),
+                  ));
+                }
+
+                if (snapshot.hasData) {
+                  Map<String, dynamic> photos = snapshot.data!;
+                  photos.forEach(
+                    (key, value) {
+                      log("$key = $value");
+                    },
+                  );
+                  if (photos.isEmpty) {
+                    return ListView(
+                      shrinkWrap: true,
+                      children: [
+                        PhotoTaker(
+                          isPhotoTaken: isPhoto1Taken,
+                        ),
+                        PhotoTaker(
+                          isPhotoTaken: isPhoto2Taken,
+                        ),
+                        const SizedBox(
+                          height: 100,
+                        )
+                      ],
+                    );
+                  } else {
+                    List<Widget> lst = [];
+                    for (int i = 1; i <= 2; i++) {
+                      lst.add(
+                        Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            FullScreenImageView(
+                                          imageUrl: photos['p$i'],
+                                          heroTag: 'image$i',
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  width: double.infinity,
-                                  height: getScreenHeight(context) * 0.4,
-                                  decoration: BoxDecoration(
-                                      color: primaryColor.withOpacity(0.1),
-                                      borderRadius:
-                                          BorderRadius.circular(borderRadius),
-                                      border: Border.all(
-                                          width: 2, color: primaryColor)),
-                                  child: ClipRRect(
-                                    borderRadius:
-                                        BorderRadius.circular(borderRadius - 2),
-                                    child: Hero(
-                                      tag: 'image$i',
-                                      child: Image.network(
-                                        photos['p$i'],
-                                        frameBuilder: (BuildContext context,
-                                            Widget child,
-                                            int? frame,
-                                            bool wasSynchronouslyLoaded) {
-                                          if (wasSynchronouslyLoaded) {
-                                            return child;
-                                          }
-                                          return frame == null
-                                              ? const Center(
-                                                  child: SpinKitPulse(
-                                                    color: primaryColor,
-                                                    size: 35,
-                                                  ),
-                                                )
-                                              : child;
-                                        },
-                                        fit: BoxFit.cover,
+                                    );
+                                  },
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: getScreenHeight(context) * 0.4,
+                                    decoration: BoxDecoration(
+                                        color: primaryColor.withOpacity(0.1),
+                                        borderRadius:
+                                            BorderRadius.circular(borderRadius),
+                                        border: Border.all(
+                                            width: 2, color: primaryColor)),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(
+                                          borderRadius - 2),
+                                      child: Hero(
+                                        tag: 'image$i',
+                                        child: Image.network(
+                                          photos['p$i'],
+                                          frameBuilder: (BuildContext context,
+                                              Widget child,
+                                              int? frame,
+                                              bool wasSynchronouslyLoaded) {
+                                            if (wasSynchronouslyLoaded) {
+                                              return child;
+                                            }
+                                            return frame == null
+                                                ? const Center(
+                                                    child: SpinKitPulse(
+                                                      color: primaryColor,
+                                                      size: 35,
+                                                    ),
+                                                  )
+                                                : child;
+                                          },
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
+                        ),
+                      );
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ...lst,
+                            const SizedBox(
+                              height: 100,
+                            )
+                          ],
                         ),
                       ),
                     );
                   }
-                  return Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ...lst,
-                          const SizedBox(
-                            height: 100,
-                          )
-                        ],
-                      ),
-                    ),
-                  );
                 }
-              }
-              return const Center(
-                child: Text("Something Wrong Happened, 2"),
-              );
-            },
-          ),
-          Visibility(
-            visible: isCompleted,
-            child: Positioned(
-              top: 0,
-              bottom: 0,
-              right: 0,
-              left: 0,
-              child: Container(
-                color: Colors.black.withOpacity(0.5),
-                child: Center(
+                return Center(
+                  child: Text(AppLocalizations.of(context)!.somethingWentWrong),
+                );
+              },
+            ),
+            Visibility(
+              visible: isUploaded,
+              child: Positioned(
+                top: 0,
+                bottom: 0,
+                right: 0,
+                left: 0,
+                child: Container(
+                  color: Colors.black.withOpacity(0.5),
                   child: Center(
-                    child: SizedBox(
-                      width: 250,
-                      child: Lottie.asset(
-                        "assets/lottie/taskChecked.json",
-                        repeat: false,
-                        controller: _controller,
+                    child: Center(
+                      child: SizedBox(
+                        width: 250,
+                        child: Lottie.asset(
+                          "assets/lottie/taskChecked.json",
+                          repeat: false,
+                          controller: _controller,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-          // Visibility(
-          //   visible: isCompleted,
-          //   child: Center(
-          //     child: Center(
-          //       child: SizedBox(
-          //         width: 250,
-          //         child: Lottie.asset(
-          //           "assets/lottie/taskChecked.json",
-          //           repeat: false,
-          //           controller: _controller,
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // )
-        ],
+            // Visibility(
+            //   visible: isCompleted,
+            //   child: Center(
+            //     child: Center(
+            //       child: SizedBox(
+            //         width: 250,
+            //         child: Lottie.asset(
+            //           "assets/lottie/taskChecked.json",
+            //           repeat: false,
+            //           controller: _controller,
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // )
+          ],
+        ),
       ),
     );
   }

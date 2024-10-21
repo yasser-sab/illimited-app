@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:illimited_app/constant/const.dart';
 import 'package:photo_view/photo_view.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class FullScreenImageView extends StatelessWidget {
   final String imageUrl;
 final String heroTag;
@@ -17,7 +17,7 @@ final String heroTag;
         backgroundColor: primaryColor,
         centerTitle: true,
         title: Text(
-          'Photo',
+          AppLocalizations.of(context)!.photo,
           style:
               GoogleFonts.roboto().copyWith(fontSize: 27, letterSpacing: 1.5),
         ),

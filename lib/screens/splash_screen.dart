@@ -36,6 +36,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
+    context.read<AppProvider>().setScreenWidth(context);
+    context.read<AppProvider>().setScreenHeight(context);
+    
     super.initState();
     log("in init");
     checkFirstLaunch().then(
@@ -48,8 +51,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<AppProvider>().setScreenWidth(context);
-    context.read<AppProvider>().setScreenHeight(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -108,7 +109,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
     log(isFirstLaunch.toString());
     if (isFirstLaunch == true) {
-      context.goNamed(RouteNames.getStarted);
+      context.goNamed(RouteNames.introLanguage);
+      // context.goNamed(RouteNames.getStarted);
     } else if (!loggedIn) {
       context.goNamed(RouteNames.signin);
     } else if (!FirebaseAuth.instance.currentUser!.emailVerified) {

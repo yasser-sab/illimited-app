@@ -8,28 +8,57 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:illimited_app/constant/const.dart';
+import 'package:illimited_app/providers/language_provider.dart';
 import 'package:illimited_app/utils/email_verification_dialog.dart';
 import 'package:illimited_app/utils/level_unlocked_dialog.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:lottie/lottie.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum Status { locked, inProgress, completed }
 
 enum Tasks { takePhoto, questions, video, generatedVideo, quote, reading }
 
-final List<String> moodButtonsData = [
-  "happy",
-  "joy",
-  "proud",
-  "sad",
-  "fear",
-  "shy",
-  "worry",
-  "angry",
-  "upset"
-];
+final Map<String, List<String>> moodButtonsData = {
+  "en": [
+    "happy",
+    "joy",
+    "proud",
+    "sad",
+    "fear",
+    "shy",
+    "worry",
+    "angry",
+    "upset"
+  ],
+  "fr": [
+    "heureux",
+    "joie",
+    "fier",
+    "triste",
+    "peur",
+    "timide",
+    "inquiétude",
+    "en colère",
+    "contrarié"
+  ],
+  "es": [
+    "feliz",
+    "alegría",
+    "orgulloso",
+    "triste",
+    "miedo",
+    "tímido",
+    "preocupación",
+    "enojado",
+    "molesto"
+  ],
+  "ar": ["سعيد", "فرح", "فخور", "حزين", "خوف", "خجول", "قلق", "غاضب", "منزعج"]
+};
 
 String capitalizeFirstLetter(String input) {
   if (input.isEmpty) {
@@ -98,14 +127,14 @@ void showCreatingProfileDialog(BuildContext context) {
         canPop: false,
         child: AlertDialog(
           icon: Text(
-            "Your Account is Being Set Up",
+            AppLocalizations.of(context)!.accountBeingSetUp,
             textAlign: TextAlign.center,
             style: GoogleFonts.roboto()
                 .copyWith(color: Colors.black, fontSize: 21),
           ),
           title: Lottie.asset("assets/lottie/cubeLoading.json"),
           content: Text(
-            'Please While Creating Your User Profile',
+            AppLocalizations.of(context)!.pleaseWhileCreatingUserProfile,
             textAlign: TextAlign.center,
             style: getFontStyle(context)
                 .copyWith(color: Color.fromARGB(139, 0, 0, 0), fontSize: 17),
@@ -149,236 +178,206 @@ void showUploadingContent(BuildContext context) {
     },
   );
 }
-Future<void> fetchAllPhotos(DocumentReference week) async {
-  log("IN fetchAllPhotos");
-  List<Map<String, String>> photosList = [];
 
-  for (int day = 1; day <= 6; day++) {
-    log("$day");
-    DocumentSnapshot taskDoc;
-
-    if (day == 1) {
-      taskDoc = await week
-          .collection('days')
-          .doc(day.toString())
-          .collection('tasks')
-          .doc("1")
-          .get();
-    } else {
-      QuerySnapshot taskCollection = await week
-          .collection('days')
-          .doc(day.toString())
-          .collection('tasks')
-          .get();
-
-      int taskCount = taskCollection.size;
-      taskDoc = await week
-          .collection('days')
-          .doc(day.toString())
-          .collection('tasks')
-          .doc(taskCount.toString())
-          .get();
-    }
-
-    if (taskDoc.exists) {
-      Map<String, String>? photos =
-          Map<String, String>.from(taskDoc['photos'] ?? {});
-
-      if (photos.containsKey('p1') && photos.containsKey('p2')) {
-        photosList.add({'p1': photos['p1']!, 'p2': photos['p2']!});
+void showConfirmationDialog(
+    BuildContext context, String message, bool isPoping) {
+  Widget yesButton = PrimaryButton(
+    text: "Discard",
+    onPressed: () async {
+      context.pop();
+      if (isPoping) {
+        // await Future.delayed(Duration(milliseconds: 150));
+        context.pop();
       }
-    }
-  }
-  List<String> fetchedImages = [];
-    for (var photoMap in photosList) {
-      fetchedImages.add(photoMap['p1']!); 
-      fetchedImages.add(photoMap['p2']!); 
-    }
-  generateVideo(fetchedImages);
-} // For http requests
-
-Future<void> generateVideo(List<String> imageUrls) async {
-  log("IN generateVideo");
-
-  // API endpoint
-  final String apiUrl = 'https://api.shotstack.io/edit/stage/render';
-
-  // Headers
-  var headers = {
-    'x-api-key': 'LFfnJVLq61WTtJDPxK1QxQOlD2mcJunscai2MYQJ',
-    'Content-Type': 'application/json',
-  };
-
-  // Build the clips array using image URLs from the list
-  List<Map<String, dynamic>> clips = [];
-  for (int i = 0; i < imageUrls.length; i++) {
-    clips.add({
-      "asset": {
-        "type": "image",
-        "src": imageUrls[i],
-      },
-      "start": i * 4, // Assuming each clip starts every 4 seconds
-      "length": 5, // Each clip is 5 seconds long
-      "effect":
-          i % 2 == 0 ? "zoomIn" : "slideLeft", // Alternate effects for variety
-      "transition": {"out": "fade"}
-    });
-  }
-
-  // JSON body for the request
-  var body = {
-    "timeline": {
-      "soundtrack": {
-        "src":
-            "https://shotstack-assets.s3-ap-southeast-2.amazonaws.com/music/freepd/advertising.mp3",
-        "effect": "fadeInFadeOut"
-      },
-      "tracks": [
-        {"clips": clips}
-      ]
     },
-    "output": {"format": "mp4", "resolution": "sd"}
-  };
+    width: getScreenWidth(context) * 0.30,
+    color: errorColor,
+  );
 
-  try {
-    // Send the POST request
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: headers,
-      body: jsonEncode(body),
-    );
+  Widget noButton = PrimaryButton(
+    text: "No",
+    color: Colors.grey,
+    onPressed: () {
+      context.pop();
+    },
+    width: getScreenWidth(context) * 0.30,
+  );
 
-    if (response.statusCode == 201) {
-      print("Video render request successful");
-      var jsonResponse = jsonDecode(response.body);
-      String renderId = jsonResponse["response"]["id"];
-      print("Render ID: $renderId");
+  AlertDialog alert = AlertDialog(
+    actionsOverflowButtonSpacing: 20,
+    icon: Lottie.asset(
+      "assets/lottie/info.json",
+      height: 100,
+      // width: 10,
+    ),
+    backgroundColor: Color.fromARGB(255, 213, 236, 255),
+    content: Text(
+      message,
+      style: getFontStyle(context).copyWith(
+          fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+      textAlign: TextAlign.center,
+    ),
+    actions: [noButton, yesButton],
+    actionsAlignment: MainAxisAlignment.center,
+  );
 
-      // Call the function to poll render status and get video URL
-      await pollRenderStatus(renderId);
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+// void showConfirmationDialog(
+//       {required BuildContext context,
+//       required String message,
+//       required VoidCallback onPressed}) {
+//     Widget yesButton = PrimaryButton(
+//       text: "Yes",
+//       onPressed: () {
+//         onPressed();
+
+//         context.pop();
+//       },
+//       width: getScreenWidth(context) * 0.30,
+//       color: errorColor,
+//     );
+
+//     Widget noButton = PrimaryButton(
+//       text: "No",
+//       color: Colors.grey,
+//       onPressed: () {
+//         context.pop();
+//       },
+//       width: getScreenWidth(context) * 0.30,
+//     );
+
+//     AlertDialog alert = AlertDialog(
+//       actionsOverflowButtonSpacing: 20,
+//       icon: Lottie.asset(
+//         "assets/lottie/info.json",
+//         height: 100,
+//         // width: 10,
+//       ),
+//       backgroundColor: Color.fromARGB(255, 213, 236, 255),
+//       content: Text(
+//         message,
+//         style: getFontStyle(context).copyWith(
+//             fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+//         textAlign: TextAlign.center,
+//       ),
+//       actions: [noButton, yesButton],
+//       actionsAlignment: MainAxisAlignment.center,
+//     );
+
+//     showDialog(
+//       context: context,
+//       builder: (BuildContext context) {
+//         return alert;
+//       },
+//     );
+//   }
+
+saveLanguage(BuildContext context) async {
+  String code = context.read<LanguageProvider>().selectedLanguage;
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setString('selectedLanguage', code);
+}
+
+Future<bool> checkPhotosAvailability(
+    DocumentReference weekRef, int dayNumber) async {
+  List<int> daysToCheck;
+
+  // Special logic for Week 8
+  if (weekRef.id == '8') {
+    if (dayNumber == 4) {
+      // Week 8, Day 4: Check photos for Day 2 and Day 3 of all weeks (1-8)
+      return await _checkPhotosForMultipleDays([2, 3], includeWeek8: true);
+    } else if (dayNumber == 5) {
+      // Week 8, Day 5: Check photos for Day 4 and Day 5 of all weeks (1-7)
+      return await _checkPhotosForMultipleDays([4, 5], includeWeek8: false);
+    } else if (dayNumber == 6) {
+      // Week 8, Day 6: Check photos for Day 6 of all weeks (1-7)
+      return await _checkPhotosForMultipleDays([6], includeWeek8: false);
+    } else if (dayNumber == 7) {
+      // Week 8, Day 7: Check photos for Day 1 of all weeks (1-8)
+      return await _checkPhotosForMultipleDays([1], includeWeek8: true);
     } else {
-      print("Failed to render video. Status code: ${response.statusCode}");
-      print(response.body);
+      return false; // Invalid day number for Week 8
     }
-  } catch (e) {
-    print("Error occurred: $e");
-  }
-}
-
-Future<void> pollRenderStatus(String renderId) async {
-  log("IN pollRenderStatus");
-
-  // API endpoint for getting render status
-  final String statusApiUrl =
-      'https://api.shotstack.io/edit/stage/render/$renderId';
-
-  // Headers
-  var headers = {
-    'x-api-key': 'LFfnJVLq61WTtJDPxK1QxQOlD2mcJunscai2MYQJ',
-    'Content-Type': 'application/json',
-  };
-
-  bool isDone = false; // Flag to track if rendering is complete
-
-  while (!isDone) {
-    try {
-      // Send the GET request to check render status
-      final response = await http.get(
-        Uri.parse(statusApiUrl),
-        headers: headers,
-      );
-
-      if (response.statusCode == 200) {
-        var jsonResponse = jsonDecode(response.body);
-        String status = jsonResponse["response"]["status"];
-        print("Render Status: $status");
-
-        // Check if the render is done
-        if (status == "done") {
-          String videoUrl = jsonResponse["response"]["url"];
-          log("Video URL: $videoUrl");
-          getVideoFromUrl(videoUrl);
-          isDone = true; // Stop the loop once done
-        } else {
-          print("Render is still processing. Waiting for 3 seconds...");
-          await Future.delayed(
-              Duration(seconds: 3)); // Wait 3 seconds before checking again
-        }
-      } else {
-        print(
-            "Failed to get render status. Status code: ${response.statusCode}");
-        print(response.body);
-        isDone = true; // Exit the loop if the request fails
+  } else {
+    // Logic for Week 1-7: Check photos for all days 1-7
+    daysToCheck = [1, 2, 3, 4, 5, 6];
+    for (int day in daysToCheck) {
+      bool photosAvailable = await _checkPhotosForDay(weekRef, day);
+      if (!photosAvailable) {
+        return false; // If any required day is missing photos
       }
-    } catch (e) {
-      print("Error occurred while fetching video URL: $e");
-      isDone = true; // Exit the loop in case of an error
     }
+    return true; // All photos are available for this week
   }
 }
 
-Future<void> getVideoFromUrl(String videoUrl) async {
-  log("IN getVideoFromUrl");
+Future<bool> _checkPhotosForMultipleDays(List<int> daysToFetch,
+    {required bool includeWeek8}) async {
+  String userId = FirebaseAuth.instance.currentUser!.uid;
 
-  try {
+  // Loop through weeks
+  for (int weekNum = 1; weekNum <= (includeWeek8 ? 8 : 7); weekNum++) {
+    DocumentReference weekRef = FirebaseFirestore.instance
+        .collection('users/$userId/weeks')
+        .doc(weekNum.toString());
 
-    // Step 1: Create an HTTP client
-    final client = http.Client();
-
-    // Step 2: Start the request and get the streamed response
-    final request = http.Request('GET', Uri.parse(videoUrl));
-    final streamedResponse = await client.send(request);
-
-    // Step 3: Get the total file size from the content-length header
-    final int contentLength =
-        int.parse(streamedResponse.headers['content-length']!);
-
-    // Step 4: Create a buffer to hold the video data
-    List<int> bytes = [];
-
-    // Track the number of bytes downloaded
-    int bytesDownloaded = 0;
-
-    // Step 5: Listen to the response stream and receive data in chunks
-    await for (var chunk in streamedResponse.stream) {
-      // Add each chunk to the buffer
-      bytes.addAll(chunk);
-
-      // Track the total downloaded so far
-      bytesDownloaded += chunk.length;
-
-      // Calculate the progress
-      double progress = (bytesDownloaded / contentLength) * 100;
-      print('Download progress: $progress%');
+    for (int day in daysToFetch) {
+      bool photosAvailable = await _checkPhotosForDay(weekRef, day);
+      if (!photosAvailable) {
+        return false; // If any required day's photos are missing
+      }
     }
-    uploadToFirbase(bytes);
-  } catch (e) {
-    print('Error: $e');
   }
-  
+
+  return true; // All required photos are available across all weeks
 }
 
-Future<void> uploadToFirbase(List<int> bytes) async {
-  log("IN uploadToFirbase");
+Future<bool> _checkPhotosForDay(DocumentReference weekRef, int dayNum) async {
+  DocumentReference dayRef = weekRef.collection('days').doc(dayNum.toString());
 
-  // Step 6: Once the download is complete, convert the buffer into Uint8List (byte data)
-  Uint8List videoBytes = Uint8List.fromList(bytes);
+  DocumentSnapshot taskDoc;
 
-  // Step 7: Upload to Firebase Storage
-  final String firebaseStoragePath = "uploads/videos/generated_video.mp4";
-  final Reference storageRef =
-      FirebaseStorage.instance.ref().child(firebaseStoragePath);
+  if (dayNum == 1) {
+    // For Day 1: Fetch photos from the first task
+    taskDoc = await dayRef.collection('tasks').doc('1').get();
+  } else {
+    // For Day 2-7: Fetch photos from the last task
+    QuerySnapshot taskCollection = await dayRef.collection('tasks').get();
+    int lastTaskNum = taskCollection.size;
+    taskDoc =
+        await dayRef.collection('tasks').doc(lastTaskNum.toString()).get();
+  }
 
-  final UploadTask uploadTask = storageRef.putData(videoBytes);
+  if (!taskDoc.exists || taskDoc.data() == null) {
+    log("FALSE FOR ++++ DATA NOT EXIST");
 
-  // Optional: Track upload progress to Firebase
-  uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
-    print(
-        'Upload progress: ${(snapshot.bytesTransferred / snapshot.totalBytes) * 100} %');
-  });
+    return false; // Task document doesn't exist
+  }
 
-  // Get the download URL after upload completes
-  final TaskSnapshot taskSnapshot = await uploadTask;
-  final String downloadUrl = await taskSnapshot.ref.getDownloadURL();
-  print('Video uploaded successfully! Download URL: $downloadUrl');
+  Map<String, dynamic>? taskData = taskDoc.data() as Map<String, dynamic>?;
+  // bool isCompleted = taskData?['isCompleted'] ?? false;
+  String? p1Url = taskData?['photos']?['p1'];
+  String? p2Url = taskData?['photos']?['p2'];
+
+  // Check if task is completed and both photos (p1 and p2) are available
+  log("----------------------------------");
+  // log("isCompleted = $isCompleted");
+  log("p1Url != null = ${p1Url != null}");
+  log("p1Url.isNotEmpty = ${p1Url?.isNotEmpty}");
+  log("p2Url != null = ${p2Url != null}");
+  log("p2Url.isNotEmpty = ${p2Url?.isNotEmpty}");
+  log("----------------------------------");
+
+  if (p1Url != null && p1Url.isNotEmpty && p2Url != null && p2Url.isNotEmpty) {
+    return true; // Photos are available
+  }
+
+  return false; // Photos are not available
 }

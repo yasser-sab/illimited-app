@@ -7,6 +7,7 @@ import 'package:illimited_app/services/authentication_service.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:illimited_app/widget/primary_textfield.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HelpFormSceen extends StatefulWidget {
   const HelpFormSceen({super.key});
@@ -38,7 +39,7 @@ class _HelpFormSceenState extends State<HelpFormSceen> {
       appBar: AppBar(
         backgroundColor: primaryColor,
         title: Text(
-          "Contact",
+          AppLocalizations.of(context)!.contact,
           style: getFontStyle(context).copyWith(fontSize: 18),
         ),
         centerTitle: true,
@@ -51,7 +52,7 @@ class _HelpFormSceenState extends State<HelpFormSceen> {
             child: Column(
               children: [
                 Text(
-                  "How can we help you ?",
+                  AppLocalizations.of(context)!.howCanWeHelpYou,
                   style: getFontStyle(context)
                       .copyWith(fontSize: 22, color: Colors.black),
                 ),
@@ -61,10 +62,11 @@ class _HelpFormSceenState extends State<HelpFormSceen> {
                 PrimaryTextfield(
                   maxLines: 1,
                   controller: _subjectController,
-                  hintText: "Subject",
+                  hintText: AppLocalizations.of(context)!.subject,
                   validator: (txt) {
                     if (txt!.trim().length < 4) {
-                      return "Must Contain at least 4 character";
+                      return AppLocalizations.of(context)!
+                          .mustContainAtLeast4Chars;
                     } else {
                       return null;
                     }
@@ -77,10 +79,11 @@ class _HelpFormSceenState extends State<HelpFormSceen> {
                   minLines: 10,
                   // maxLines: 7,
                   controller: _msgController,
-                  hintText: "Type your message",
+                  hintText: AppLocalizations.of(context)!.typeYourMessage,
                   validator: (txt) {
                     if (txt!.trim().length < 10) {
-                      return "Must Contain at least 10 character";
+                      return AppLocalizations.of(context)!
+                          .mustContainAtLeast10Chars;
                     } else {
                       return null;
                     }
@@ -90,10 +93,11 @@ class _HelpFormSceenState extends State<HelpFormSceen> {
                   height: 25,
                 ),
                 PrimaryButton(
-                  text: "Send",
+                  text: AppLocalizations.of(context)!.send,
                   onPressed: () async {
                     final Email email = Email(
-                      body: '${_msgController.text.trim()})\n\n${user!.displayName}.',
+                      body:
+                          '${_msgController.text.trim()})\n\n${user!.displayName}.',
                       subject: _subjectController.text.trim(),
                       recipients: ['joannaplessier@gmail.com'],
                       isHTML: false,
@@ -104,7 +108,14 @@ class _HelpFormSceenState extends State<HelpFormSceen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text("*After you click 'Send' you'll be redirected to your email's message page. From there, all you need to do is click the 'Send' button.", textAlign: TextAlign.center, style: GoogleFonts.roboto(color: Colors.black.withOpacity(0.4), fontSize: 13 , fontWeight: FontWeight.w400),),
+                  child: Text(
+                    AppLocalizations.of(context)!.afterClickSendRedirect,
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.roboto(
+                        color: Colors.black.withOpacity(0.4),
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400),
+                  ),
                 )
               ],
             ),

@@ -6,7 +6,7 @@ import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class PhotoTaker extends StatefulWidget {
   const PhotoTaker({super.key, required this.isTaskDone});
 
@@ -32,7 +32,7 @@ class PhotoTakerState extends State<PhotoTaker> {
 
   void _removeImage() {
     setState(() {
-      _selectedImage = null; 
+      _selectedImage = null;
     });
     widget.isTaskDone(false);
   }
@@ -43,6 +43,7 @@ class PhotoTakerState extends State<PhotoTaker> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+
         DottedBorder(
           color: Colors.green,
           radius: Radius.circular(borderRadius),
@@ -113,7 +114,7 @@ class PhotoTakerState extends State<PhotoTaker> {
                           height: 10,
                         ),
                         Text(
-                          'Take a photo to preview',
+                          AppLocalizations.of(context)!.takePhotoToPreview,
                           style: getFontStyle(context).copyWith(
                               color: const Color.fromARGB(125, 0, 0, 0),
                               fontSize: 16),
@@ -126,9 +127,8 @@ class PhotoTakerState extends State<PhotoTaker> {
                           color: primaryColor.withOpacity(0.6),
                           height: 40,
                           fontSize: 16.5,
-                          onPressed:
-                              _takeSelfie,
-                          text: "Take",
+                          onPressed: _takeSelfie,
+                          text: AppLocalizations.of(context)!.take,
                         ),
                       ],
                     ),

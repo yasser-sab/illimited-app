@@ -1,5 +1,7 @@
 
 
+import 'package:illimited_app/screens/intro_language.dart';
+
 class RouteNames {
   static const splash = '/';
   static const signin = '/signin';
@@ -16,9 +18,11 @@ class RouteNames {
   static const dayDetails = '/dayDetails';
   static const taskDetails = '/taskDetails';
   static const goal = '/goal';
+  static const language = '/language';
+  static const introLanguage = '/introLanguage';
 
 
-  static List<String> noLoginScreens = [splash, getStarted, signup, emailVerificationMessage, resetPassword]; 
+  static List<String> noLoginScreens = [splash, introLanguage, getStarted, signup, emailVerificationMessage, resetPassword]; 
 }
 
 
