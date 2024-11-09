@@ -22,6 +22,7 @@ import 'package:illimited_app/screens/sign_up_screen.dart';
 import 'package:illimited_app/screens/signin_screen.dart';
 import 'package:illimited_app/screens/splash_screen.dart';
 import 'package:illimited_app/screens/task_details.dart';
+import 'package:illimited_app/screens/terms_conditions.dart';
 import 'package:illimited_app/screens/week_details.dart';
 import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/task_card.dart';
@@ -81,7 +82,8 @@ final GoRouter _router = GoRouter(
       name: RouteNames.introVideo,
       path: RouteNames.introVideo,
       builder: (BuildContext context, GoRouterState state) {
-        return const IntroVideoScreen();
+        final langCode = state.extra as String;
+        return IntroVideoScreen(langCode: langCode,);
       },
     ),
     GoRoute(
@@ -161,7 +163,11 @@ final GoRouter _router = GoRouter(
         final isLastDay = args["isLastDay"] as bool;
         final taskData = args["taskData"] as Map<String, dynamic>;
         return TaskDetails(
-            taskType: taskType, taskData: taskData, isLastTask: isLastTask, isLastDay: isLastDay,);
+          taskType: taskType,
+          taskData: taskData,
+          isLastTask: isLastTask,
+          isLastDay: isLastDay,
+        );
       },
     ),
     GoRoute(
@@ -171,18 +177,25 @@ final GoRouter _router = GoRouter(
         return const GoalScreen();
       },
     ),
-        GoRoute(
+    GoRoute(
       name: RouteNames.language,
       path: RouteNames.language,
       builder: (BuildContext context, GoRouterState state) {
         return const LanguageScreen();
       },
     ),
-            GoRoute(
+    GoRoute(
       name: RouteNames.introLanguage,
       path: RouteNames.introLanguage,
       builder: (BuildContext context, GoRouterState state) {
         return const IntroLanguage();
+      },
+    ),
+    GoRoute(
+      name: RouteNames.termsConditions,
+      path: RouteNames.termsConditions,
+      builder: (BuildContext context, GoRouterState state) {
+        return TermsConditions();
       },
     ),
   ],

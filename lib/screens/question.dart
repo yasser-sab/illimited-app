@@ -219,6 +219,6 @@ class _QuestionState extends State<Question> {
     await Future.delayed(
       const Duration(milliseconds: 3000),
     );
-    context.goNamed(RouteNames.introVideo);
+    context.goNamed(RouteNames.introVideo, extra: Localizations.localeOf(context).languageCode);
   }
 }

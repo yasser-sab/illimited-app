@@ -25,7 +25,7 @@ class NotificationService {
     tz.setLocalLocation(tz.getLocation(currentTimeZone));
 
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_notification');
+        AndroidInitializationSettings('@drawable/ic_notification');
 
     const InitializationSettings initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);
@@ -43,7 +43,7 @@ class NotificationService {
 
   Future<void> scheduleRemainders(BuildContext context,
       {bool isItNow = false}) async {
-    const times = [11, 17, 20, 21, 22, 23, 0, 1, 2, 3, 4];
+    const times = [11, 17];
     const AndroidNotificationDetails androidDetails =
         AndroidNotificationDetails(
       'remainder_channel_id', // Unique channel ID
@@ -52,6 +52,7 @@ class NotificationService {
       priority: Priority.high,
       playSound: true,
       visibility: NotificationVisibility.public,
+      
       largeIcon: DrawableResourceAndroidBitmap(
         '@mipmap/launcher_icon',
       ),
@@ -128,8 +129,6 @@ class NotificationService {
   }
 
   Future<void> instantNotification(BuildContext context) async {
-    // Android notification details with high priority
-
     const AndroidNotificationDetails androidDetails =
         AndroidNotificationDetails(
       'instant_channel_id', // Unique channel ID
@@ -141,8 +140,6 @@ class NotificationService {
       largeIcon: DrawableResourceAndroidBitmap(
         '@mipmap/launcher_icon',
       ),
-      // icon: '@mipmap/ic_notification',
-      // fullScreenIntent: true,
       enableVibration: true,
     );
 
@@ -157,46 +154,7 @@ class NotificationService {
     );
   }
 
-  // Future<void> schedulTest() async {
-  //   const AndroidNotificationDetails androidDetails =
-  //       AndroidNotificationDetails(
-  //     'night_channel_id', // Unique channel ID
-  //     'Night Notifications', // Channel namec
-  //     importance: Importance.max,
-  //     priority: Priority.high,
-  //     playSound: true,
-  //     visibility: NotificationVisibility.public,
-  //     largeIcon: DrawableResourceAndroidBitmap(
-  //       '@mipmap/launcher_icon',
-  //     ),
-  //     icon: '@mipmap/launcher_icon',
-  //     // fullScreenIntent: true,
-  //     enableVibration: true,
-  //   );
-
-  //   final now = tz.TZDateTime.now(tz.local);
-  //   var scheduledDate =
-  //       tz.TZDateTime(tz.local, now.year, now.month, 24, 22, 38);
-
-  //   const NotificationDetails platformDetails =
-  //       NotificationDetails(android: androidDetails);
-
-  //   await flutterLocalNotificationsPlugin.zonedSchedule(
-  //     12,
-  //     'test notification',
-  //     'just a test !!',
-  //     scheduledDate,
-  //     uiLocalNotificationDateInterpretation:
-  //         UILocalNotificationDateInterpretation.wallClockTime,
-  //     platformDetails,
-  //     androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-  //     matchDateTimeComponents: DateTimeComponents.time,
-  //   );
-  // }
-
   Future<void> scheduleNightNotification(BuildContext context) async {
-    // Android notification details with high priority
-
     const AndroidNotificationDetails androidDetails =
         AndroidNotificationDetails(
       'night_channel_id', // Unique channel ID
@@ -208,8 +166,6 @@ class NotificationService {
       largeIcon: DrawableResourceAndroidBitmap(
         '@mipmap/launcher_icon',
       ),
-
-      // fullScreenIntent: true,
       enableVibration: true,
     );
 
@@ -235,7 +191,5 @@ class NotificationService {
       matchDateTimeComponents: DateTimeComponents.time,
       payload: 'night',
     );
-    // notifTimes[1] =
-    //     "1 = ${scheduledDate.day}/${scheduledDate.month} - ${scheduledDate.hour}:${scheduledDate.minute}";
   }
 }

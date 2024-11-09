@@ -8,6 +8,7 @@ import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/main.dart';
 import 'package:illimited_app/models/language.dart';
 import 'package:illimited_app/providers/language_provider.dart';
+import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/services/notification_service.dart';
 import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/language_button.dart';
@@ -67,22 +68,21 @@ class _LanguageScreenState extends State<LanguageScreen> {
                   (lang) {
                     return LanguageButton(
                       lang: lang,
-                      onTap: () {
-                        setState(() async {
-                          languageProvider
-                              .setSelectedLanguage(lang.languageCode);
-                          MyApp.setLocale(context, Locale(lang.languageCode));
-                          if (FirebaseAuth.instance.currentUser != null) {
-                            await NotificationService()
-                                .cancelAllNotifications();
-                            await NotificationService()
-                                .scheduleMorningNotification(context);
-                            await NotificationService()
-                                .scheduleNightNotification(context);
-                            await NotificationService()
-                                .scheduleRemainders(context);
-                          }
-                        });
+                      onTap: () async {
+                        languageProvider.setSelectedLanguage(lang.languageCode);
+                        MyApp.setLocale(context, Locale(lang.languageCode));
+                        if (FirebaseAuth.instance.currentUser != null) {
+                          log("hna");
+                          await NotificationService().cancelAllNotifications();
+                          await NotificationService()
+                              .scheduleMorningNotification(context);
+                          await NotificationService()
+                              .scheduleNightNotification(context);
+                          await NotificationService()
+                              .scheduleRemainders(context);
+                        } else {
+                          log("machi hna");
+                        }
                       },
                     );
                   },

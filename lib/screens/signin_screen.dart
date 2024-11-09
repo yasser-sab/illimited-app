@@ -80,15 +80,10 @@ class _SignInScreenState extends State<SignInScreen> {
                       const SizedBox(
                         height: 40,
                       ),
-                      InkWell(
-                                    onTap: () {
-              AuthService().signOut();
-            },
-                        child: Text(
-                          AppLocalizations.of(context)!.signIn,
-                          style: getFontStyle(context).copyWith(
-                              fontSize: 40, fontWeight: FontWeight.w800),
-                        ),
+                      Text(
+                        AppLocalizations.of(context)!.signIn,
+                        style: getFontStyle(context).copyWith(
+                            fontSize: 40, fontWeight: FontWeight.w800),
                       ),
                       SizedBox(
                         height: getScreenHeight(context) * 0.05,

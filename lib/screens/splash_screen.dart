@@ -36,9 +36,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    context.read<AppProvider>().setScreenWidth(context);
-    context.read<AppProvider>().setScreenHeight(context);
-    
     super.initState();
     log("in init");
     checkFirstLaunch().then(
@@ -51,6 +48,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    context.read<AppProvider>().setScreenWidth(context);
+    context.read<AppProvider>().setScreenHeight(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -67,7 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         right: 0,
                         child: SlideInUp(
                           child: Text(
-                            "illimité",
+                            "Illimités",
                             textAlign: TextAlign.center,
                             style: GoogleFonts.lobster(
                                 color: Colors.white, fontSize: 80),

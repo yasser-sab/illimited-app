@@ -20,6 +20,7 @@ class RouteNames {
   static const goal = '/goal';
   static const language = '/language';
   static const introLanguage = '/introLanguage';
+  static const termsConditions = '/termsConditions';
 
 
   static List<String> noLoginScreens = [splash, introLanguage, getStarted, signup, emailVerificationMessage, resetPassword]; 

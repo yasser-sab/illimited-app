@@ -123,6 +123,24 @@ class _DayDetailsState extends State<DayDetails> {
                   snapshot.data!.docs;
               List<Widget> taskCards = [];
 
+              if (widget.daykey == 1) {
+                taskCards.add(
+                  Card(
+                    // color: Colors.transparent,
+                    margin: EdgeInsets.all(12),
+                    elevation: 7,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        side: BorderSide(width: 0.5)),
+                    child: const ListTile(
+                      leading: Icon(
+                        Icons.info,
+                      ),
+                      title: Text("Please make sure to review all your tasks and also keep an eye on the completed ones."),
+                    ),
+                  ),
+                );
+              }
               // Process tasks to determine status
               for (int i = 0; i < tasks.length; i++) {
                 Map<String, dynamic> taskData = tasks[i].data();
