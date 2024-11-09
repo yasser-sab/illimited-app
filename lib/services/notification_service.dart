@@ -155,6 +155,7 @@ class NotificationService {
   }
 
   Future<void> scheduleNightNotification(BuildContext context) async {
+    
     const AndroidNotificationDetails androidDetails =
         AndroidNotificationDetails(
       'night_channel_id', // Unique channel ID

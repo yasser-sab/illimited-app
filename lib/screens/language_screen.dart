@@ -68,21 +68,22 @@ class _LanguageScreenState extends State<LanguageScreen> {
                   (lang) {
                     return LanguageButton(
                       lang: lang,
-                      onTap: () async {
-                        languageProvider.setSelectedLanguage(lang.languageCode);
-                        MyApp.setLocale(context, Locale(lang.languageCode));
-                        if (FirebaseAuth.instance.currentUser != null) {
-                          log("hna");
-                          await NotificationService().cancelAllNotifications();
-                          await NotificationService()
-                              .scheduleMorningNotification(context);
-                          await NotificationService()
-                              .scheduleNightNotification(context);
-                          await NotificationService()
-                              .scheduleRemainders(context);
-                        } else {
-                          log("machi hna");
-                        }
+                      onTap: () {
+                        setState(() async {
+                          languageProvider
+                              .setSelectedLanguage(lang.languageCode);
+                          MyApp.setLocale(context, Locale(lang.languageCode));
+                          if (FirebaseAuth.instance.currentUser != null) {
+                            await NotificationService()
+                                .cancelAllNotifications();
+                            await NotificationService()
+                                .scheduleMorningNotification(context);
+                            await NotificationService()
+                                .scheduleNightNotification(context);
+                            await NotificationService()
+                                .scheduleRemainders(context);
+                          }
+                        });
                       },
                     );
                   },
