@@ -83,7 +83,7 @@ class _MyAppState extends State<MyApp> {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       locale: _locale,
       routerConfig: router,
-      title: "Illimited",
+      title: "Illimités",
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,

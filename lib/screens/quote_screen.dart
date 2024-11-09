@@ -73,7 +73,7 @@ class _QuoteTaskState extends State<QuoteTask> with TickerProviderStateMixin {
   @override
   void dispose() {
     _soundPlayer.dispose();
-    // _controller.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -131,9 +131,9 @@ class _QuoteTaskState extends State<QuoteTask> with TickerProviderStateMixin {
     if (btnText == "") {
       btnText = AppLocalizations.of(context)!.done;
     }
-    // _controller = AnimationController(vsync: this);
-    // _controller.duration = Duration(milliseconds: 1800);
-    // _controller.forward();
+    _controller = AnimationController(vsync: this);
+    _controller.duration = Duration(milliseconds: 1800);
+    _controller.forward();
 
     return PopScope(
       canPop: false,

@@ -34,15 +34,15 @@ class GoogleSignButton extends StatelessWidget {
         
         style: ElevatedButton.styleFrom(
           elevation: elevation,
-          foregroundColor: textColor,
-          backgroundColor:color,
+          foregroundColor: enabled! ? textColor: Colors.white,
+          backgroundColor: enabled! ? color : Colors.grey,
           padding: EdgeInsets.zero,
           textStyle: getFontStyle(context).copyWith(fontWeight: isBold! ? FontWeight.bold : FontWeight.normal, fontSize: 20),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
           ),
         ),
-        onPressed: onPressed,
+        onPressed: enabled! ? onPressed : (){},
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

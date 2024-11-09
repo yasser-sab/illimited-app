@@ -118,21 +118,21 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "type": Tasks.video,
             "title": "Video Motivation",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle%CC%811.semaine1.jour1.Jeanmp4.mp4?alt=media&token=d3dfac10-95ef-4a95-ace5-e9256d12f337",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle%CC%811.semaine1.jour1.ENGLISHmp4.mp4?alt=media&token=c56b7481-435c-45bd-bd27-b019d28a17cd",
             "description": "DON'T BE AFRAID OF CHANGE!"
           },
           "ar": {
             "type": Tasks.video,
             "title": "فيديو تحفيزي",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle%CC%811.semaine1.jour1.Jeanmp4.mp4?alt=media&token=d3dfac10-95ef-4a95-ace5-e9256d12f337",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle%CC%811.semaine1.jour1.ARABICp4.mp4?alt=media&token=460b3b82-7ef9-433b-ad37-e9c11ac35ea2",
             "description": "لا تخاف من التغيير!"
           },
           "es": {
             "type": Tasks.video,
             "title": "Video de motivación",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle%CC%811.semaine1.jour1.Jeanmp4.mp4?alt=media&token=d3dfac10-95ef-4a95-ace5-e9256d12f337",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle%CC%811.semaine1.jour1.SPANISH.mp4?alt=media&token=84550b23-09ea-4b84-bfe3-8144bc3500fb",
             "description": "¡NO TENGAS MIEDO AL CAMBIO!"
           }
         },
@@ -152,21 +152,21 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "type": Tasks.video,
             "title": "Video Motivation",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FDefi1Controletesalimsem1jour2.mp4?alt=media&token=0e8d856b-37e1-40e8-ad8c-09300c9c93bb",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/logbookVideos%2FDefi1ControleENGLISH.mp4?alt=media&token=0144b75f-37aa-4c8a-bc1f-3236d03ea560",
             "description": "We are what we eat!"
           },
           "ar": {
             "type": Tasks.video,
             "title": "فيديو تحفيزي",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FDefi1Controletesalimsem1jour2.mp4?alt=media&token=0e8d856b-37e1-40e8-ad8c-09300c9c93bb",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/logbookVideos%2FDefi1ControletesaliARABIC.mp4?alt=media&token=6831a4e6-b2aa-48f5-b874-6179b91088b3",
             "description": "نحن ما نأكله!"
           },
           "es": {
             "type": Tasks.video,
             "title": "Video de motivación",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FDefi1Controletesalimsem1jour2.mp4?alt=media&token=0e8d856b-37e1-40e8-ad8c-09300c9c93bb",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/logbookVideos%2FDefi1ControleSPANISH.mp4?alt=media&token=d7d47863-6ea3-40ba-8755-05ae429aa111",
             "description": "¡Somos lo que comemos!"
           }
         },
@@ -277,36 +277,6 @@ Map<String, Map<String, dynamic>> tasksOf = {
       "tasks": {
         "task1": {
           "fr": {
-            "type": Tasks.video,
-            "title": "Vidéo de motivation",
-            "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2Fsem1jour3deficulinaire2.mp4?alt=media&token=89d7b71a-0932-4727-bbd9-3c774a17f037",
-            "description": "Nous sommes ce que nous mangeons !"
-          },
-          "en": {
-            "type": Tasks.video,
-            "title": "Video Motivation",
-            "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2Fsem1jour3deficulinaire2.mp4?alt=media&token=89d7b71a-0932-4727-bbd9-3c774a17f037",
-            "description": "We are what we eat!"
-          },
-          "ar": {
-            "type": Tasks.video,
-            "title": "فيديو تحفيزي",
-            "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2Fsem1jour3deficulinaire2.mp4?alt=media&token=89d7b71a-0932-4727-bbd9-3c774a17f037",
-            "description": "نحن ما نأكله!"
-          },
-          "es": {
-            "type": Tasks.video,
-            "title": "Video de motivación",
-            "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2Fsem1jour3deficulinaire2.mp4?alt=media&token=89d7b71a-0932-4727-bbd9-3c774a17f037",
-            "description": "¡Somos lo que comemos!"
-          }
-        },
-        "task2": {
-          "fr": {
             "type": Tasks.questions,
             "title": "Défi Communauté Gourmande",
             "description":
@@ -361,7 +331,7 @@ Map<String, Map<String, dynamic>> tasksOf = {
             }
           }
         },
-        "task3": {
+        "task2": {
           "fr": {
             "type": Tasks.questions,
             "title": "ÉVOLUTION PHYSIQUE",
@@ -477,7 +447,7 @@ Map<String, Map<String, dynamic>> tasksOf = {
             }
           }
         },
-        "task4": {
+        "task3": {
           "fr": {
             "type": Tasks.takePhoto,
             "title": "Temps de Selfie !",
@@ -545,21 +515,21 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "type": Tasks.video,
             "title": "Video motivation",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FDefi3EvolutionPhisiq-sem1jour4.mp4?alt=media&token=7e120cbe-12ec-4e4b-843e-e5c7f308aac3",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/logbookVideos%2FDefi3ENGLISHvolutionPhisiq-sem1jour4.mp4?alt=media&token=b0dbe268-704e-43a4-a3ea-c1c62a7bee7e",
             "description": "DON'T BE AFRAID OF CHANGE!"
           },
           "ar": {
             "type": Tasks.video,
             "title": "فيديو تحفيزي",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FDefi3EvolutionPhisiq-sem1jour4.mp4?alt=media&token=7e120cbe-12ec-4e4b-843e-e5c7f308aac3",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/logbookVideos%2FDefi3ARABICevolutionPhisiq-sem1jour4.mp4?alt=media&token=1e92a91b-b058-4620-b610-cb25960d6758",
             "description": "لا تخاف من التغيير!"
           },
           "es": {
             "type": Tasks.video,
             "title": "Vídeo de motivación",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FDefi3EvolutionPhisiq-sem1jour4.mp4?alt=media&token=7e120cbe-12ec-4e4b-843e-e5c7f308aac3",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/logbookVideos%2FDefi3SPANISHevolutionPhisiq-sem1jour4.mp4?alt=media&token=1790a68b-96cd-4459-b52c-d917d3b8a7db",
             "description": "¡NO TENGAS MIEDO AL CAMBIO!"
           }
         },
@@ -912,21 +882,21 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "type": Tasks.video,
             "title": "Motivational Video",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle%CC%812.semaine2.jou1.Suzanne.mp4?alt=media&token=185fff2c-bb5e-46a4-b607-7b27650cf00e",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle%CC%812.semaine2.jou1ENGLISH%20(1).mp4?alt=media&token=58836d6b-a28b-4e2c-aff3-3f431e770f4f",
             "description": "WELL-BEING KEY 2: CHANGE YOUR PERSPECTIVE"
           },
           "ar": {
             "type": Tasks.video,
             "title": "فيديو تحفيزي",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle%CC%812.semaine2.jou1.Suzanne.mp4?alt=media&token=185fff2c-bb5e-46a4-b607-7b27650cf00e",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle%CC%812.semaine2.jou1.SuzanneARABIC.mp4?alt=media&token=1b90bf89-0155-4bdc-9ffb-3a72f1d39af4",
             "description": "المفتاح للرفاهية 2: غيّر وجهة نظرك"
           },
           "es": {
             "type": Tasks.video,
             "title": "Video motivacional",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle%CC%812.semaine2.jou1.Suzanne.mp4?alt=media&token=185fff2c-bb5e-46a4-b607-7b27650cf00e",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/logbookVideos%2FCL%C3%89BIENETRE2.SPANISH.mp4?alt=media&token=ffb2bc86-cdb0-4415-9880-ee9cc1c7e089",
             "description": "CLAVE DEL BIENESTAR 2: CAMBIA TU PERSPECTIVA"
           }
         }
@@ -1088,6 +1058,36 @@ Map<String, Map<String, dynamic>> tasksOf = {
       "tasks": {
         "task1": {
           "fr": {
+            "type": Tasks.video,
+            "title": "Vidéo de motivation",
+            "videoUrl":
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FvideosstyleFrench.mp4?alt=media&token=8f0fc8e4-bf9b-432f-9920-f9a21b458a46",
+            "description": "Vidéo de styles de coupe de cheveux"
+          },
+          "en": {
+            "type": Tasks.video,
+            "title": "Video motivation",
+            "videoUrl":
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FvideosstyleENGLISH.mp4?alt=media&token=a2d03fa4-3067-413b-b97e-6af867b53721",
+            "description": "Haircut style video"
+          },
+          "ar": {
+            "type": Tasks.video,
+            "title": "فيديو تحفيزي",
+            "videoUrl":
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FvideosstyleARABICmp4.mp4?alt=media&token=c967ed2e-66b9-4c81-abfe-06a0a7a14e47",
+            "description": "فيديو لأنماط قصات الشعر"
+          },
+          "es": {
+            "type": Tasks.video,
+            "title": "Vídeo de motivación",
+            "videoUrl":
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FvideosStyleSPANISH.mp4?alt=media&token=ca065558-ae15-4bb8-97bf-feb9b85a3cbf",
+            "description": "Video de estilos de cortes de cabello"
+          }
+        },
+        "task2": {
+          "fr": {
             "type": Tasks.questions,
             "title": "Journal de bord",
             "description": "Décrivez vos sentiments",
@@ -1148,7 +1148,7 @@ Map<String, Map<String, dynamic>> tasksOf = {
             }
           }
         },
-        "task2": {
+        "task3": {
           "fr": {
             "type": Tasks.takePhoto,
             "title": "Temps de Selfie !",
@@ -1312,6 +1312,36 @@ Map<String, Map<String, dynamic>> tasksOf = {
         },
         "task2": {
           "fr": {
+            "type": Tasks.video,
+            "title": "Vidéo de motivation",
+            "videoUrl":
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2Fsem1jour3deficulinaire2.mp4?alt=media&token=89d7b71a-0932-4727-bbd9-3c774a17f037",
+            "description": "Nous sommes ce que nous mangeons !"
+          },
+          "en": {
+            "type": Tasks.video,
+            "title": "Video Motivation",
+            "videoUrl":
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/logbookVideos%2Fdefi2ENGLISHsem1jour3.mp4?alt=media&token=fb68c64d-4ad6-4f28-bfdb-b5a5e50fe2df",
+            "description": "We are what we eat!"
+          },
+          "ar": {
+            "type": Tasks.video,
+            "title": "فيديو تحفيزي",
+            "videoUrl":
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/logbookVideos%2Fdefi2culinaire2ARABIC.mp4?alt=media&token=14253441-f36c-4598-b6a5-6fbc53abbc57",
+            "description": "نحن ما نأكله!"
+          },
+          "es": {
+            "type": Tasks.video,
+            "title": "Video de motivación",
+            "videoUrl":
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/logbookVideos%2FDefi2SPANISHsem1jour3.mp4?alt=media&token=4e576d80-65ff-4a21-b21d-0eb162a27b0d",
+            "description": "¡Somos lo que comemos!"
+          }
+        },
+        "task3": {
+          "fr": {
             "type": Tasks.questions,
             "title": "ÉVOLUTION PHYSIQUE",
             "description":
@@ -1435,7 +1465,7 @@ Map<String, Map<String, dynamic>> tasksOf = {
             }
           }
         },
-        "task3": {
+        "task4": {
           "fr": {
             "type": Tasks.takePhoto,
             "title": "Temps de Selfie!",
@@ -1616,7 +1646,7 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "type": Tasks.video,
             "title": "Video motivation",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2Fcle3%2Csemaine3%2Cjour1%20Sophie.mp4?alt=media&token=9dae5aeb-9e9e-4863-b933-4d644715c131",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCL%C3%89BIENETRE3English.mp4?alt=media&token=fd0df046-8e92-47b1-a60c-073058aec031",
             "description":
                 "WELL-BEING KEY 3: LIVE IN THE PRESENT MOMENT: What if you decided to live more in the present moment?"
           },
@@ -1624,7 +1654,7 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "type": Tasks.video,
             "title": "فيديو تحفيزي",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2Fcle3%2Csemaine3%2Cjour1%20Sophie.mp4?alt=media&token=9dae5aeb-9e9e-4863-b933-4d644715c131",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCLEBIENETRE3%20ARABIC.mp4?alt=media&token=709bc159-ff7d-432c-b000-f6889c30d2c9",
             "description":
                 "مفتاح الرفاهية 3: عيش اللحظة الحالية: ماذا لو قررت أن تعيش أكثر في اللحظة الحالية؟"
           },
@@ -1632,7 +1662,7 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "type": Tasks.video,
             "title": "Vídeo motivacional",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2Fcle3%2Csemaine3%2Cjour1%20Sophie.mp4?alt=media&token=9dae5aeb-9e9e-4863-b933-4d644715c131",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCL%C3%89BIENETRE3SPANISH.mp4?alt=media&token=2c4c1813-bff1-4e5a-9c4b-1c1dafb7379d",
             "description":
                 "CLAVE DE BIENESTAR 3: VIVE EL MOMENTO PRESENTE: ¿Y si decidieras vivir más en el momento presente?"
           }
@@ -1683,21 +1713,21 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "type": Tasks.video,
             "title": "Video motivation",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2Fsemaine3jour2defi4prendreconscience.mp4?alt=media&token=5d7dcd5b-b019-4a42-b71f-420262e6229f",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/logbookVideos%2Fdefi4ENGLISHprendreconscience.mp4?alt=media&token=a091b2fa-0624-4c1e-af7b-c2bc88e645f6",
             "description": "DON'T BE AFRAID OF CHANGE!"
           },
           "ar": {
             "type": Tasks.video,
             "title": "فيديو تحفيزي",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2Fsemaine3jour2defi4prendreconscience.mp4?alt=media&token=5d7dcd5b-b019-4a42-b71f-420262e6229f",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/logbookVideos%2Fdefi4ARABIC.mp4?alt=media&token=bb3a18d4-474d-4158-af41-a254f0567ac2",
             "description": "لا تخاف من التغيير!"
           },
           "es": {
             "type": Tasks.video,
             "title": "Vídeo motivacional",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2Fsemaine3jour2defi4prendreconscience.mp4?alt=media&token=5d7dcd5b-b019-4a42-b71f-420262e6229f",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/logbookVideos%2Fsemaine3jour2defi4SPANISH.mp4?alt=media&token=15066040-2eda-4b48-8dae-e2aace30066b",
             "description": "¡NO TENGAS MIEDO AL CAMBIO!"
           }
         },
@@ -2331,21 +2361,21 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "type": Tasks.video,
             "title": "Video motivation",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle4Fsemaine4jour1Eric.mp4?alt=media&token=7aada55e-c9be-4942-9043-f1509eac4519",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle4ENGLISH.mp4?alt=media&token=7410d585-2f23-4a11-85d9-bae07391aa4a",
             "description": "WELLNESS KEY 4"
           },
           "ar": {
             "type": Tasks.video,
             "title": "فيديو تحفيزي",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle4Fsemaine4jour1Eric.mp4?alt=media&token=7aada55e-c9be-4942-9043-f1509eac4519",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCLEBIENETRE4ARABIC.mp4?alt=media&token=ccad4f8e-f7bd-43aa-baae-c0c126dc86df",
             "description": "مفتاح الرفاهية 4"
           },
           "es": {
             "type": Tasks.video,
             "title": "Video motivacional",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle4Fsemaine4jour1Eric.mp4?alt=media&token=7aada55e-c9be-4942-9043-f1509eac4519",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle4SPANISH.mp4?alt=media&token=9d67476d-fa2e-4260-a4ab-04a2fb83b20a",
             "description": "CLAVE DE BIENESTAR 4"
           }
         }
@@ -2904,29 +2934,27 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "questions": {
               "1":
                   "Comment se passent tes objectifs de la semaine et en général ?",
-              "2":
-                  "Comment se passent tes objectifs de la semaine et en général ?",
-              "3": {
+              "2": {
                 "q": "Quel repas avez-vous choisi cette semaine ?",
                 "a": ["Matin", "Midi", "Soir", "Collation"]
               },
-              "4": {
+              "3": {
                 "q":
                     "De combien de portions avez-vous réduit votre consommation ?",
                 "a": ['½', '⅓', '¼']
               },
-              "5": {
+              "4": {
                 "q": "Avez-vous remplacé les jus par de l'eau ou du thé ? ",
                 "a": ['Oui', 'Non']
               },
-              "6": {
+              "5": {
                 "q":
                     "Avez-vous trouvé d'autres activités à faire lorsque vous aviez envie de grignoter ?",
                 "a": ['Oui', 'Non']
               },
-              "7":
+              "6":
                   "Quelles activités avez-vous choisies pour éviter le grignotage ?",
-              "8":
+              "7":
                   "Comment vous sentez-vous par rapport à cette semaine de défi ?"
             }
           },
@@ -2938,26 +2966,25 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "introText": "Welcome to your physical challenge :)",
             "questions": {
               "1": "How are your goals going this week and in general?",
-              "2": "How are your goals going this week and in general?",
-              "3": {
+              "2": {
                 "q": "Which meal did you choose this week?",
                 "a": ["Morning", "Afternoon", "Evening", "Snack"]
               },
-              "4": {
+              "3": {
                 "q": "By how many servings have you reduced your intake?",
                 "a": ['½', '⅓', '¼']
               },
-              "5": {
+              "4": {
                 "q": "Have you replaced juices with water or tea?",
                 "a": ['Yes', 'No']
               },
-              "6": {
+              "5": {
                 "q":
                     "Have you found other activities to do when you felt like snacking?",
                 "a": ['Yes', 'No']
               },
-              "7": "What activities did you choose to avoid snacking?",
-              "8": "How do you feel about this week of the challenge?"
+              "6": "What activities did you choose to avoid snacking?",
+              "7": "How do you feel about this week of the challenge?"
             }
           },
           "ar": {
@@ -2967,26 +2994,25 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "introText": "مرحبًا بك في تحديك البدني :)",
             "questions": {
               "1": "كيف تسير أهدافك هذا الأسبوع وعامةً؟",
-              "2": "كيف تسير أهدافك هذا الأسبوع وعامةً؟",
-              "3": {
+              "2": {
                 "q": "أي وجبة اخترت هذا الأسبوع؟",
                 "a": ["صباحًا", "ظهراً", "مساءً", "وجبة خفيفة"]
               },
-              "4": {
+              "3": {
                 "q": "كم عدد الحصص التي قللت استهلاكك منها؟",
                 "a": ['½', '⅓', '¼']
               },
-              "5": {
+              "4": {
                 "q": "هل استبدلت العصائر بالماء أو الشاي؟",
                 "a": ['نعم', 'لا']
               },
-              "6": {
+              "5": {
                 "q":
                     "هل وجدت أنشطة أخرى تفعلها عندما تشعر بالرغبة في تناول وجبة خفيفة؟",
                 "a": ['نعم', 'لا']
               },
-              "7": "ما الأنشطة التي اخترتها لتجنب تناول الوجبات الخفيفة؟",
-              "8": "كيف تشعر حيال أسبوع التحدي هذا؟"
+              "6": "ما الأنشطة التي اخترتها لتجنب تناول الوجبات الخفيفة؟",
+              "7": "كيف تشعر حيال أسبوع التحدي هذا؟"
             }
           },
           "es": {
@@ -2997,26 +3023,25 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "introText": "Bienvenido a tu desafío físico :)",
             "questions": {
               "1": "¿Cómo van tus objetivos esta semana y en general?",
-              "2": "¿Cómo van tus objetivos esta semana y en general?",
-              "3": {
+              "2": {
                 "q": "¿Qué comida elegiste esta semana?",
                 "a": ["Mañana", "Tarde", "Noche", "Snack"]
               },
-              "4": {
+              "3": {
                 "q": "¿Cuántas porciones has reducido de tu consumo?",
                 "a": ['½', '⅓', '¼']
               },
-              "5": {
+              "4": {
                 "q": "¿Has reemplazado los jugos por agua o té?",
                 "a": ['Sí', 'No']
               },
-              "6": {
+              "5": {
                 "q":
                     "¿Has encontrado otras actividades para hacer cuando tenías ganas de picar?",
                 "a": ['Sí', 'No']
               },
-              "7": "¿Qué actividades elegiste para evitar picar?",
-              "8": "¿Cómo te sientes respecto a esta semana de desafío?"
+              "6": "¿Qué actividades elegiste para evitar picar?",
+              "7": "¿Cómo te sientes respecto a esta semana de desafío?"
             }
           }
         },
@@ -3115,21 +3140,21 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "type": Tasks.video,
             "title": "Video motivation",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2Fcle5Semaine5-jour1_acceptersesimper.mp4?alt=media&token=586526bf-5d28-4775-ba7f-0e0532622aa1",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2Fcle5ENGLISH.mp4?alt=media&token=45373d52-7eea-4b3c-ad30-39a8594be7ed",
             "description": "WELLNESS KEY 5"
           },
           "ar": {
             "type": Tasks.video,
             "title": "فيديو تحفيزي",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2Fcle5Semaine5-jour1_acceptersesimper.mp4?alt=media&token=586526bf-5d28-4775-ba7f-0e0532622aa1",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2Fcle5ARABIC.mp4?alt=media&token=197249d7-9026-4b73-8161-fa1077d039ec",
             "description": "مفتاح الرفاهية 5"
           },
           "es": {
             "type": Tasks.video,
             "title": "Video motivacional",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2Fcle5Semaine5-jour1_acceptersesimper.mp4?alt=media&token=586526bf-5d28-4775-ba7f-0e0532622aa1",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2Fcle5SPANISH.mp4?alt=media&token=0dad4bb6-5d6c-4569-babc-ab3dbc30567e",
             "description": "CLAVE DE BIENESTAR 5"
           }
         }
@@ -3149,21 +3174,21 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "type": Tasks.video,
             "title": "Video motivation",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2Fdefi6Oserrevercestos.mp4?alt=media&token=e6c631ef-b76c-4bea-a328-2125bdcf8200",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2Fdefi6OserreverENGLISH.mp4?alt=media&token=a936993f-145b-4cd6-b1bf-ff748d9a9313",
             "description": "DON'T BE AFRAID OF CHANGE!"
           },
           "ar": {
             "type": Tasks.video,
             "title": "فيديو تحفيزي",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2Fdefi6Oserrevercestos.mp4?alt=media&token=e6c631ef-b76c-4bea-a328-2125bdcf8200",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2Fdefi6ARABIC.mp4?alt=media&token=77db15de-ebf2-4215-b120-141dc5af9425",
             "description": "لا تخاف من التغيير!"
           },
           "es": {
             "type": Tasks.video,
             "title": "Video motivacional",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2Fdefi6Oserrevercestos.mp4?alt=media&token=e6c631ef-b76c-4bea-a328-2125bdcf8200",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2Fdefi6OserreverSPANISH.mp4?alt=media&token=2087fe2e-18db-4ff9-8a25-8a50775f2fd6",
             "description": "¡NO TENGAS MIEDO AL CAMBIO!"
           }
         },
@@ -3612,30 +3637,26 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "questions": {
               "1":
                   "Comment se passent tes objectifs de la semaine et en général ?",
-              "2":
-                  "Comment se passent tes objectifs de la semaine et en général ?",
-              "3": {
+              "2": {
                 "q": "Quel repas avez-vous choisi cette semaine ?",
                 "a": ["Matin", "Midi", "Soir", "Collation"]
               },
-              "4": {
+              "3": {
                 "q":
                     "De combien de portions avez-vous réduit votre consommation ?",
                 "a": ["½", "⅓", "¼"]
               },
-              "5": {
+              "4": {
                 "q": "Avez-vous remplacé les jus par de l'eau ou du thé ?",
                 "a": ["Oui", "Non"]
               },
-              "6": {
+              "5": {
                 "q":
                     "Avez-vous trouvé d'autres activités à faire lorsque vous aviez envie de grignoter ?",
                 "a": ["Oui", "Non"]
               },
-              "7":
-                  "Quelles activités avez-vous choisies pour éviter le grignotage ?",
-              "8":
-                  "Comment vous sentez-vous par rapport à cette semaine de défi ?"
+              "6":
+                  "Quelles activités avez-vous choisies pour éviter le grignotage ?"
             }
           },
           "en": {
@@ -3646,26 +3667,24 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "introText": "Welcome to your physical challenge :)",
             "questions": {
               "1": "How are your goals for the week and in general going?",
-              "2": "How are your goals for the week and in general going?",
-              "3": {
+              "2": {
                 "q": "Which meal did you choose this week?",
                 "a": ["Morning", "Afternoon", "Evening", "Snack"]
               },
-              "4": {
+              "3": {
                 "q": "By how many portions have you reduced your intake?",
                 "a": ["½", "⅓", "¼"]
               },
-              "5": {
+              "4": {
                 "q": "Did you replace juices with water or tea?",
                 "a": ["Yes", "No"]
               },
-              "6": {
+              "5": {
                 "q":
                     "Did you find other activities to do when you wanted to snack?",
                 "a": ["Yes", "No"]
               },
-              "7": "What activities did you choose to avoid snacking?",
-              "8": "How do you feel about this week of the challenge?"
+              "6": "What activities did you choose to avoid snacking?"
             }
           },
           "ar": {
@@ -3675,26 +3694,24 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "introText": "مرحبًا بك في تحديك البدني :)",
             "questions": {
               "1": "كيف تسير أهدافك لهذا الأسبوع وعامةً؟",
-              "2": "كيف تسير أهدافك لهذا الأسبوع وعامةً؟",
-              "3": {
+              "2": {
                 "q": "أي وجبة اخترت هذا الأسبوع؟",
                 "a": ["صباحًا", "ظهراً", "مساءً", "وجبة خفيفة"]
               },
-              "4": {
+              "3": {
                 "q": "بكم حصة قمت بتقليل استهلاكك؟",
                 "a": ["½", "⅓", "¼"]
               },
-              "5": {
+              "4": {
                 "q": "هل استبدلت العصائر بالماء أو الشاي؟",
                 "a": ["نعم", "لا"]
               },
-              "6": {
+              "5": {
                 "q":
                     "هل وجدت أنشطة أخرى تقوم بها عندما تشعر بالرغبة في تناول وجبة خفيفة؟",
                 "a": ["نعم", "لا"]
               },
-              "7": "ما الأنشطة التي اخترتها لتجنب تناول الوجبات الخفيفة؟",
-              "8": "كيف تشعر بشأن هذا الأسبوع من التحدي؟"
+              "6": "ما الأنشطة التي اخترتها لتجنب تناول الوجبات الخفيفة؟"
             }
           },
           "es": {
@@ -3705,26 +3722,24 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "introText": "Bienvenido a tu desafío físico :)",
             "questions": {
               "1": "¿Cómo van tus objetivos de la semana y en general?",
-              "2": "¿Cómo van tus objetivos de la semana y en general?",
-              "3": {
+              "2": {
                 "q": "¿Qué comida elegiste esta semana?",
                 "a": ["Mañana", "Tarde", "Noche", "Snack"]
               },
-              "4": {
+              "3": {
                 "q": "¿En cuántas porciones has reducido tu consumo?",
                 "a": ["½", "⅓", "¼"]
               },
-              "5": {
+              "4": {
                 "q": "¿Has reemplazado los jugos por agua o té?",
                 "a": ["Sí", "No"]
               },
-              "6": {
+              "5": {
                 "q":
                     "¿Has encontrado otras actividades para hacer cuando tenías ganas de picar?",
                 "a": ["Sí", "No"]
               },
-              "7": "¿Qué actividades elegiste para evitar picar?",
-              "8": "¿Cómo te sientes respecto a esta semana de desafío?"
+              "6": "¿Qué actividades elegiste para evitar picar?"
             }
           }
         },
@@ -3823,21 +3838,21 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "type": Tasks.video,
             "title": "Motivational Video",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCl6semaine6jour1soph.mp4?alt=media&token=fe7552cb-6047-42ff-a30e-1060ac2c96f6",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCLE6ENGLISH.mp4?alt=media&token=0b10362d-dc6a-4368-8e71-3dca7207d560",
             "description": "WELLNESS KEY 6"
           },
           "ar": {
             "type": Tasks.video,
             "title": "فيديو تحفيزي",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCl6semaine6jour1soph.mp4?alt=media&token=fe7552cb-6047-42ff-a30e-1060ac2c96f6",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCLE6ARABIC.mp4?alt=media&token=2a19cd8a-7973-4a20-b773-60329dd63db8",
             "description": "مفتاح العافية 6"
           },
           "es": {
             "type": Tasks.video,
             "title": "Video Motivacional",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCl6semaine6jour1soph.mp4?alt=media&token=fe7552cb-6047-42ff-a30e-1060ac2c96f6",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCLE6SPANISH.mp4?alt=media&token=bf4f1ec0-d833-4b99-9e0b-4c18291e5518",
             "description": "CLAVE DE BIENESTAR 6"
           }
         },
@@ -4354,29 +4369,27 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "questions": {
               "1":
                   "Comment se passent tes objectifs de la semaine et en général ?",
-              "2":
-                  "Comment se passent tes objectifs de la semaine et en général ?",
-              "3": {
+              "2": {
                 "q": "Quel repas avez-vous choisi cette semaine ?",
                 "a": ["Matin", "Midi", "Soir", "Collation"]
               },
-              "4": {
+              "3": {
                 "q":
                     "De combien de portions avez-vous réduit votre consommation ?",
                 "a": ['½', '⅓', '¼']
               },
-              "5": {
+              "4": {
                 "q": "Avez-vous remplacé les jus par de l'eau ou du thé ?",
                 "a": ['Oui', 'Non']
               },
-              "6": {
+              "5": {
                 "q":
                     "Avez-vous trouvé d'autres activités à faire lorsque vous aviez envie de grignoter ?",
                 "a": ['Oui', 'Non']
               },
-              "7":
+              "6":
                   "Quelles activités avez-vous choisies pour éviter le grignotage ?",
-              "8":
+              "7":
                   "Comment vous sentez-vous par rapport à cette semaine de défi ?"
             }
           },
@@ -4388,26 +4401,25 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "introText": "Welcome to your physical challenge :)",
             "questions": {
               "1": "How are your goals for this week and in general going?",
-              "2": "How are your goals for this week and in general going?",
-              "3": {
+              "2": {
                 "q": "Which meal did you choose this week?",
                 "a": ["Morning", "Afternoon", "Evening", "Snack"]
               },
-              "4": {
+              "3": {
                 "q": "By how many servings have you reduced your intake?",
                 "a": ['½', '⅓', '¼']
               },
-              "5": {
+              "4": {
                 "q": "Have you replaced juices with water or tea?",
                 "a": ['Yes', 'No']
               },
-              "6": {
+              "5": {
                 "q":
                     "Did you find other activities to do when you felt like snacking?",
                 "a": ['Yes', 'No']
               },
-              "7": "What activities did you choose to avoid snacking?",
-              "8": "How do you feel about this week of the challenge?"
+              "6": "What activities did you choose to avoid snacking?",
+              "7": "How do you feel about this week of the challenge?"
             }
           },
           "ar": {
@@ -4417,26 +4429,25 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "introText": "مرحبًا بك في تحديك البدني :)",
             "questions": {
               "1": "كيف تسير أهدافك لهذا الأسبوع وبشكل عام؟",
-              "2": "كيف تسير أهدافك لهذا الأسبوع وبشكل عام؟",
-              "3": {
+              "2": {
                 "q": "أي وجبة اخترت هذا الأسبوع؟",
                 "a": ["صباحًا", "ظهراً", "مساءً", "وجبة خفيفة"]
               },
-              "4": {
+              "3": {
                 "q": "بكم عدد الحصص التي خفضت من استهلاكك؟",
                 "a": ['½', '⅓', '¼']
               },
-              "5": {
+              "4": {
                 "q": "هل استبدلت العصائر بالماء أو الشاي؟",
                 "a": ['نعم', 'لا']
               },
-              "6": {
+              "5": {
                 "q":
                     "هل وجدت أنشطة أخرى تقوم بها عندما تشعر برغبة في تناول وجبة خفيفة؟",
                 "a": ['نعم', 'لا']
               },
-              "7": "ما الأنشطة التي اخترتها لتجنب تناول الوجبات الخفيفة؟",
-              "8": "كيف تشعر حيال هذا الأسبوع من التحدي؟"
+              "6": "ما الأنشطة التي اخترتها لتجنب تناول الوجبات الخفيفة؟",
+              "7": "كيف تشعر حيال هذا الأسبوع من التحدي؟"
             }
           },
           "es": {
@@ -4447,26 +4458,25 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "introText": "Bienvenido a tu desafío físico :)",
             "questions": {
               "1": "¿Cómo van tus objetivos de esta semana y en general?",
-              "2": "¿Cómo van tus objetivos de esta semana y en general?",
-              "3": {
+              "2": {
                 "q": "¿Qué comida elegiste esta semana?",
                 "a": ["Mañana", "Tarde", "Noche", "Snack"]
               },
-              "4": {
+              "3": {
                 "q": "¿Cuántas porciones has reducido en tu consumo?",
                 "a": ['½', '⅓', '¼']
               },
-              "5": {
+              "4": {
                 "q": "¿Has reemplazado los jugos por agua o té?",
                 "a": ['Sí', 'No']
               },
-              "6": {
+              "5": {
                 "q":
                     "¿Has encontrado otras actividades para hacer cuando tienes ganas de picar?",
                 "a": ['Sí', 'No']
               },
-              "7": "¿Qué actividades elegiste para evitar picar?",
-              "8": "¿Cómo te sientes con respecto a esta semana del desafío?"
+              "6": "¿Qué actividades elegiste para evitar picar?",
+              "7": "¿Cómo te sientes con respecto a esta semana del desafío?"
             }
           }
         },
@@ -4565,21 +4575,21 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "type": Tasks.video,
             "title": "Video Motivation",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle7Semaine7jour1Jea.mp4?alt=media&token=f931a1eb-648e-4845-b28e-59e61484df30",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle7ENGLISH.mp4?alt=media&token=f1a8db44-9f39-437e-a299-0293e3f7f2c8",
             "description": "WELLNESS KEY 7"
           },
           "ar": {
             "type": Tasks.video,
             "title": "فيديو تحفيزي",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle7Semaine7jour1Jea.mp4?alt=media&token=f931a1eb-648e-4845-b28e-59e61484df30",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle7ARABIC.mp4?alt=media&token=41b4b7d8-d2fe-467d-a8c7-7e9b4d00a50f",
             "description": "مفتاح الرفاهية 7"
           },
           "es": {
             "type": Tasks.video,
             "title": "Video Motivación",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle7Semaine7jour1Jea.mp4?alt=media&token=f931a1eb-648e-4845-b28e-59e61484df30",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle7SPANISH.mp4?alt=media&token=44b5aaea-bd19-469b-bfa2-be9252206c35",
             "description": "CLAVE DE BIENESTAR 7"
           }
         }
@@ -4593,7 +4603,7 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "title": "Journal de board",
             "description": "Décrivez vos sentiments",
             "introText":
-                "Est donc de trouver cette activité culturelle qui vous intéresse. Pour éviter tout désagrément, n'hésitez pas à communiquer avec les organisateurs pour savoir si l’endroit et les équipements sont adaptés. Vous vous sentez un peu fébrile ? demandez à un de vos proches de vous accompagner et amusez-vous :) ",
+                "Le DEFI PHYSIQUE est donc de trouver cette activité culturelle qui vous intéresse. Pour éviter tout désagrément, n'hésitez pas à communiquer avec les organisateurs pour savoir si l’endroit et les équipements sont adaptés. Vous vous sentez un peu fébrile ? demandez à un de vos proches de vous accompagner et amusez-vous :) ",
             "questions": {
               "1":
                   "Activités choisies, date, avec qui allez-vous faire cette activité ?",
@@ -4606,7 +4616,7 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "title": "Board Journal",
             "description": "Describe your feelings",
             "introText":
-                "The goal is to find a cultural activity that interests you. To avoid any inconvenience, feel free to communicate with the organizers to ensure that the venue and facilities are suitable. Feeling a bit anxious? Ask a friend or family member to accompany you and have fun :)",
+                "The PHYSICAL CHALLENGE is to find that cultural activity that interests you. To avoid any inconvenience, feel free to communicate with the organizers to find out if the location and equipment are suitable. Feeling a bit anxious? Ask one of your friends or family to accompany you and have fun :)",
             "questions": {
               "1":
                   "Chosen activities, date, who will you do this activity with?",
@@ -4619,7 +4629,7 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "title": "مذكرات الأنشطة",
             "description": "صف مشاعرك",
             "introText":
-                "الهدف هو العثور على نشاط ثقافي يهمك. لتجنب أي إزعاج، لا تتردد في التواصل مع المنظمين للتأكد من أن المكان والمرافق مناسبة. هل تشعر ببعض القلق؟ اطلب من أحد أصدقائك مرافقتك واستمتع :)",
+                "التحدي البدني هو العثور على هذه النشاط الثقافي الذي يهمك. لتجنب أي إزعاج، لا تتردد في التواصل مع المنظمين لمعرفة ما إذا كان المكان والمعدات مناسبة. هل تشعر قليلاً بالتوتر؟ اطلب من أحد المقربين منك أن يرافقك واستمتع :)",
             "questions": {
               "1": "الأنشطة المختارة، التاريخ، مع من ستقوم بهذا النشاط؟",
               "2": "كيف تشعر اليوم؟",
@@ -4631,7 +4641,7 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "title": "Diario de Actividades",
             "description": "Describe tus sentimientos",
             "introText":
-                "El objetivo es encontrar una actividad cultural que te interese. Para evitar cualquier inconveniente, no dudes en comunicarte con los organizadores para asegurarte de que el lugar y las instalaciones sean adecuadas. ¿Te sientes un poco ansioso? Pide a un amigo o familiar que te acompañe y diviértete :)",
+                "El DESAFÍO FÍSICO es encontrar esa actividad cultural que te interese. Para evitar cualquier inconveniente, no dudes en comunicarte con los organizadores para saber si el lugar y los equipos son adecuados. ¿Te sientes un poco ansioso? Pídele a uno de tus amigos que te acompañe y diviértete :)",
             "questions": {
               "1":
                   "Actividades elegidas, fecha, ¿con quién harás esta actividad?",
@@ -5004,29 +5014,27 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "questions": {
               "1":
                   "Comment se passent tes objectifs de la semaine et en général ?",
-              "2":
-                  "Comment se passent tes objectifs de la semaine et en général ?",
-              "3": {
+              "2": {
                 "q": "Quel repas avez-vous choisi cette semaine ?",
                 "a": ["Matin", "Midi", "Soir", "Collation"]
               },
-              "4": {
+              "3": {
                 "q":
                     "De combien de portions avez-vous réduit votre consommation ?",
                 "a": ["½", "⅓", "¼"]
               },
-              "5": {
+              "4": {
                 "q": "Avez-vous remplacé les jus par de l'eau ou du thé ?",
                 "a": ["Oui", "Non"]
               },
-              "6": {
+              "5": {
                 "q":
                     "Avez-vous trouvé d'autres activités à faire lorsque vous aviez envie de grignoter ?",
                 "a": ["Oui", "Non"]
               },
-              "7":
+              "6":
                   "Quelles activités avez-vous choisies pour éviter le grignotage ?",
-              "8":
+              "7":
                   "Comment vous sentez-vous par rapport à cette semaine de défi ?"
             }
           },
@@ -5038,26 +5046,25 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "introText": "Welcome to your physical challenge :)",
             "questions": {
               "1": "How are your goals going this week and overall?",
-              "2": "How are your goals going this week and overall?",
-              "3": {
+              "2": {
                 "q": "Which meal did you choose this week?",
                 "a": ["Morning", "Afternoon", "Evening", "Snack"]
               },
-              "4": {
+              "3": {
                 "q": "How many portions have you reduced your intake?",
                 "a": ["½", "⅓", "¼"]
               },
-              "5": {
+              "4": {
                 "q": "Have you replaced juices with water or tea?",
                 "a": ["Yes", "No"]
               },
-              "6": {
+              "5": {
                 "q":
                     "Have you found other activities to do when you felt like snacking?",
                 "a": ["Yes", "No"]
               },
-              "7": "What activities did you choose to avoid snacking?",
-              "8": "How do you feel about this week’s challenge?"
+              "6": "What activities did you choose to avoid snacking?",
+              "7": "How do you feel about this week’s challenge?"
             }
           },
           "ar": {
@@ -5067,26 +5074,25 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "introText": "مرحبًا بك في تحدي اللياقة البدنية الخاص بك :)",
             "questions": {
               "1": "كيف تسير أهدافك هذا الأسبوع وعامةً؟",
-              "2": "كيف تسير أهدافك هذا الأسبوع وعامةً؟",
-              "3": {
+              "2": {
                 "q": "أي وجبة اخترت هذا الأسبوع؟",
                 "a": ["صباحًا", "ظهراً", "مساءً", "وجبة خفيفة"]
               },
-              "4": {
+              "3": {
                 "q": "كم عدد الحصص التي قللت من تناولها؟",
                 "a": ["½", "⅓", "¼"]
               },
-              "5": {
+              "4": {
                 "q": "هل استبدلت العصائر بالماء أو الشاي؟",
                 "a": ["نعم", "لا"]
               },
-              "6": {
+              "5": {
                 "q":
                     "هل وجدت أنشطة أخرى تفعلها عندما تشعر بالرغبة في تناول الوجبات الخفيفة؟",
                 "a": ["نعم", "لا"]
               },
-              "7": "ما الأنشطة التي اخترتها لتجنب تناول الوجبات الخفيفة؟",
-              "8": "كيف تشعر بشأن تحدي هذا الأسبوع؟"
+              "6": "ما الأنشطة التي اخترتها لتجنب تناول الوجبات الخفيفة؟",
+              "7": "كيف تشعر بشأن تحدي هذا الأسبوع؟"
             }
           },
           "es": {
@@ -5097,26 +5103,25 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "introText": "Bienvenido a tu desafío físico :)",
             "questions": {
               "1": "¿Cómo van tus objetivos esta semana y en general?",
-              "2": "¿Cómo van tus objetivos esta semana y en general?",
-              "3": {
+              "2": {
                 "q": "¿Qué comida elegiste esta semana?",
                 "a": ["Mañana", "Tarde", "Noche", "Snack"]
               },
-              "4": {
+              "3": {
                 "q": "¿Cuántas porciones has reducido de tu consumo?",
                 "a": ["½", "⅓", "¼"]
               },
-              "5": {
+              "4": {
                 "q": "¿Has reemplazado los jugos por agua o té?",
                 "a": ["Sí", "No"]
               },
-              "6": {
+              "5": {
                 "q":
                     "¿Has encontrado otras actividades para hacer cuando tenías ganas de picar?",
                 "a": ["Sí", "No"]
               },
-              "7": "¿Qué actividades elegiste para evitar picar?",
-              "8": "¿Cómo te sientes respecto a este desafío de la semana?"
+              "6": "¿Qué actividades elegiste para evitar picar?",
+              "7": "¿Cómo te sientes respecto a este desafío de la semana?"
             }
           }
         },
@@ -5260,21 +5265,21 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "type": Tasks.video,
             "title": "Motivation Video",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle8semaine8jour1jea.mp4?alt=media&token=e4020c48-eda4-466e-af8d-e77a01dc08fe",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle8ENGLISH.mp4?alt=media&token=79416b91-0a44-4591-be90-fce69db99c52",
             "description": "WELLNESS KEY 8"
           },
           "ar": {
             "type": Tasks.video,
             "title": "فيديو تحفيزي",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle8semaine8jour1jea.mp4?alt=media&token=e4020c48-eda4-466e-af8d-e77a01dc08fe",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle8ARABIC.mp4?alt=media&token=93476fb0-9f0a-4755-93ee-c0964a87adff",
             "description": "مفتاح الرفاهية 8"
           },
           "es": {
             "type": Tasks.video,
             "title": "Video de Motivación",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle8semaine8jour1jea.mp4?alt=media&token=e4020c48-eda4-466e-af8d-e77a01dc08fe",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FCle8SPANISH.mp4?alt=media&token=0e747921-cecd-413a-8834-586333f05cbd",
             "description": "CLAVE DE BIENESTAR 8"
           }
         }
@@ -5526,21 +5531,21 @@ Map<String, Map<String, dynamic>> tasksOf = {
             "type": Tasks.video,
             "title": "End Video",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FFelicitationVideo.mp4?alt=media&token=125ef43c-46dd-42f3-b275-c8199df5e9d6",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/logbookVideos%2FFelicitationENGLISH.mp4?alt=media&token=92074dd0-3597-4bef-8a41-db42098bce90",
             "description": "Congratulations :D"
           },
           "ar": {
             "type": Tasks.video,
             "title": "فيديو النهاية",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FFelicitationVideo.mp4?alt=media&token=125ef43c-46dd-42f3-b275-c8199df5e9d6",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/logbookVideos%2FFelicitationARABIC.mp4?alt=media&token=590b7f02-629d-4357-adfe-ec9a25477ac8",
             "description": "تهانينا :D"
           },
           "es": {
             "type": Tasks.video,
             "title": "Video de Fin",
             "videoUrl":
-                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/taskVideos%2FFelicitationVideo.mp4?alt=media&token=125ef43c-46dd-42f3-b275-c8199df5e9d6",
+                "https://firebasestorage.googleapis.com/v0/b/illimited-app.appspot.com/o/logbookVideos%2FFelicitationSPANISH.mp4?alt=media&token=4e0b7334-a24e-4324-a872-d5d25a6def7c",
             "description": "¡Felicidades! :D"
           }
         }

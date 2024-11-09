@@ -1,15 +1,16 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/router/router_names.dart';
+import 'package:illimited_app/screens/terms_conditions.dart';
 import 'package:illimited_app/widget/primary_button.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GetStarted extends StatefulWidget {
-  
   const GetStarted({super.key});
 
   @override
@@ -21,6 +22,29 @@ class _GetStartedState extends State<GetStarted> {
   void initState() {
     super.initState();
   }
+
+  Future<void> setFalseFirstLaunch() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("isFirstLaunch", false);
+  }
+
+  void _navigateToTerms() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              TermsConditions()), // Adjust to your actual TermsConditions page
+    );
+  }
+
+  bool _isChecked = false;
+
+  void _onCheckboxChanged(bool? value) {
+    setState(() {
+      _isChecked = value ?? false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +66,8 @@ class _GetStartedState extends State<GetStarted> {
                 duration: Duration(seconds: 2),
                 child: FadeIn(
                   duration: Duration(seconds: 2),
-                  child: Text(AppLocalizations.of(context)!.welcomeToApp(appName),
+                  child: Text(
+                      AppLocalizations.of(context)!.welcomeToApp(appName),
                       style: Theme.of(context).textTheme.displayLarge),
                 ),
               ),
@@ -64,18 +89,58 @@ class _GetStartedState extends State<GetStarted> {
           right: 20,
           child: Column(
             children: [
+              Row(
+                children: [
+                  Checkbox(
+                    side: BorderSide(color: Colors.white),
+                    activeColor: primaryColor,
+                    value: _isChecked,
+                    onChanged: _onCheckboxChanged,
+                  ),
+                  Expanded(
+                    child: RichText(
+                      text: TextSpan(
+                        text: AppLocalizations.of(context)!.acceptTerms,
+                        style: getFontStyle(context).copyWith(),
+                        children: [
+                          TextSpan(
+                            text: AppLocalizations.of(context)!.terms_title,
+                            style: const TextStyle(
+                              color: Colors.blue,
+                              decoration: TextDecoration.underline,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = _navigateToTerms,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
               PrimaryButton(
+                enabled: _isChecked,
                 isBold: true,
                 text: AppLocalizations.of(context)!.getStarted,
-                onPressed: () => context.goNamed(RouteNames.signup),
+                onPressed: () {
+                  setFalseFirstLaunch();
+                  context.goNamed(RouteNames.signup);
+                },
               ),
               const SizedBox(
                 height: 10,
               ),
               PrimaryButton(
+                enabled: _isChecked,
                 isBold: true,
                 text: AppLocalizations.of(context)!.signIn,
-                onPressed: () => context.goNamed(RouteNames.signin),
+                onPressed: () {
+                  setFalseFirstLaunch();
+                  context.goNamed(RouteNames.signin);
+                },
                 color: primaryColor.withOpacity(0.1),
                 borderWith: 1.0,
               ),

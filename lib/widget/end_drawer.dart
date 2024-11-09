@@ -11,6 +11,7 @@ import 'package:illimited_app/widget/drawer_button.dart';
 import 'package:illimited_app/widget/profile_frame.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class EndDrawerContent extends StatelessWidget {
   const EndDrawerContent({super.key});
 
@@ -77,7 +78,7 @@ class EndDrawerContent extends StatelessWidget {
                   DrawerIconButton(
                     iconPath: "assets/icon/goal.png",
                     text: AppLocalizations.of(context)!.goals,
-                    onPressed: ()  {
+                    onPressed: () {
                       context.pushNamed(RouteNames.goal);
                     },
                   ),
@@ -85,6 +86,12 @@ class EndDrawerContent extends StatelessWidget {
                     iconPath: "assets/icon/forum.png",
                     text: AppLocalizations.of(context)!.forum,
                     onPressed: () => {},
+                  ),
+                  DrawerIconButton(
+                    iconPath: "assets/icon/terms-and-conditions.png",
+                    text: AppLocalizations.of(context)!.terms_title,
+                    onPressed: () =>
+                        {context.pushNamed(RouteNames.termsConditions)},
                   ),
                   const Spacer(),
                   const Divider(),

@@ -24,20 +24,6 @@ class IntroLanguage extends StatefulWidget {
 }
 
 class _IntroLanguageState extends State<IntroLanguage> {
-  String _currentLanguageCode = "en";
-  @override
-  void initState() {
-    super.initState();
-   
-
-    _currentLanguageCode = context.read<LanguageProvider>().selectedLanguage;
-  }
-
-  Future<void> setFalseFirstLaunch() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool("isFirstLaunch", false);
-  }
-
   @override
   Widget build(BuildContext context) {
     final languageProvider = Provider.of<LanguageProvider>(context);
@@ -84,7 +70,7 @@ class _IntroLanguageState extends State<IntroLanguage> {
             PrimaryButton(
               text: AppLocalizations.of(context)!.save,
               onPressed: () {
-                 setFalseFirstLaunch();
+                //  setFalseFirstLaunch();
                 saveLanguage(context);
                 mySnackBar(context: context, message: AppLocalizations.of(context)!.languageSaved);
                 context.goNamed(RouteNames.getStarted);

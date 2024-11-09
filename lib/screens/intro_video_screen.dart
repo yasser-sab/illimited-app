@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:illimited_app/router/router_names.dart';
@@ -7,7 +9,8 @@ import 'package:lottie/lottie.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class IntroVideoScreen extends StatefulWidget {
-  const IntroVideoScreen({super.key});
+  const IntroVideoScreen({super.key, required this.langCode});
+  final langCode;
 
   @override
   State<IntroVideoScreen> createState() => _IntroVideoScreenState();
@@ -20,7 +23,9 @@ class _IntroVideoScreenState extends State<IntroVideoScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.asset("assets/video/IntroVideo.mp4")
+        // String langCode = Localizations.localeOf(context).languageCode;
+    _controller = VideoPlayerController.asset("assets/video/${widget.langCode}-IntroVideo.mp4")
+    // _controller = VideoPlayerController.asset("assets/video/es-IntroVideo.mp4")
       ..initialize().then((_) {
         setState(() {});
         _controller.play();
@@ -37,12 +42,15 @@ class _IntroVideoScreenState extends State<IntroVideoScreen> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller.dispose().then((value) {
+      log("WA DISPOSSED");
+    },);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+
     return PopScope(
       canPop: false,
       child: Scaffold(

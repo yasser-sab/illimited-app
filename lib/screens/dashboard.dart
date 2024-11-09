@@ -147,53 +147,10 @@ class _DashboardState extends State<Dashboard> {
         toolbarHeight: 80,
         backgroundColor: primaryColor,
         centerTitle: true,
-        title: InkWell(
-          onTap: () async {
-            FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-                NotificationService().flutterLocalNotificationsPlugin;
-
-            List<PendingNotificationRequest> lst =
-                await flutterLocalNotificationsPlugin
-                    .pendingNotificationRequests();
-
-            List<Widget> titles = [];
-            log("======================================");
-            for (var x in lst) {
-              log("Title = ${x.title}");
-              titles.add(
-                Text(
-                  x.title!,
-                  style: getFontStyle(context).copyWith(color: Colors.black),
-                ),
-              );
-            }
-            log("======================================");
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('Pending Notifications'),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: titles,
-                  ),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('Close'),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-          child: Text(
-            AppLocalizations.of(context)!.weeks,
-            style:
-                GoogleFonts.roboto().copyWith(fontSize: 27, letterSpacing: 1.5),
-          ),
+        title: Text(
+          AppLocalizations.of(context)!.weeks,
+          style:
+              GoogleFonts.roboto().copyWith(fontSize: 27, letterSpacing: 1.5),
         ),
       ),
       body: RefreshIndicator(
