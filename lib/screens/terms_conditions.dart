@@ -84,14 +84,6 @@ class TermsConditions extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: Text(
-                AppLocalizations.of(context)!.renewal_text,
-                style: TextStyle(fontSize: contentSize, color: Colors.black),
-              ),
-            ),
-            SizedBox(height: 8),
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Text(
                 AppLocalizations.of(context)!.refund_text,
                 style: TextStyle(fontSize: contentSize, color: Colors.black),
               ),

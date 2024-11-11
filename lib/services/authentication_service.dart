@@ -9,6 +9,7 @@ import 'package:illimited_app/providers/questions_provider.dart';
 import 'package:illimited_app/services/notification_service.dart';
 import 'package:illimited_app/widget/top_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -85,17 +86,17 @@ class AuthService {
     } on FirebaseAuthException catch (e) {
       log(e.code);
       if (e.code == 'user-not-found') {
-        mySnackBar(context: context, message: "No user found for that email", snackBarType: SnackBarType.failure);
+        mySnackBar(context: context, message: AppLocalizations.of(context)!.noUserFoundForEmail, snackBarType: SnackBarType.failure);
       } else if (e.code == 'wrong-password') {
-        mySnackBar(context: context, message: "Wrong password", snackBarType: SnackBarType.failure);
+        mySnackBar(context: context, message: AppLocalizations.of(context)!.wrongPassword, snackBarType: SnackBarType.failure);
       } else if (e.code == 'invalid-credential') {
-        mySnackBar(context: context, message: "Invalid Credentials", snackBarType: SnackBarType.failure);
+        mySnackBar(context: context, message: AppLocalizations.of(context)!.invalidCredentials, snackBarType: SnackBarType.failure);
       }
        else if (e.code == 'too-many-requests') {
-        mySnackBar(context: context, message: "Too Many Requests, Please try again later", snackBarType: SnackBarType.failure);
+        mySnackBar(context: context, message: AppLocalizations.of(context)!.tooManyRequests, snackBarType: SnackBarType.failure);
       }
       else {
-        mySnackBar(context: context, message: "Something Went wrong, Please try again later", snackBarType: SnackBarType.failure);
+        mySnackBar(context: context, message: AppLocalizations.of(context)!.somethingWentWrong, snackBarType: SnackBarType.failure);
       }
     } catch (e) {
       print(e);

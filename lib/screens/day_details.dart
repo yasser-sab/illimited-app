@@ -132,11 +132,11 @@ class _DayDetailsState extends State<DayDetails> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                         side: BorderSide(width: 0.5)),
-                    child: const ListTile(
+                    child: ListTile(
                       leading: Icon(
                         Icons.info,
                       ),
-                      title: Text("Please make sure to review all your tasks and also keep an eye on the completed ones."),
+                      title: Text(AppLocalizations.of(context)!.firstDayTaskRemainder),
                     ),
                   ),
                 );

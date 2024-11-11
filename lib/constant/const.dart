@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-const String appName = "illimite";
+const String appName = "Illimités";
 // Primary Colors
 const Color primaryBlue = Color(0xFF007AFF);
 const Color primaryGreen = Color(0xFF66BB66);

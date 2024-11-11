@@ -164,7 +164,7 @@ void showUploadingContent(BuildContext context) {
         child: AlertDialog(
           insetPadding: EdgeInsets.symmetric(horizontal: 100),
           icon: Text(
-            "Uploading...",
+            AppLocalizations.of(context)!.uploading,
             textAlign: TextAlign.center,
             style: GoogleFonts.roboto()
                 .copyWith(color: Colors.black, fontSize: 21),
@@ -182,7 +182,7 @@ void showUploadingContent(BuildContext context) {
 void showConfirmationDialog(
     BuildContext context, String message, bool isPoping) {
   Widget yesButton = PrimaryButton(
-    text: "Discard",
+    text: AppLocalizations.of(context)!.discard,
     onPressed: () async {
       context.pop();
       if (isPoping) {
@@ -195,7 +195,7 @@ void showConfirmationDialog(
   );
 
   Widget noButton = PrimaryButton(
-    text: "No",
+    text: AppLocalizations.of(context)!.no,
     color: Colors.grey,
     onPressed: () {
       context.pop();
@@ -380,4 +380,120 @@ Future<bool> _checkPhotosForDay(DocumentReference weekRef, int dayNum) async {
   }
 
   return false; // Photos are not available
+}
+
+void showFullScreenBottomSheet(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    enableDrag: false,
+    backgroundColor: Colors.transparent,
+    builder: (BuildContext context) {
+      return BottomSheetContainer();
+    },
+  );
+}
+
+class FullScreenBottomSheetExample extends StatefulWidget {
+  @override
+  _FullScreenBottomSheetExampleState createState() => _FullScreenBottomSheetExampleState();
+}
+
+class _FullScreenBottomSheetExampleState extends State<FullScreenBottomSheetExample> {
+  @override
+  void initState() {
+    super.initState();
+    // Show the bottom sheet when the widget is first built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showFullScreenBottomSheet(context);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent, // Makes the main screen transparent
+      body: Container(), // Empty body since we are showing only the bottom sheet
+    );
+  }
+}
+
+// BottomSheetContainer widget, responsible for setting up the AnimationController
+class BottomSheetContainer extends StatefulWidget {
+  @override
+  _BottomSheetContainerState createState() => _BottomSheetContainerState();
+}
+
+class _BottomSheetContainerState extends State<BottomSheetContainer> with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    // Set up the AnimationController with a custom duration to control speed
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 3), // Adjust to control animation speed
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Pass the controller to BottomSheetContent widget
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      child: BottomSheetContent(controller: _controller),
+    );
+  }
+}
+
+// BottomSheetContent widget with the Lottie animation and any other UI elements
+class BottomSheetContent extends StatelessWidget {
+  final AnimationController controller;
+
+  const BottomSheetContent({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        // Lottie Background Animation
+        Positioned.fill(
+          child: Lottie.asset(
+            'assets/lottie/purchase-background.json',
+            fit: BoxFit.cover,
+            controller: controller,
+            frameRate: FrameRate(120),
+            onLoaded: (composition) {
+              // Adjust the speed by setting the controller duration based on the animation’s length
+              controller.duration = composition.duration * 2; // Example: Slow it down by 2x
+            },
+          ),
+        ),
+        // Content overlay on top of Lottie animation
+        Column(
+          children: [
+            Expanded(
+              child: Center(
+                child: Text(
+                  'This is a full-screen bottom sheet with a slowed-down Lottie background',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 }

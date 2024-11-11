@@ -12,6 +12,7 @@ import 'package:illimited_app/models/number_sequence.dart';
 import 'package:illimited_app/providers/app_provider.dart';
 import 'package:illimited_app/providers/progress_provider.dart';
 import 'package:illimited_app/router/router_names.dart';
+import 'package:illimited_app/screens/purchase_screen.dart';
 import 'package:illimited_app/services/notification_service.dart';
 import 'package:illimited_app/screens/video_generation_screen.dart';
 import 'package:illimited_app/services/user_repository.dart';
@@ -19,6 +20,7 @@ import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/end_drawer.dart';
 import 'package:illimited_app/widget/levelsButton.dart';
 import 'package:illimited_app/widget/progress_bar.dart';
+import 'package:illimited_app/widget/purchase_buttomsheet.dart';
 import 'package:lottie/lottie.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -290,11 +292,17 @@ class _DashboardState extends State<Dashboard> {
                                     percent: getPercentage(nbCompletedWeeks),
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 15, bottom: 7),
-                                  child: Image.asset("assets/icon/trophy.png",
-                                      width: 40),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => PurchaseScreen(),));
+                                    
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 15, bottom: 7),
+                                    child: Image.asset("assets/icon/trophy.png",
+                                        width: 40),
+                                  ),
                                 ),
                               ],
                             ),
