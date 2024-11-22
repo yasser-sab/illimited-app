@@ -16,6 +16,7 @@ import 'package:illimited_app/screens/goal_screen.dart';
 import 'package:illimited_app/screens/intro_language.dart';
 import 'package:illimited_app/screens/intro_video_screen.dart';
 import 'package:illimited_app/screens/language_screen.dart';
+import 'package:illimited_app/screens/privacyPolicy.dart';
 import 'package:illimited_app/screens/profile_screen.dart';
 import 'package:illimited_app/screens/question.dart';
 import 'package:illimited_app/screens/sign_up_screen.dart';
@@ -196,6 +197,13 @@ final GoRouter _router = GoRouter(
       path: RouteNames.termsConditions,
       builder: (BuildContext context, GoRouterState state) {
         return TermsConditions();
+      },
+    ),
+        GoRoute(
+      name: RouteNames.privacyPolicy,
+      path: RouteNames.privacyPolicy,
+      builder: (BuildContext context, GoRouterState state) {
+        return PrivacyPolicy();
       },
     ),
   ],

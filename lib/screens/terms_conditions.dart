@@ -10,16 +10,16 @@ class TermsConditions extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          foregroundColor: Colors.white,
-          toolbarHeight: 80,
-          backgroundColor: primaryColor,
-          centerTitle: true,
-          title: Text(
-            AppLocalizations.of(context)!.terms_title,
-            style: GoogleFonts.roboto()
-                .copyWith(fontSize: 27, letterSpacing: 1.5),
-          ),
+        foregroundColor: Colors.white,
+        toolbarHeight: 80,
+        backgroundColor: primaryColor,
+        centerTitle: true,
+        title: Text(
+          AppLocalizations.of(context)!.terms_title,
+          style:
+              GoogleFonts.roboto().copyWith(fontSize: 27, letterSpacing: 1.5),
         ),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -39,7 +39,10 @@ class TermsConditions extends StatelessWidget {
               padding: const EdgeInsets.only(left: 10),
               child: Text(
                 AppLocalizations.of(context)!.introduction_text,
-                style: TextStyle(fontSize: contentSize, color: Colors.black),
+                style: TextStyle(
+                  fontSize: contentSize,
+                  color: Colors.black,
+                ),
               ),
             ),
             SizedBox(height: 16),
@@ -215,7 +218,7 @@ class TermsConditions extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Padding(
-             padding: const EdgeInsets.only(left: 10),
+              padding: const EdgeInsets.only(left: 10),
               child: Text(
                 AppLocalizations.of(context)!.contact_support_text,
                 style: TextStyle(fontSize: contentSize, color: Colors.black),

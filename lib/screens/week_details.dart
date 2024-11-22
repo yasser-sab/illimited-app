@@ -152,23 +152,25 @@ class _WeekDetailsState extends State<WeekDetails> {
                       status: status,
                       nbDay: i,
                       onPressed: () async {
-                        DocumentReference dayRef = widget.weekDays.doc('$i');
-                        context
-                            .read<UserProgressProvider>()
-                            .setCurrentDayRef(dayRef);
+                        if (status != Status.locked) {
+                          DocumentReference dayRef = widget.weekDays.doc('$i');
+                          context
+                              .read<UserProgressProvider>()
+                              .setCurrentDayRef(dayRef);
 
-                        CollectionReference tasksRef =
-                            dayRef.collection('tasks');
+                          CollectionReference tasksRef =
+                              dayRef.collection('tasks');
 
-                        final bool? shouldRefresh = await context
-                            .pushNamed(RouteNames.dayDetails, extra: {
-                          "tasksCollectionRef": tasksRef,
-                          "dayKey": dayKey,
-                          "isLastDay": i == 7 ? true : false,
-                          "weekKey": widget.weekkey
-                        });
-                        if (shouldRefresh != null && shouldRefresh) {
-                          _refreshData();
+                          final bool? shouldRefresh = await context
+                              .pushNamed(RouteNames.dayDetails, extra: {
+                            "tasksCollectionRef": tasksRef,
+                            "dayKey": dayKey,
+                            "isLastDay": i == 7 ? true : false,
+                            "weekKey": widget.weekkey
+                          });
+                          if (shouldRefresh != null && shouldRefresh) {
+                            _refreshData();
+                          }
                         }
                       },
                     ),

@@ -25,7 +25,7 @@ class ProfileFrame extends StatelessWidget {
             decoration: BoxDecoration(
                 color: Color(0xFFD7D7D7),
                 borderRadius: BorderRadius.circular(50),
-                border: Border.all(width: 1)),
+                border: Border.all(width: 1,)),
             width: size,
             height: size,
             child: ClipOval(
