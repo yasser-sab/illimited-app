@@ -438,5 +438,3 @@ void showPurchaseBottomSheet(BuildContext context) {
     },
   );
 }
-
-// BottomSheetContainer widget, responsible for setting up the AnimationController

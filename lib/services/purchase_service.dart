@@ -215,7 +215,6 @@ class PurchaseService {
   }
 
   Future<bool> _savePurchaseToFirestore(PurchaseDetails purchaseDetails) async {
-    log("IN _savePurchaseToFirestore");
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       try {
@@ -234,8 +233,6 @@ class PurchaseService {
   }
 
   Future<bool> hasUserPurchased() async {
-    log("IN hasUserPurchased");
-
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return false;
 

@@ -4,13 +4,11 @@ import 'package:illimited_app/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppProvider extends ChangeNotifier {
-
-
-
   bool _isProccessingPurchase = false;
   bool get isProccessingPurchase => _isProccessingPurchase;
   void setProccessingPurchase(bool val) async {
     _isProccessingPurchase = val;
+
     notifyListeners();
   }
 

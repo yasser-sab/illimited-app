@@ -331,11 +331,17 @@ class _DashboardState extends State<Dashboard> {
                                     percent: getPercentage(nbCompletedWeeks),
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 15, bottom: 7),
-                                  child: Image.asset("assets/icon/trophy.png",
-                                      width: 40),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => PurchaseScreen(),));
+                                    
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 15, bottom: 7),
+                                    child: Image.asset("assets/icon/trophy.png",
+                                        width: 40),
+                                  ),
                                 ),
                               ],
                             ),
