@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:illimited_app/constant/const.dart';
 
 class DrawerIconButton extends StatelessWidget {
-  const DrawerIconButton(
-      {super.key, required this.text, required this.iconPath, required this.onPressed, this.color = Colors.black});
+  const DrawerIconButton({
+    super.key,
+    required this.text,
+    required this.iconPath,
+    required this.onPressed,
+    this.color = Colors.black,
+  });
 
   final Color color;
   final String text;
@@ -13,7 +17,7 @@ class DrawerIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double size = 22;
+    double size = 20;
     return GestureDetector(
       onTap: onPressed,
       child: SizedBox(
@@ -27,13 +31,18 @@ class DrawerIconButton extends StatelessWidget {
                 height: size,
                 color: color == Colors.red ? color : null,
               ),
-              const SizedBox(
-                width: 18,
-              ),
-              Text(
-                text,
-                // style: getFontStyle(context).copyWith(fontSize: _size, color: color),
-                style: GoogleFonts.roboto().copyWith(fontSize: size, color: color, fontWeight: FontWeight.normal),
+              const SizedBox(width: 18),
+              Flexible(
+                child: Text(
+                  text,
+                  style: GoogleFonts.roboto(
+                    fontSize: size,
+                    color: color,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  overflow: TextOverflow.ellipsis, // Truncates with "..."
+                  maxLines: 2, // Limits text to a single line
+                ),
               ),
             ],
           ),

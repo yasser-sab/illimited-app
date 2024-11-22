@@ -62,16 +62,17 @@ class TaskCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () async {
-        log((taskData["type"] as Tasks).name);
-        final bool? shouldRefresh =
-            await context.pushNamed(RouteNames.taskDetails, extra: {
-          "taskType": taskData["type"],
-          "isLastTask": isLastTask,
-          "isLastDay": isLastDay,
-          "taskData": taskData,
-        });
-        if (shouldRefresh != null && shouldRefresh) {
-          onRefresh();
+        if (status != Status.locked) {
+          final bool? shouldRefresh =
+              await context.pushNamed(RouteNames.taskDetails, extra: {
+            "taskType": taskData["type"],
+            "isLastTask": isLastTask,
+            "isLastDay": isLastDay,
+            "taskData": taskData,
+          });
+          if (shouldRefresh != null && shouldRefresh) {
+            onRefresh();
+          }
         }
       },
       child: SizedBox(

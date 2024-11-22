@@ -29,12 +29,11 @@ class _GetStartedState extends State<GetStarted> {
   }
 
   void _navigateToTerms() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) =>
-              TermsConditions()), // Adjust to your actual TermsConditions page
-    );
+    context.pushNamed(RouteNames.termsConditions);
+  }
+
+  void _navigateToPrivacy() {
+    context.pushNamed(RouteNames.privacyPolicy);
   }
 
   bool _isChecked = false;
@@ -111,6 +110,24 @@ class _GetStartedState extends State<GetStarted> {
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = _navigateToTerms,
+                          ),
+                          TextSpan(
+                            text: AppLocalizations.of(context)!.and,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              decoration: TextDecoration.underline,
+                            ),
+                            // recognizer: TapGestureRecognizer()
+                            //   ..onTap = _navigateToTerms,
+                          ),
+                          TextSpan(
+                            text: AppLocalizations.of(context)!.privacyPolicy,
+                            style: const TextStyle(
+                              color: Colors.blue,
+                              decoration: TextDecoration.underline,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = _navigateToPrivacy,
                           ),
                         ],
                       ),

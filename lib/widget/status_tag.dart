@@ -4,7 +4,9 @@ import 'package:illimited_app/utils/utils.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class StatusTag extends StatelessWidget {
   final Status status;
-  const StatusTag({super.key, required this.status});
+  final String? tagText;
+  final Color? tagFontColor;
+  const StatusTag({super.key, required this.status, this.tagText, this.tagFontColor});
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,14 @@ class StatusTag extends StatelessWidget {
         text = AppLocalizations.of(context)!.completedUppercase;
         break;
     }
+
+    if (tagText != null) {
+      text = tagText!;
+    }
+    if (tagFontColor != null) {
+      fontColor = tagFontColor!;
+    }
+    
     return Container(
       decoration: BoxDecoration(
           color: backgroundColor, borderRadius: BorderRadius.circular(5)),

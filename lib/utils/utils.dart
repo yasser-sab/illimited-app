@@ -9,9 +9,11 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:illimited_app/constant/const.dart';
 import 'package:illimited_app/providers/language_provider.dart';
+import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/utils/email_verification_dialog.dart';
 import 'package:illimited_app/utils/level_unlocked_dialog.dart';
 import 'package:illimited_app/widget/primary_button.dart';
+import 'package:illimited_app/widget/purchase_buttomsheet.dart';
 import 'package:lottie/lottie.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -89,6 +91,49 @@ void showEmailVerificationDialog({
         message: message,
         subtitle: subtitle,
         verifyButtonCallBack: verifyButtonCallBack,
+      );
+    },
+  );
+}
+
+void showUpgradeToPremium(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        backgroundColor: const Color.fromARGB(255, 217, 251, 255),
+        actionsOverflowButtonSpacing: 20,
+        icon: Image.asset(
+          "assets/icon/premium.png",
+          width: 100,
+          height: 100,
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              textAlign: TextAlign.center,
+              AppLocalizations.of(context)!.upgradeToPremium,
+              style: GoogleFonts.roboto(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.black),
+            ),
+            SizedBox(height: 15,),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: PrimaryButton(
+                fontSize: 18,
+                height: 45,
+                text: AppLocalizations.of(context)!.upgrade,
+                onPressed: () {
+                  context.pop();
+                  showPurchaseBottomSheet(context);
+                },
+              ),
+            )
+          ],
+        ),
       );
     },
   );
@@ -382,7 +427,7 @@ Future<bool> _checkPhotosForDay(DocumentReference weekRef, int dayNum) async {
   return false; // Photos are not available
 }
 
-void showFullScreenBottomSheet(BuildContext context) {
+void showPurchaseBottomSheet(BuildContext context) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -394,106 +439,4 @@ void showFullScreenBottomSheet(BuildContext context) {
   );
 }
 
-class FullScreenBottomSheetExample extends StatefulWidget {
-  @override
-  _FullScreenBottomSheetExampleState createState() => _FullScreenBottomSheetExampleState();
-}
-
-class _FullScreenBottomSheetExampleState extends State<FullScreenBottomSheetExample> {
-  @override
-  void initState() {
-    super.initState();
-    // Show the bottom sheet when the widget is first built
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      showFullScreenBottomSheet(context);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent, // Makes the main screen transparent
-      body: Container(), // Empty body since we are showing only the bottom sheet
-    );
-  }
-}
-
 // BottomSheetContainer widget, responsible for setting up the AnimationController
-class BottomSheetContainer extends StatefulWidget {
-  @override
-  _BottomSheetContainerState createState() => _BottomSheetContainerState();
-}
-
-class _BottomSheetContainerState extends State<BottomSheetContainer> with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    // Set up the AnimationController with a custom duration to control speed
-    _controller = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: 3), // Adjust to control animation speed
-    )..repeat();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // Pass the controller to BottomSheetContent widget
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      child: BottomSheetContent(controller: _controller),
-    );
-  }
-}
-
-// BottomSheetContent widget with the Lottie animation and any other UI elements
-class BottomSheetContent extends StatelessWidget {
-  final AnimationController controller;
-
-  const BottomSheetContent({required this.controller});
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        // Lottie Background Animation
-        Positioned.fill(
-          child: Lottie.asset(
-            'assets/lottie/purchase-background.json',
-            fit: BoxFit.cover,
-            controller: controller,
-            frameRate: FrameRate(120),
-            onLoaded: (composition) {
-              // Adjust the speed by setting the controller duration based on the animation’s length
-              controller.duration = composition.duration * 2; // Example: Slow it down by 2x
-            },
-          ),
-        ),
-        // Content overlay on top of Lottie animation
-        Column(
-          children: [
-            Expanded(
-              child: Center(
-                child: Text(
-                  'This is a full-screen bottom sheet with a slowed-down Lottie background',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}

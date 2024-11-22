@@ -15,6 +15,7 @@ import 'package:illimited_app/router/router_names.dart';
 import 'package:illimited_app/screens/purchase_screen.dart';
 import 'package:illimited_app/services/notification_service.dart';
 import 'package:illimited_app/screens/video_generation_screen.dart';
+import 'package:illimited_app/services/purchase_service.dart';
 import 'package:illimited_app/services/user_repository.dart';
 import 'package:illimited_app/utils/utils.dart';
 import 'package:illimited_app/widget/end_drawer.dart';
@@ -38,8 +39,14 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   late Future<Map<String, dynamic>> _futureData;
   late double screenWidth;
+  bool hasPurchases = false;
   @override
   void initState() {
+    PurchaseService().hasUserPurchased().then(
+      (value) {
+        hasPurchases = value;
+      },
+    );
     requestPermission();
     screenWidth = context.read<AppProvider>().screenWidth;
     super.initState();
@@ -232,26 +239,58 @@ class _DashboardState extends State<Dashboard> {
                     ],
                     child: LevelButton(
                       onPressed: () async {
-                        DocumentReference weekRef = FirebaseFirestore.instance
-                            .collection('users')
-                            .doc(FirebaseAuth.instance.currentUser!.uid)
-                            .collection('weeks')
-                            .doc(weekKey);
+                        if (status != Status.locked) {
+                          if (i != 1) {
+                            if (hasPurchases) {
+                              DocumentReference weekRef = FirebaseFirestore
+                                  .instance
+                                  .collection('users')
+                                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                                  .collection('weeks')
+                                  .doc(weekKey);
 
-                        context
-                            .read<UserProgressProvider>()
-                            .setCurrentWeekRef(weekRef);
+                              context
+                                  .read<UserProgressProvider>()
+                                  .setCurrentWeekRef(weekRef);
 
-                        CollectionReference<Map<String, dynamic>> daysRef =
-                            weekRef.collection('days');
+                              CollectionReference<Map<String, dynamic>>
+                                  daysRef = weekRef.collection('days');
 
-                        final bool? shouldRefresh = await context
-                            .pushNamed(RouteNames.weekDetails, extra: {
-                          "daysCollectionRef": daysRef,
-                          "weekKey": weekKey,
-                        });
-                        if (shouldRefresh != null && shouldRefresh) {
-                          _refreshData();
+                              final bool? shouldRefresh = await context
+                                  .pushNamed(RouteNames.weekDetails, extra: {
+                                "daysCollectionRef": daysRef,
+                                "weekKey": weekKey,
+                              });
+                              if (shouldRefresh != null && shouldRefresh) {
+                                _refreshData();
+                              }
+                            } else {
+                              showUpgradeToPremium(context);
+                            }
+                          } else {
+                            DocumentReference weekRef = FirebaseFirestore
+                                .instance
+                                .collection('users')
+                                .doc(FirebaseAuth.instance.currentUser!.uid)
+                                .collection('weeks')
+                                .doc(weekKey);
+
+                            context
+                                .read<UserProgressProvider>()
+                                .setCurrentWeekRef(weekRef);
+
+                            CollectionReference<Map<String, dynamic>> daysRef =
+                                weekRef.collection('days');
+
+                            final bool? shouldRefresh = await context
+                                .pushNamed(RouteNames.weekDetails, extra: {
+                              "daysCollectionRef": daysRef,
+                              "weekKey": weekKey,
+                            });
+                            if (shouldRefresh != null && shouldRefresh) {
+                              _refreshData();
+                            }
+                          }
                         }
                       },
                       status: status,
@@ -292,17 +331,11 @@ class _DashboardState extends State<Dashboard> {
                                     percent: getPercentage(nbCompletedWeeks),
                                   ),
                                 ),
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => PurchaseScreen(),));
-                                    
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 15, bottom: 7),
-                                    child: Image.asset("assets/icon/trophy.png",
-                                        width: 40),
-                                  ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 15, bottom: 7),
+                                  child: Image.asset("assets/icon/trophy.png",
+                                      width: 40),
                                 ),
                               ],
                             ),

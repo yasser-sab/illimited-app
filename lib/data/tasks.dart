@@ -173,52 +173,31 @@ Map<String, Map<String, dynamic>> tasksOf = {
         "task2": {
           "fr": {
             "type": Tasks.questions,
-            "title": "Journal de bord",
-            "description":
-                "CONTROLE TES ALIMENTS, histoire de Jean CONSIGNE DÉFI “CONTRÔLER SES ALIMENTS”",
-            "introText":
-                "Choisissez un aliment que vous souhaitez mieux contrôler, cette semaine nous vous proposons de mieux contrôler : CHOCOLAT",
-            "questions": {
-              "1":
-                  "À quelle fréquence et en quelle quantité en avez-vous mangé dans la journée ?",
-              "2": "Dans quelles circonstances ?"
-            }
+            "title": "Vos sentiments !",
+            "description": "Décrivez votre ressenti",
+            "introText": "Bienvenue dans ton journal de bord de jour :)",
+            "questions": {"1": "Comment ça va ?"}
           },
           "en": {
             "type": Tasks.questions,
-            "title": "Logbook",
-            "description":
-                "CONTROL YOUR FOODS, Jean's story CHALLENGE INSTRUCTION “CONTROL YOUR FOODS”",
-            "introText":
-                "Choose a food that you want to control better; this week we suggest focusing on: CHOCOLATE",
-            "questions": {
-              "1": "How often and how much did you eat it during the day?",
-              "2": "Under what circumstances?"
-            }
+            "title": "Your Feelings!",
+            "description": "Describe your feeling",
+            "introText": "Welcome to your daily journal :)",
+            "questions": {"1": "How are you?"}
           },
           "ar": {
             "type": Tasks.questions,
-            "title": "دفتر الملاحظات",
-            "description": "راقب طعامك، قصة جان تعليمات التحدي “راقب طعامك”",
-            "introText":
-                "اختر طعامًا ترغب في مراقبته بشكل أفضل، هذا الأسبوع نقترح التركيز على: الشوكولاتة",
-            "questions": {
-              "1": "كم مرة وكم كمية تناولتها في اليوم؟",
-              "2": "في أي ظروف؟"
-            }
+            "title": "مشاعرك!",
+            "description": "صف شعورك",
+            "introText": "مرحبًا بك في دفتر يومياتك :)",
+            "questions": {"1": "كيف حالك؟"}
           },
           "es": {
             "type": Tasks.questions,
-            "title": "Diario",
-            "description":
-                "CONTROLAR TUS ALIMENTOS, historia de Jean INSTRUCCIÓN DEL DESAFÍO “CONTROLAR TUS ALIMENTOS”",
-            "introText":
-                "Elige un alimento que desees controlar mejor; esta semana te proponemos centrarte en: CHOCOLATE",
-            "questions": {
-              "1":
-                  "¿Con qué frecuencia y en qué cantidad lo has comido durante el día?",
-              "2": "¿En qué circunstancias?"
-            }
+            "title": "¡Tus Sentimientos!",
+            "description": "Describe tus sentimientos",
+            "introText": "Bienvenido a tu diario diario :)",
+            "questions": {"1": "¿Cómo estás?"}
           }
         },
         "task3": {
@@ -536,31 +515,52 @@ Map<String, Map<String, dynamic>> tasksOf = {
         "task3": {
           "fr": {
             "type": Tasks.questions,
-            "title": "Vos sentiments !",
-            "description": "Décrivez votre ressenti",
-            "introText": "Bienvenue dans ton journal de bord de jour :)",
-            "questions": {"1": "Comment ça va ?"}
+            "title": "Journal de bord",
+            "description":
+                "CONTROLE TES ALIMENTS, histoire de Jean CONSIGNE DÉFI “CONTRÔLER SES ALIMENTS”",
+            "introText":
+                "Choisissez un aliment que vous souhaitez mieux contrôler, cette semaine nous vous proposons de mieux contrôler : CHOCOLAT",
+            "questions": {
+              "1":
+                  "À quelle fréquence et en quelle quantité en avez-vous mangé dans la journée ?",
+              "2": "Dans quelles circonstances ?"
+            }
           },
           "en": {
             "type": Tasks.questions,
-            "title": "Your Feelings!",
-            "description": "Describe your feeling",
-            "introText": "Welcome to your daily journal :)",
-            "questions": {"1": "How are you?"}
+            "title": "Logbook",
+            "description":
+                "CONTROL YOUR FOODS, Jean's story CHALLENGE INSTRUCTION “CONTROL YOUR FOODS”",
+            "introText":
+                "Choose a food that you want to control better; this week we suggest focusing on: CHOCOLATE",
+            "questions": {
+              "1": "How often and how much did you eat it during the day?",
+              "2": "Under what circumstances?"
+            }
           },
           "ar": {
             "type": Tasks.questions,
-            "title": "مشاعرك!",
-            "description": "صف شعورك",
-            "introText": "مرحبًا بك في دفتر يومياتك :)",
-            "questions": {"1": "كيف حالك؟"}
+            "title": "دفتر الملاحظات",
+            "description": "راقب طعامك، قصة جان تعليمات التحدي “راقب طعامك”",
+            "introText":
+                "اختر طعامًا ترغب في مراقبته بشكل أفضل، هذا الأسبوع نقترح التركيز على: الشوكولاتة",
+            "questions": {
+              "1": "كم مرة وكم كمية تناولتها في اليوم؟",
+              "2": "في أي ظروف؟"
+            }
           },
           "es": {
             "type": Tasks.questions,
-            "title": "¡Tus Sentimientos!",
-            "description": "Describe tus sentimientos",
-            "introText": "Bienvenido a tu diario diario :)",
-            "questions": {"1": "¿Cómo estás?"}
+            "title": "Diario",
+            "description":
+                "CONTROLAR TUS ALIMENTOS, historia de Jean INSTRUCCIÓN DEL DESAFÍO “CONTROLAR TUS ALIMENTOS”",
+            "introText":
+                "Elige un alimento que desees controlar mejor; esta semana te proponemos centrarte en: CHOCOLATE",
+            "questions": {
+              "1":
+                  "¿Con qué frecuencia y en qué cantidad lo has comido durante el día?",
+              "2": "¿En qué circunstancias?"
+            }
           }
         },
         "task4": {

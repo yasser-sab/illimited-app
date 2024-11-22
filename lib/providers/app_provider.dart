@@ -4,10 +4,13 @@ import 'package:illimited_app/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppProvider extends ChangeNotifier {
-  String _info = "Nothing";
-  String get info => _info;
-  setInfo(String info) {
-    _info = info;
+
+
+
+  bool _isProccessingPurchase = false;
+  bool get isProccessingPurchase => _isProccessingPurchase;
+  void setProccessingPurchase(bool val) async {
+    _isProccessingPurchase = val;
     notifyListeners();
   }
 
