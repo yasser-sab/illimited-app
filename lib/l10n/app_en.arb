@@ -59,7 +59,7 @@
   "errorLoadingData": "Error loading data",
   "failedToRenderVideo": "Failed to render video.",
   "fear": "fear",
-  "fees_text": "Fees and Duration: The program is available for an 8-week period at a promotional rate of CAD 19.99. This amount is charged at the time of purchase, granting access to the entire program. At the end of 8 weeks, the subscription automatically ends.",
+  "fees_text": "Pricing and Duration: The program is offered at a promotional price of CAD $19.99, charged at the time of purchase, granting access to the entire program.",
   "firstDayTaskRemainder": "Please make sure to review all your tasks and also keep an eye on the completed ones.",
   "firstLastNameAtLeast6Chars": "First/Last Name Must be at least 6 characters",
   "firstName": "First Name",
@@ -142,7 +142,6 @@
   "profileUpdatedSuccessfully": "Profile Updated Successfully!",
   "proud": "proud",
   "refund_text": "Refund Policy: No refunds will be made after purchase, except in cases of major technical issues with the application or significant non-compliance with promised services.",
-  "renewal_text": "Renewal and Promotions: Once the subscription period ends, users may choose to renew at a standard rate of CAD 39.99. All promotional offers are subject to change.",
   "resend": "Re-send",
   "resendCooldown": "Re-send {cooldown} secs",
   "reset": "Reset",
@@ -202,13 +201,5 @@
     }
   },
   "worry": "worry",
-  "wrongPassword": "Wrong password",
-  "notifMorningTitle" : "Good Morning ☀",
-  "notifMorningDescription" : "What a beautiful morning! 🌸 Don’t forget your challenges to make today amazing! 😊",
-  "notifRemainderTitle" : "Reminder!",
-  "notifRemainderDescription" : "We love having you with us! 😊 Don’t forget to complete your previous challenges.",
-  "notifEveningTitle" : "Good Evening 🌙",
-  "notifEveningDescription" : "The night is peaceful and full of promise. 🌙 Maybe you can complete your tasks? 😊",
-  "notifFinalTitle" : "Congratulations! 🎉",
-  "notifFinalDescription" : "You did it on your own, proving your amazing capability. We’re so proud! 😊"
+  "wrongPassword": "Wrong password"
 }

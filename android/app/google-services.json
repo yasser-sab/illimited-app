@@ -7,42 +7,42 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1030505689131:android:caae2864ddebb01040ba6e",
+        "mobilesdk_app_id": "1:1030505689131:android:5610b34a80d2d74540ba6e",
         "android_client_info": {
-          "package_name": "com.example.illimited_app"
+          "package_name": "com.surpoids.illimites"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1030505689131-6oidha1bvsie75r5k8qll9u0bfvncdae.apps.googleusercontent.com",
+          "client_id": "1030505689131-8njto33p35h9hobou6n586r5jeav9ror.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.illimited_app",
+            "package_name": "com.surpoids.illimites",
             "certificate_hash": "73409a0846265b51f5308b0a333104e19bc1eaae"
           }
         },
         {
-          "client_id": "1030505689131-9ch5eldban8q4jc9hrnsmbaa8p7bfijg.apps.googleusercontent.com",
+          "client_id": "1030505689131-nl2utus7tgt9nbh6iorjeeqv2snvnon4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.illimited_app",
+            "package_name": "com.surpoids.illimites",
+            "certificate_hash": "5f5375009db63dc3b0d9ffc89e4104789477696b"
+          }
+        },
+        {
+          "client_id": "1030505689131-nnj0e48gdv6sr8sdlpr3o91837a8kjp1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.surpoids.illimites",
             "certificate_hash": "95d4ded9fd20ea151cdb0938749659409463b8ce"
           }
         },
         {
-          "client_id": "1030505689131-firpjrbctn1v8d51lqdf7p7dtiq4qu9g.apps.googleusercontent.com",
+          "client_id": "1030505689131-u99997tu9pcb58spbk0qmuevho61sp5r.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.illimited_app",
+            "package_name": "com.surpoids.illimites",
             "certificate_hash": "9d9c47a2627b7f10abbc77a5d17ab093b9620d86"
-          }
-        },
-        {
-          "client_id": "1030505689131-u6goo21235an40k4749qi7k3alks1h05.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.illimited_app",
-            "certificate_hash": "5f5375009db63dc3b0d9ffc89e4104789477696b"
           }
         },
         {
@@ -63,10 +63,10 @@
               "client_type": 3
             },
             {
-              "client_id": "1030505689131-j8nk28450qn9v8p1apamuqitr4k3gidh.apps.googleusercontent.com",
+              "client_id": "1030505689131-j2tm2avh88ah48jrp6qbmbmjb53k173b.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.illimitedApp"
+                "bundle_id": "com.surpoids.illimites"
               }
             }
           ]

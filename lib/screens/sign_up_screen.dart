@@ -220,7 +220,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             mySnackBar(
                                 context: context,
                                 message:
-                                    AppLocalizations.of(context)!.nameMustBeAtLeast6Chars,
+                                    AppLocalizations.of(context)!.passwordAtLeast6Chars,
                                 snackBarType: SnackBarType.failure);
                           } else {
                             if (_confirmePasswordController.text ==

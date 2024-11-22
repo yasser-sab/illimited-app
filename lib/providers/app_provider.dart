@@ -4,6 +4,13 @@ import 'package:illimited_app/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppProvider extends ChangeNotifier {
+  String _info = "Nothing";
+  String get info => _info;
+  setInfo(String info) {
+    _info = info;
+    notifyListeners();
+  }
+
   //VERIFICATION COOL DOWN
   int _sendVerificationCooldown = 0;
   Timer? _cooldownTimer;
@@ -54,6 +61,7 @@ class AppProvider extends ChangeNotifier {
   void setScreenWidth(BuildContext context) async {
     _screenWidth = getScreenWidth(context);
   }
+
   double _screenHeight = 810;
   double get screenHeight => _screenHeight;
   void setScreenHeight(BuildContext context) async {
